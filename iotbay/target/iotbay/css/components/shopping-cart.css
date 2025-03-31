@@ -1,0 +1,19 @@
+#shopping-cart {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 350px;
+    background-color: var(--content-bg-primary);
+    box-shadow: 0 2px 10px var(--shadow-color);
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    color: var(--content-text-primary);
+}
+
+.cart-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+}

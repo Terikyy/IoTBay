@@ -1,0 +1,11 @@
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/controllers/CartServlet.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/controllers/AuthServlet.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/controllers/ProductServlet.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/dao/OrderDAO.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/model/Product.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/utils/DBUtil.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/model/Order.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/dao/ProductDAO.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/dao/UserDAO.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/model/User.java
+/Users/erikvh/VSCodeProjects/IoTBay/iotbay/src/main/java/utils/HashUtil.java
