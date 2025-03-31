@@ -1,3 +1,6 @@
 # Ignore Visual Studio Code specific files
 .vscode/
 *.code-workspace
+
+# Ignore macOS system files
+.DS_Store
