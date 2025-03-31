@@ -1,0 +1,4 @@
+/* Import base styles and header styles */
+@import '../base/reset.css';
+@import '../base/variables.css';
+@import '../components/header.css';
