@@ -1,4 +1,48 @@
-/* Import base styles and header styles */
-@import '../base/reset.css';
+/* Import base styles first */
 @import '../base/variables.css';
+@import '../base/reset.css';
+
+/* Import layout styles */
+@import 'layout/container.css';
+
+/* Import component styles */
 @import '../components/header.css';
+
+/* Subpage-specific styles */
+.centered-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--content-bg-primary);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    text-align: center;
+}
+
+.centered-container h2 {
+    font-size: 1.5rem;
+    color: var(--content-text-primary);
+    margin-bottom: 1rem;
+}
+
+.centered-container p {
+    font-size: 1rem;
+    color: var(--content-text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.centered-container a {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-primary);
+    color: var(--header-text);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.centered-container a:hover {
+    background-color: var(--accent-secondary);
+    box-shadow: 0 0 4px var(--accent-primary);
+}

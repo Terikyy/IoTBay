@@ -22,14 +22,20 @@
         </div>
         <a href="index.jsp">Return to Main Page</a>
     </header>
-    <h2>Login</h2>
-    <form action="login.jsp" method="post">
-        <label for="email">Email:</label><br>
-        <input type="email" name="email" id="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" name="password" id="password" required><br>
-        <input type="submit" value="Login">
-    </form>
-    <p>Don't have an account? <a href="register.jsp">Register here</a></p>
+    <div class="container">
+        <div class="main-container">
+            <div class="centered-container">
+                <form action="login.jsp" method="post">
+                    <h2>Login</h2>
+                    <label for="email">Email:</label><br>
+                    <input type="email" name="email" id="email" required><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" name="password" id="password" required><br>
+                    <input type="submit" value="Login">
+                </form>
+                <p>Don't have an account? <a href="register.jsp">Register here</a></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

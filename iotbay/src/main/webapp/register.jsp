@@ -28,20 +28,26 @@
         </div>
         <a href="index.jsp">Return to Main Page</a>
     </header>
-    <h2>Registration</h2>
-    <form action="register.jsp" method="post">
-        <label for="email">Email:</label><br>
-        <input type="email" name="email" id="email" required><br>
-        <label for="name">Name:</label><br>
-        <input type="text" name="name" id="name" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" name="password" id="password" required><br>
-        <label for="gender">Gender:</label><br>
-        <input type="radio" name="gender" value="male" required> Male<br>
-        <input type="radio" name="gender" value="female" required> Female<br>
-        <input type="radio" name="gender" value="other" required> Other<br>
-        <input type="checkbox" name="tos" id="tos" required> I agree to the Terms of Service<br>
-        <input type="submit" value="Register">
-    </form>
+    <div class="container">
+        <div class="main-container">
+            <div class="centered-container">
+                <form action="register.jsp" method="post">
+                    <h2>Registration</h2>
+                    <label for="email">Email:</label><br>
+                    <input type="email" name="email" id="email" required><br>
+                    <label for="name">Name:</label><br>
+                    <input type="text" name="name" id="name" required><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" name="password" id="password" required><br>
+                    <label for="gender">Gender:</label><br>
+                    <input type="radio" name="gender" value="male" required> Male<br>
+                    <input type="radio" name="gender" value="female" required> Female<br>
+                    <input type="radio" name="gender" value="other" required> Other<br>
+                    <input type="checkbox" name="tos" id="tos" required> I agree to the Terms of Service<br>
+                    <input type="submit" value="Register">
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
