@@ -2,6 +2,7 @@ package model;
 
 public class Address {
     private int addressID;
+    private String name;
     private int number;
     private String street;
     private String suburb;
@@ -9,11 +10,20 @@ public class Address {
     private String city;
     private String state;
 
-    public Address(int addressID, int userID, String address, String city, String state, String postcode, String country) {
+    public Address(int addressID, String name, int userID, String address, String city, String state, String postcode, String country) {
         this.addressID = addressID;
+        this.name = name;
         this.city = city;
         this.state = state;
         this.postcode = postcode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAddressID() {
@@ -71,4 +81,5 @@ public class Address {
     public void setState(String state) {
         this.state = state;
     }
+
 }

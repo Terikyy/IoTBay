@@ -7,5 +7,6 @@ public class Order {
     int paymentID;
     Date orderDate;
     int status;
-    
+    String addressID;
+
 }
