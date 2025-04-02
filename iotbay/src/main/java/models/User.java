@@ -1,6 +1,8 @@
-package model;
+package models;
 
 import java.io.Serializable;
+
+// to be removed
 
 public /*abstract*/ class User implements Serializable {
 

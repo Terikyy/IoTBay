@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 
+// to be removed
+
 public /*abstract*/ class User implements Serializable {
 
     String email;
