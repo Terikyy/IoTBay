@@ -1,4 +1,4 @@
-package model;
+package models;
 
 /**
  * The Address class is designed to be immutable to ensure that once an address is created,
