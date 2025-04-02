@@ -60,6 +60,7 @@
                         out.println("<p>Changes saved successfully!</p>");
                     }
                 %>
+                <a href="logout.jsp">Logout</a>
             </div>
         </div>
     </div>
