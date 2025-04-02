@@ -57,13 +57,11 @@ form label {
 }
 
 /* Checkbox and radio button styling */
-form input[type="checkbox"],
-form input[type="radio"] {
+form input[type="checkbox"] {
     margin-right: 0.5rem;
 }
 
-form .checkbox-group,
-form .radio-group {
+form .checkbox-group {
     display: flex;
     align-items: center;
     gap: 0.5rem;
