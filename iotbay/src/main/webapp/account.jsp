@@ -1,7 +1,10 @@
 <%@ page import="models.users.User" %>
+<%@ page import="java.io.Console" %>
 <%@ page session="true" %>
 <%
     User user = (User) session.getAttribute("user");
+    System.out.println("Username : " + user.getName());
+
     if (user == null) {
         response.sendRedirect("login.jsp");
         return;
@@ -33,7 +36,7 @@
                 <input type="text" name="name" id="name" value="<%= user.getName() %>"><br>
                 <label for="password">Password:</label><br>
                 <input type="password" name="password" id="password" value="<%= user.getPassword() %>"><br>
-                <!-- This is gonna be tough, I'd say leave it out for now (Commenting out JSP stuff is so fucking annoying)-->
+                <!-- This is gonna be tough, I'd say leave it out for now (Commenting out JSP stuff is a huge pain in the ass)-->
                 <!--
                 <label for="adressLine">Address Line:</label><br>
                 <input type="text" name="adressLine" id="adressLine" value="<%//= user.getAdressLine() %>"><br>
@@ -56,6 +59,10 @@
                     //user.setPostalCode(request.getParameter("postalCode") != null ? Integer.parseInt(request.getParameter("postalCode")) : null);
                     //user.setStateCode(request.getParameter("stateCode"));
                     session.setAttribute("user", user);
+                    // For some reason it loads it with the old user...
+                    // --> redirect to reload
+                    response.sendRedirect("account.jsp");
+                    //This doesn't work now because of the redirect
                     out.println("<p>Changes saved successfully!</p>");
                 }
             %>
