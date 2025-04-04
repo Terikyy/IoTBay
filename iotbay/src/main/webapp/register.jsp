@@ -7,7 +7,6 @@
         User user = new Customer(
                 (int) (Math.random() * 1000000), // Random ID for demo purposes - will be replaced with UUID logic or database ID in production
                 request.getParameter("email"),
-                request.getParameter("name"),
                 request.getParameter("password")
         );
         session.setAttribute("user", user);
@@ -37,8 +36,6 @@
                 <h2>Registration</h2>
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
-                <label for="name">Name:</label><br>
-                <input type="text" name="name" id="name" required><br>
                 <label for="password">Password:</label><br>
                 <input type="password" name="password" id="password" required><br>
                 <input type="checkbox" name="tos" id="tos" required> I agree to the Terms of Service<br>

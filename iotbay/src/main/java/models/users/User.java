@@ -8,9 +8,9 @@ public abstract class User {
     private String password;
     private Integer addressID;
 
-    public User(Integer userID, String email, String name, String password) {
+    public User(Integer userID, String email, String password) {
         this.userID = userID;
-        this.name = name;
+        this.name = "";
         this.email = email;
         this.password = password;
     }
@@ -22,6 +22,7 @@ public abstract class User {
     public String getName() {
         return this.name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -29,6 +30,7 @@ public abstract class User {
     public String getEmail() {
         return this.email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -36,13 +38,15 @@ public abstract class User {
     public String getPassword() {
         return this.password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public int getAddressID() {
         return addressID;
     }
+
     public void setAddressID(int addressID) {
         this.addressID = addressID;
     }
