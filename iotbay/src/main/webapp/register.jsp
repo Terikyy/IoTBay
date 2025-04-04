@@ -1,8 +1,11 @@
-<%@ page import="model.User" %>
+<%@ page import="models.users.Customer" %>
+<%@ page import="models.users.User" %>
+<%@ page import="java.util.Random" %>
 <%@ page session="true" %>
 <%
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        User user = new User(
+        User user = new Customer(
+                (int) (Math.random() * 1000000), // Random ID for demo purposes - will be replaced with UUID logic or database ID in production
                 request.getParameter("email"),
                 request.getParameter("name"),
                 request.getParameter("password")
