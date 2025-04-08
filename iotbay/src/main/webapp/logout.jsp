@@ -1,7 +1,7 @@
 <%@ page session="true" %>
 <%
     // Remove the user from session storage
-    session.removeAttribute("user");
+    session.removeAttribute("customer");
 %>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,15 +1,22 @@
-<%@ page import="models.users.Customer" %>
-<%@ page import="models.users.User" %>
-<%@ page import="java.util.Random" %>
+<%@ page import="model.users.Customer" %>
 <%@ page session="true" %>
 <%
+    Customer registeredCustomer = (Customer) session.getAttribute("customer");
+    if (registeredCustomer != null) {
+        response.sendRedirect("account.jsp");
+        return;
+    }
+%>
+<%
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        User user = new Customer(
-                (int) (Math.random() * 1000000), // Random ID for demo purposes - will be replaced with UUID logic or database ID in production
+        Customer customer = new Customer(
+                // placeholder customer id=1
+                1,
+                request.getParameter("name"),
                 request.getParameter("email"),
                 request.getParameter("password")
         );
-        session.setAttribute("user", user);
+        session.setAttribute("customer", customer);
         response.sendRedirect("account.jsp");
         return;
     }
@@ -34,6 +41,8 @@
         <div class="centered-container">
             <form action="register.jsp" method="post">
                 <h2>Registration</h2>
+                <label for="name">Name:</label><br>
+                <input type="text" name="name" id="name" required><br>
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
                 <label for="password">Password:</label><br>

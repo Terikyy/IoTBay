@@ -1,8 +1,17 @@
+<%@ page import="model.users.*" %>
 <%@ page session="true" %>
+<%
+    // Add support for other user types
+    Customer customer = (Customer) session.getAttribute("customer");
+    if (customer != null) {
+        response.sendRedirect("account.jsp");
+        return;
+    }
+%>
 <%
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         // Placeholder for login logic
-        session.setAttribute("user", new model.User(request.getParameter("email"), "Placeholder Name", "Placeholder Password", "male"));
+        session.setAttribute("customer", new Customer(1, "Placeholder Name", request.getParameter("email"), request.getParameter("password")));
         response.sendRedirect("account.jsp");
         return;
     }

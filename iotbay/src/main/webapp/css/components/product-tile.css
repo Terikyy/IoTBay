@@ -40,7 +40,7 @@
 /* Add to Cart Button */
 .product-tile .add-to-cart {
     background: var(--accent-primary);
-    color: white;
+    color: var(--content-text-primary);
     padding: 8px 15px;
     border: none;
     border-radius: 8px;
