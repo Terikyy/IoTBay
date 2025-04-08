@@ -60,4 +60,24 @@ public class UserUtil {
         }
         return "Unknown";
     }
+
+    /**
+     * Check if the user is an admin.
+     *
+     * @param user The User object.
+     * @return True if the user is an admin, false otherwise.
+     */
+    public static boolean isAdmin(User user) {
+        return user instanceof Admin;
+    }
+
+    /**
+     * Check if the user is a staff member.
+     *
+     * @param user The User object.
+     * @return True if the user is an staff / admin, false otherwise.
+     */
+    public static boolean isStaff(User user) {
+        return user instanceof Staff || user instanceof Admin;
+    }
 }
