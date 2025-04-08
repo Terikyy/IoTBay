@@ -50,13 +50,14 @@
         <!-- Main content area -->
         <div class="main-content">
             <%-- Fetch products dynamically from the backend --%>
-            <div class="product-tile" data-id="1000" data-name="Raspberry Pi Micro 2" data-price="29.99">
-                <img src="assets/images/raspi_micro_2.png" alt="Raspberry Pi Micro 2" onerror="this.src='assets/images/placeholder.png';">
+            <%-- Example of product tile --%>
+            <div class="product-tile">
+                <img src="assets/images/products/raspi_micro_2.png" alt="Raspberry Pi Micro 2" onerror="this.src='assets/images/products/placeholder.png';">
                 <h3>Raspberry Pi Pico 2</h3>
                 <p>$29.99</p>
                 <p>Size: 1 Unit</p>
                 <p>In Stock: 500</p>
-                <button class="add-to-cart" data-id="1000">Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
         </div>
     </div>

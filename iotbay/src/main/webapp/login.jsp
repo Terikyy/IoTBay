@@ -1,19 +1,30 @@
-<%@ page import="model.users.*" %>
+<%@ page import="utils.UserUtil" %>
+<%@ page import="model.users.User" %>
 <%@ page session="true" %>
 <%
-    // Add support for other user types
-    Customer customer = (Customer) session.getAttribute("customer");
-    if (customer != null) {
-        response.sendRedirect("account.jsp");
+    // Check if a user is already logged in and if so redirect to welcome page
+    User user = (User) session.getAttribute("user");
+    if (user != null) {
+        response.sendRedirect("welcome.jsp");
         return;
     }
 %>
 <%
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        // Placeholder for login logic
-        session.setAttribute("customer", new Customer(1, "Placeholder Name", request.getParameter("email"), request.getParameter("password")));
-        response.sendRedirect("account.jsp");
-        return;
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        // Authenticate user using UserUtil
+        User loggedInUser = UserUtil.authenticateUser(email, password);
+
+        if (loggedInUser != null) {
+            // Store user in session and redirect to welcome page
+            session.setAttribute("user", loggedInUser);
+            response.sendRedirect("welcome.jsp");
+            return;
+        } else {
+            out.println("<p>Invalid email or password. Please try again.</p>");
+        }
     }
 %>
 <!DOCTYPE html>

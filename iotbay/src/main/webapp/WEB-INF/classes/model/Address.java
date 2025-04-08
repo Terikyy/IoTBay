@@ -10,16 +10,16 @@ package model;
  * needs to be updated or changed.
  */
 public class Address {
-    private final Integer addressID; 
+    private final int addressID; 
     private final String name;       
-    private final Integer streetNumber;    
+    private final int streetNumber;    
     private final String streetName;     
-    private final Integer postcode;   
+    private final int postcode;   
     private final String suburb;     
     private final String city;       
     private final String state;      
 
-    public Address(Integer addressID, String name, Integer streetNumber, String streetName, Integer postcode, String suburb, String city, String state) {
+    public Address(int addressID, String name, int streetNumber, String streetName, int postcode, String suburb, String city, String state) {
         this.addressID = addressID;
         this.name = name;
         this.streetNumber = streetNumber;
@@ -30,7 +30,7 @@ public class Address {
         this.state = state;
     }
 
-    public Integer getAddressID() {
+    public int getAddressID() {
         return addressID;
     }
 
@@ -38,7 +38,7 @@ public class Address {
         return name;
     }
 
-    public Integer getStreetNumber() {
+    public int getStreetNumber() {
         return streetNumber;
     }
 
@@ -46,7 +46,7 @@ public class Address {
         return streetName;
     }
 
-    public Integer getPostcode() {
+    public int getPostcode() {
         return postcode;
     }
 

@@ -2,8 +2,8 @@ package model.users;
 
 public class Admin extends User {
 
-    public Admin(Integer userID, String email, String password) {
-        super(userID, email, password);
+    public Admin(Integer userID, String name, String email, String password) {
+        super(userID, name, email, password);
     }
 
 }

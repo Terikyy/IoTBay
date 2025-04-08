@@ -1,8 +1,8 @@
 <%@ page import="model.users.*" %>
 <%@ page session="true" %>
 <%
-    // Add support for other user types
-    Customer user = (Customer) session.getAttribute("customer");
+    // Redirect to login page if user is not logged in
+    User user = (User) session.getAttribute("user");
     if (user == null) {
         response.sendRedirect("login.jsp");
         return;
@@ -28,7 +28,6 @@
             <div class="centered-container">
                 <form action="account.jsp" method="post">
                     <h2>Account Management</h2>
-                    <p>Welcome, <%= user.getName() %></p>
                     <p>Personal Information:</p>
                     <label for="name">Name:</label><br>
                     <input type="text" name="name" id="name" value="<%= user.getName() %>"><br>
@@ -36,7 +35,8 @@
                     <input type="email" name="email" id="email" value="<%= user.getEmail() %>" readonly><br>
                     <label for="password">Password:</label><br>
                     <input type="password" name="password" id="password" value="<%= user.getPassword() %>"><br>
-                    <!-- Add adress information fields with Adress.java class-->
+                    <p>Address Information:</p>
+                    <!-- TODO: Add adress information fields with Adress.java class-->
                     <label for="adressLine">Address Line:</label><br>
                     <input type="text" name="adressLine" id="adressLine" value=""><br>
                     <label for="additionalAdressInfo">Additional Address Info:</label><br>
@@ -52,7 +52,7 @@
                         user.setName(request.getParameter("name"));
                         user.setEmail(request.getParameter("email"));
                         user.setPassword(request.getParameter("password"));
-                        // add adress saving
+                        // TODO: add adress saving
                         session.setAttribute("user", user);
                         out.println("<p>Changes saved successfully!</p>");
                     }

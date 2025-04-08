@@ -3,12 +3,12 @@ package model;
 import java.util.Date;
 
 public class Product {
-    int productID;
-    String name;
-    String description;
-    double price;
-    int stock;
-    Date releaseDate;
+    private final int productID;
+    private String name;
+    private String description;
+    private double price;
+    private int stock;
+    private Date releaseDate;
 
     public Product(int productID, String name, String description, double price, int stock, Date releaseDate) {
         this.productID = productID;
@@ -21,11 +21,6 @@ public class Product {
 
     public int getProductID() {
         return productID;
-    }
-
-    // This method is not supposed to be used
-    public void setProductID(int productID) {
-        this.productID = productID;
     }
 
     public String getName() {

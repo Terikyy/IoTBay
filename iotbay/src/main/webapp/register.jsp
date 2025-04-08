@@ -1,24 +1,30 @@
-<%@ page import="model.users.Customer" %>
+<%@ page import="model.users.User" %>
+<%@ page import="utils.UserUtil" %>
 <%@ page session="true" %>
 <%
-    Customer registeredCustomer = (Customer) session.getAttribute("customer");
-    if (registeredCustomer != null) {
+    // Check if a user is already logged in
+    User loggedInUser = (User) session.getAttribute("user");
+    if (loggedInUser != null) {
         response.sendRedirect("account.jsp");
         return;
     }
 %>
 <%
     if ("POST".equalsIgnoreCase(request.getMethod())) {
-        Customer customer = new Customer(
-                // placeholder customer id=1
-                1,
-                request.getParameter("name"),
-                request.getParameter("email"),
-                request.getParameter("password")
-        );
-        session.setAttribute("customer", customer);
-        response.sendRedirect("account.jsp");
-        return;
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        // Use UserUtil to register the customer
+        User user = UserUtil.registerCustomer(name, email, password);
+
+        if (user != null) {
+            session.setAttribute("user", user);
+            response.sendRedirect("welcome.jsp");
+            return;
+        } else {
+            out.println("<p>An error occured while registering</p>");
+        }
     }
 %>
 <!DOCTYPE html>
