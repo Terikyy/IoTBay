@@ -10,6 +10,7 @@
     }
 %>
 <%
+    // Maybe move handling to UserController
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");

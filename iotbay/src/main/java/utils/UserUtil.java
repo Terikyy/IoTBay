@@ -13,7 +13,7 @@ public class UserUtil {
      * @return A User object if authentication is successful, null otherwise.
      */
     public static User authenticateUser(String email, String password) {
-        // Placeholder: Replace with actual database query to fetch user details
+        // Placeholder: Replace with actual database query to fetch user details (UserDAO)
         int uid = (int) (Math.random() * 1000000); // Placeholder: Random ID for demo purposes - will be replaced with UUID logic or database ID in production
         String name = "User Name"; // Placeholder name
         if ("admin@example.com".equals(email) && "admin123".equals(password)) {
@@ -36,10 +36,9 @@ public class UserUtil {
      * @return A Customer object if registration is successful, null otherwise.
      */
     public static Customer registerCustomer(String name, String email, String password) {
-        // Placeholder: Replace with actual database logic to save customer details
+        // Placeholder: Replace with actual database logic to save customer details (UserDAO)
         int uid = (int) (Math.random() * 1000000); // Placeholder: Random ID for demo purposes
-        // TODO: Add database logic to check if the email already exists and insert the new customer
-
+        
         // For now, assume registration is always successful
         return new Customer(uid, name, email, password);
     }
