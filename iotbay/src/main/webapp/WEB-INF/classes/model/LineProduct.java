@@ -1,6 +1,6 @@
 package model;
 
-public class LineProduct {
+public abstract class LineProduct {
     private final int productID;
     private int quantity;
 
