@@ -1,4 +1,4 @@
-package model;
+package model.lineproducts;
 
 public class OrderItem extends LineProduct {
     private final int orderID;

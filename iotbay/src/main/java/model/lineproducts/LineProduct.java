@@ -1,4 +1,4 @@
-package model;
+package model.lineproducts;
 
 public abstract class LineProduct {
     private final int productID;
