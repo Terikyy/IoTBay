@@ -1,5 +1,5 @@
 <%@ page import="model.users.User" %>
-<%@ page import="utils.UserUtil" %>
+<%@ page import="controllers.UserController" %>
 <%@ page session="true" %>
 <%
     // Check if a user is already logged in
@@ -16,8 +16,8 @@
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Use UserUtil to register the customer
-        User user = UserUtil.registerCustomer(name, email, password);
+        // Use UserController to register the customer
+        User user = UserController.registerCustomer(name, email, password);
 
         if (user != null) {
             session.setAttribute("user", user);

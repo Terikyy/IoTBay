@@ -1,4 +1,4 @@
-<%@ page import="utils.UserUtil" %>
+<%@ page import="controllers.UserController" %>
 <%@ page import="model.users.User" %>
 <%@ page session="true" %>
 <%
@@ -10,13 +10,12 @@
     }
 %>
 <%
-    // Maybe move handling to UserController
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Authenticate user using UserUtil
-        User loggedInUser = UserUtil.authenticateUser(email, password);
+        // Authenticate user using UserController
+        User loggedInUser = UserController.authenticateUser(email, password);
 
         if (loggedInUser != null) {
             // Store user in session and redirect to welcome page
