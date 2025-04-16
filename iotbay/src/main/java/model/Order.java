@@ -5,14 +5,14 @@ import java.util.Date;
 public class Order {
     private final int orderID;
     private final Integer userID;
+    private int addressID; // Not final to allow for address change
+    private String trackingNumber;
+    private String orderStatus; 
     private final Date orderDate;
-    private int orderStatus; // 0: Pending, 1: Shipped, 2: Delivered, 3: Cancelled
-    private int addressID; // Not final to allow for address changes
-    private Integer trackingNumber;
-    private double totalPrice;
+    private final double totalPrice;
 
 
-    public Order(int orderID, Integer userID, int addressID, Integer trackingNumber, int orderStatus, Date orderDate, double totalPrice) {
+    public Order(int orderID, Integer userID, int addressID, String trackingNumber, String orderStatus, Date orderDate, double totalPrice) {
         this.orderID = orderID;
         this.userID = userID;
         this.addressID = addressID;
@@ -26,16 +26,8 @@ public class Order {
         return orderID;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public int getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
+    public Integer getUserID() {
+        return userID;
     }
 
     public int getAddressID() {
@@ -46,23 +38,27 @@ public class Order {
         this.addressID = addressID;
     }
 
-    public Integer getUserID() {
-        return userID;
-    }
-
-    public Integer getTrackingNumber() {
+    public String getTrackingNumber() {
         return trackingNumber;
     }
 
-    public void setTrackingNumber(Integer trackingNumber) {
+    public void setTrackingNumber(String trackingNumber) {
         this.trackingNumber = trackingNumber;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
     }
 
     public double getTotalPrice() {
         return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
     }
 }

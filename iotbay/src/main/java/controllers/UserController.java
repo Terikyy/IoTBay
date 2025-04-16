@@ -46,4 +46,6 @@ public class UserController {
         // For now, assume registration is always successful
         return new Customer(uid, name, email, password);
     }
+
+    // TODO: Implement methods for user profile management, and logging of login/logout actions
 }

@@ -1,14 +1,14 @@
 package model.lineproducts;
 
 public class CartItem extends LineProduct {
-    private final int orderID;
+    private final Integer userID; // Use Integer since it can be null (when not logged in)
 
-    public CartItem(int productID, int orderID, int quantity) {
+    public CartItem(int productID, Integer userID, int quantity) {
         super(productID, quantity);
-        this.orderID = orderID;
+        this.userID = userID;
     }
 
-    public int getOrderID() {
-        return orderID;
+    public Integer getUserId() {
+        return userID;
     }
 }

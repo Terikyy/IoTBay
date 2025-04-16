@@ -8,9 +8,9 @@ public class Payment {
     private final double amountPaid;
     private final String paymentMethod;
     private final Date paymentDate;
-    private int paymentStatus; // 0: Pending, 1: Completed, 2: Failed
+    private String paymentStatus;
 
-    public Payment(int paymentID, int orderID, String paymentMethod, double amountPaid, Date paymentDate, int paymentStatus) {
+    public Payment(int paymentID, int orderID, String paymentMethod, double amountPaid, Date paymentDate, String paymentStatus) {
         this.paymentID = paymentID;
         this.orderID = orderID;
         this.paymentMethod = paymentMethod;
@@ -39,11 +39,11 @@ public class Payment {
         return orderID;
     }
 
-    public int getPaymentStatus() {
+    public String getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(int paymentStatus) {
+    public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 }
