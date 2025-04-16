@@ -5,5 +5,8 @@
 # Ignore macOS system files
 .DS_Store
 
-# Ignore JetBrains IDE specific files
+# Ignore build output by maven
 /target/
+
+# Ignore entire WEB-INF folder since it only contains generated content
+/iotbay/src/main/webapp/WEB-INF/
