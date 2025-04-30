@@ -6,7 +6,7 @@
 .DS_Store
 
 # Ignore build output by maven
-/target/
+/iotbay/target/
 
 # Ignore generated content in WEB-INF folder
 /iotbay/src/main/webapp/WEB-INF/classes/
