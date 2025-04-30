@@ -1,11 +1,34 @@
 package model.dao;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
+import model.Order;
 
-public class OrderDAO extends AbstractDAO {
+public class OrderDAO extends AbstractDAO<Order> {
+
     public OrderDAO(Connection conn) throws SQLException {
         super(conn);
     }
-    // Interaction with the database for order-related operations
+
+    @Override
+    protected Order mapRow(ResultSet rs) throws SQLException {
+        return new Order(
+            rs.getInt("OrderID"),
+            rs.getObject("UserID") != null ? rs.getInt("UserID") : null, // Handle nullable UserID
+            rs.getInt("AddressID"),
+            rs.getString("TrackingNumber"),
+            rs.getString("OrderStatus"),
+            rs.getDate("OrderDate"),
+            rs.getDouble("TotalPrice")
+        );
+    }
+
+    @Override
+    public int insert(Order order) throws SQLException {
+        throw new UnsupportedOperationException("Insert operation is not implemented yet.");
+    }
+
+    @Override
+    public int update(Order order) throws SQLException {
+        throw new UnsupportedOperationException("Update operation is not implemented yet.");
+    }
 }
