@@ -10,3 +10,5 @@
 
 # Ignore entire WEB-INF folder since it only contains generated content
 /iotbay/src/main/webapp/WEB-INF/
+# But do not ignore web.xml
+!/iotbay/src/main/webapp/WEB-INF/web.xml
