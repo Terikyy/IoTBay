@@ -8,7 +8,7 @@
 # Ignore build output by maven
 /target/
 
-# Ignore entire WEB-INF folder since it only contains generated content
-/iotbay/src/main/webapp/WEB-INF/
-# But do not ignore web.xml
-!/iotbay/src/main/webapp/WEB-INF/web.xml
+# Ignore generated content in WEB-INF folder
+/iotbay/src/main/webapp/WEB-INF/classes/
+/iotbay/src/main/webapp/WEB-INF/lib/
+/iotbay/src/main/webapp/WEB-INF/test-classes/
