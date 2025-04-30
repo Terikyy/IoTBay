@@ -36,6 +36,8 @@ public class ConnServlet extends HttpServlet {
     private PaymentDAO paymentDAO;
     private ProductDAO productDAO;
     private UserDAO userDAO;
+    private AdminDAO adminDAO;
+    private StaffDAO staffDAO;
 
     private Connection conn;
 
@@ -72,6 +74,8 @@ public class ConnServlet extends HttpServlet {
             paymentDAO = new PaymentDAO(conn);
             productDAO = new ProductDAO(conn);
             userDAO = new UserDAO(conn);
+            adminDAO = new AdminDAO(conn);
+            staffDAO = new StaffDAO(conn);
 
         } catch (SQLException ex) {
             Logger.getLogger(ConnServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,6 +90,8 @@ public class ConnServlet extends HttpServlet {
         session.setAttribute("paymentDAO", paymentDAO);
         session.setAttribute("productDAO", productDAO);
         session.setAttribute("userDAO", userDAO);
+        session.setAttribute("adminDAO", adminDAO);
+        session.setAttribute("staffDAO", staffDAO);
 
     }
 
