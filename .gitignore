@@ -12,3 +12,6 @@
 /iotbay/src/main/webapp/WEB-INF/classes/
 /iotbay/src/main/webapp/WEB-INF/lib/
 /iotbay/src/main/webapp/WEB-INF/test-classes/
+
+# Ignore DB class as it's user specific
+/iotbay/src/main/java/model/dao/DB.java
