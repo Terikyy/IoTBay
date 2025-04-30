@@ -26,7 +26,13 @@ public class ConnServlet extends HttpServlet {
 
     private DBConnector db;
 
-    //private DBManager manager;
+    private AdressDAO adressDAO;
+    private CartItemDAO cartItemDAO;
+    private OrderDAO orderDAO;
+    private OrderItemDAO orderItemDAO;
+    private PaymentDAO paymentDAO;
+    private ProductDAO productDAO;
+    private UserDAO userDAO;
 
     private Connection conn;
 
@@ -46,31 +52,37 @@ public class ConnServlet extends HttpServlet {
     }
 
     @Override // Add the DBConnector, DBManager, Connection instances to the session
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
 
         conn = db.openConnection();
-        /* 
+        
         try {
-            // TODO: Change to include all our DAO classes (managers)
-            //manager = new DBManager(conn);
+            // TODO: Add constructors for the daos (managers)
+            adressDAO = new AdressDAO(conn);
+            cartItemDAO = new CartItemDAO(conn);
+            orderDAO = new OrderDAO(conn);
+            orderItemDAO = new OrderItemDAO(conn);
+            paymentDAO = new PaymentDAO(conn);
+            productDAO = new ProductDAO(conn);
+            userDAO = new UserDAO(conn);
 
         } catch (SQLException ex) {
-
             Logger.getLogger(ConnServlet.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-        */
+        
         // export the DB manager to the view-session (JSPs)
-        //session.setAttribute("manager", manager);
-
-        // set more managers to the session if needed
-        // session.setAttribute("userDAO", userDAO);, etc.
+        session.setAttribute("adressDAO", adressDAO);
+        session.setAttribute("cartItemDAO", cartItemDAO);
+        session.setAttribute("orderDAO", orderDAO);
+        session.setAttribute("orderItemDAO", orderItemDAO);
+        session.setAttribute("paymentDAO", paymentDAO);
+        session.setAttribute("productDAO", productDAO);
+        session.setAttribute("userDAO", userDAO);
 
     }
 
