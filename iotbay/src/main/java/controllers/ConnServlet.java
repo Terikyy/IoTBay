@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 
 import jakarta.servlet.ServletException;
 
+import jakarta.servlet.annotation.WebServlet;
+
 import jakarta.servlet.http.HttpServlet;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import jakarta.servlet.http.HttpSession;
 
 import model.dao.*;
 
+@WebServlet("/Conservlet")
 public class ConnServlet extends HttpServlet {
 
     private DBConnector db;

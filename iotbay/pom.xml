@@ -89,12 +89,5 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <!-- TODO: Remove this later when we've set it up properly -->
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-            </resource>
-        </resources>
-        <directory>src/main/webapp/WEB-INF</directory>
     </build>
 </project>
