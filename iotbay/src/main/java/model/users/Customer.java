@@ -6,4 +6,8 @@ public class Customer extends User {
         super(userID, name, email, password);
     }
 
+    public Customer(User user) {
+        super(user.getUserID(), user.getName(), user.getEmail(), user.getPassword());
+    }
+
 }

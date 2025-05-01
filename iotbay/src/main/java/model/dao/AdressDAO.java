@@ -1,7 +1,11 @@
 package model.dao;
 
-import java.sql.*;
 import model.Address;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class AdressDAO extends AbstractDAO<Address> {
 
@@ -12,14 +16,14 @@ public class AdressDAO extends AbstractDAO<Address> {
     @Override
     protected Address mapRow(ResultSet rs) throws SQLException {
         return new Address(
-            rs.getInt("AddressID"),
-            rs.getString("Name"),
-            rs.getInt("StreetNumber"),
-            rs.getString("StreetName"),
-            rs.getInt("Postcode"),
-            rs.getString("Suburb"),
-            rs.getString("City"),
-            rs.getString("State")
+                rs.getInt("AddressID"),
+                rs.getString("Name"),
+                rs.getInt("StreetNumber"),
+                rs.getString("StreetName"),
+                rs.getInt("Postcode"),
+                rs.getString("Suburb"),
+                rs.getString("City"),
+                rs.getString("State")
         );
     }
 
@@ -31,5 +35,20 @@ public class AdressDAO extends AbstractDAO<Address> {
     @Override
     public int update(Address address) throws SQLException {
         throw new UnsupportedOperationException("Update operation is not implemented yet.");
+    }
+
+    @Override
+    public List<Address> get() throws SQLException {
+        throw new UnsupportedOperationException("Get operation is not implemented yet.");
+    }
+
+    @Override
+    public Address getById(int id) throws SQLException {
+        throw new UnsupportedOperationException("Get operation is not implemented yet.");
+    }
+
+    @Override
+    public int delete(int id) throws SQLException {
+        throw new UnsupportedOperationException("Delete operation is not implemented yet.");
     }
 }

@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 -- 01 User
 CREATE TABLE User (
     UserID INT PRIMARY KEY,

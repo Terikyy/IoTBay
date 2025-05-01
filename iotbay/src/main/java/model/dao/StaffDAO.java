@@ -1,6 +1,9 @@
 package model.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class StaffDAO {
 
@@ -11,7 +14,7 @@ public class StaffDAO {
     }
 
     // Check if a user is a staff member
-    public boolean isStaff(int userId) throws SQLException {
+    public boolean getById(int userId) throws SQLException {
         String query = "SELECT * FROM Staff WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);
@@ -22,8 +25,16 @@ public class StaffDAO {
     }
 
     // Add a user to the Staff table
-    public int insertStaff(int userId) throws SQLException {
+    public int insert(int userId) throws SQLException {
         String query = "INSERT INTO Staff (UserID) VALUES (?)";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate(); // Returns the number of rows affected
+        }
+    }
+
+    public int delete(int userId) throws SQLException {
+        String query = "DELETE FROM Staff WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);
             return ps.executeUpdate(); // Returns the number of rows affected

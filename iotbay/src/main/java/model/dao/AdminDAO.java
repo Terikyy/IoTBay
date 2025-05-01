@@ -1,17 +1,19 @@
 package model.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AdminDAO {
+    private final Connection conn;
 
-    private Connection conn;
-
-    public AdminDAO(Connection conn) {
+    public AdminDAO(Connection conn) throws SQLException {
         this.conn = conn;
     }
 
     // Check if a user is an admin
-    public boolean isAdmin(int userId) throws SQLException {
+    public boolean getById(int userId) throws SQLException {
         String query = "SELECT * FROM Admin WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);
@@ -22,11 +24,19 @@ public class AdminDAO {
     }
 
     // Add a user to the Admin table
-    public int insertAdmin(int userId) throws SQLException {
+    public int insert(int userId) throws SQLException {
         String query = "INSERT INTO Admin (UserID) VALUES (?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);
             return ps.executeUpdate(); // Returns the number of rows affected
+        }
+    }
+
+    public boolean delete(int userId) throws SQLException {
+        String query = "DELETE FROM Admin WHERE UserID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0; // Returns true if a record was deleted
         }
     }
 }

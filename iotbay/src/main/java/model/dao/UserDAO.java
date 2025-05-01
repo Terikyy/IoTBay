@@ -1,13 +1,20 @@
 package model.dao;
 
-import java.sql.*;
+import model.users.Admin;
+import model.users.Customer;
+import model.users.Staff;
+import model.users.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import model.users.*;
 
 public class UserDAO extends AbstractDAO<User> {
 
-    private StaffDAO staffDAO;
-    private AdminDAO adminDAO;
+    private final StaffDAO staffDAO;
+    private final AdminDAO adminDAO;
 
     public UserDAO(Connection conn) throws SQLException {
         super(conn);
@@ -17,19 +24,31 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     protected User mapRow(ResultSet rs) throws SQLException {
-        // Default to Customer, but determine the actual type later
-        return new Customer(
-            rs.getInt("UserID"),
-            rs.getString("Name"),
-            rs.getString("Email"),
-            rs.getString("Password")
+        User user = new Customer(
+                rs.getInt("UserID"),
+                rs.getString("Name"),
+                rs.getString("Email"),
+                rs.getString("Password")
         );
+        int userId = user.getUserID();
+
+        // Check if the user is in the Admin table
+        if (adminDAO.getById(userId)) {
+            return new Admin(user);
+        }
+
+        // Check if the user is in the Staff table
+        if (staffDAO.getById(userId)) {
+            return new Staff(user);
+        }
+
+        return new Customer(user);
     }
 
     @Override
     public int insert(User user) throws SQLException {
         String query = "INSERT INTO User (UserID, Name, Email, Password) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = st.getConnection().prepareStatement(query)) {
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, user.getUserID());
             ps.setString(2, user.getName());
             ps.setString(3, user.getEmail());
@@ -41,7 +60,7 @@ public class UserDAO extends AbstractDAO<User> {
     @Override
     public int update(User user) throws SQLException {
         String query = "UPDATE User SET Name = ?, Email = ?, Password = ? WHERE UserID = ?";
-        try (PreparedStatement ps = st.getConnection().prepareStatement(query)) {
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
@@ -50,60 +69,30 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
+    @Override
+    public List<User> get() throws SQLException {
+        return getFromTable("User");
+    }
+
+    @Override
+    public User getById(int id) throws SQLException {
+        return getFromTableById("User", "UserID", id);
+    }
+
+    @Override
+    public int delete(int id) throws SQLException {
+        return deleteFromTable("User", "UserID", id);
+    }
+
     // Retrieve a user by email and password (for login authentication)
     public User authenticate(String email, String password) throws SQLException {
         String query = "SELECT * FROM User WHERE Email = ? AND Password = ?";
-        try (PreparedStatement ps = st.getConnection().prepareStatement(query)) {
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, email);
             ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return mapRow(rs);
-                }
-            }
-        }
-        return null; // User not found
-    }
-
-    // Retrieve all users with a specific name
-    public List<User> getUsersByName(String name) throws SQLException {
-        return getByColumn("User", "Name", name);
-    }
-
-    // Determine the user type and instantiate the appropriate subclass
-    public User getUserById(int userId) throws SQLException {
-        String query = "SELECT * FROM User WHERE UserID = ?";
-        try (PreparedStatement ps = st.getConnection().prepareStatement(query)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    // Check if the user is in the Admin table
-                    if (adminDAO.isAdmin(userId)) {
-                        return new Admin(
-                            rs.getInt("UserID"),
-                            rs.getString("Name"),
-                            rs.getString("Email"),
-                            rs.getString("Password")
-                        );
-                    }
-
-                    // Check if the user is in the Staff table
-                    if (staffDAO.isStaff(userId)) {
-                        return new Staff(
-                            rs.getInt("UserID"),
-                            rs.getString("Name"),
-                            rs.getString("Email"),
-                            rs.getString("Password")
-                        );
-                    }
-
-                    // Default to Customer if not found in Admin or Staff
-                    return new Customer(
-                        rs.getInt("UserID"),
-                        rs.getString("Name"),
-                        rs.getString("Email"),
-                        rs.getString("Password")
-                    );
                 }
             }
         }

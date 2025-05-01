@@ -1,44 +1,45 @@
 package model.dao;
 
-import model.lineproducts.CartItem;
+import model.lineproducts.OrderItem;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CartItemDAO extends AbstractDAO<CartItem> {
+public class OrderItemDAO extends AbstractDAO<OrderItem> {
 
-    public CartItemDAO(Connection conn) throws SQLException {
+    public OrderItemDAO(Connection conn) throws SQLException {
         super(conn);
     }
 
     @Override
-    protected CartItem mapRow(ResultSet rs) throws SQLException {
-        return new CartItem(
+    protected OrderItem mapRow(ResultSet rs) throws SQLException {
+        return new OrderItem(
                 rs.getInt("ProductID"),
-                rs.getObject("UserID") != null ? rs.getInt("UserID") : null, // Handle nullable UserID
-                rs.getInt("Quantity")
+                rs.getInt("OrderID"),
+                rs.getInt("Quantity"),
+                rs.getDouble("PriceOnOrder")
         );
     }
 
     @Override
-    public int insert(CartItem cartItem) throws SQLException {
+    public int insert(OrderItem orderItem) throws SQLException {
         throw new UnsupportedOperationException("Insert operation is not implemented yet.");
     }
 
     @Override
-    public int update(CartItem cartItem) throws SQLException {
+    public int update(OrderItem orderItem) throws SQLException {
         throw new UnsupportedOperationException("Update operation is not implemented yet.");
     }
 
     @Override
-    public List<CartItem> get() throws SQLException {
+    public List<OrderItem> get() throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
     @Override
-    public CartItem getById(int id) throws SQLException {
+    public OrderItem getById(int id) throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
