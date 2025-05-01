@@ -1,6 +1,9 @@
 package utils;
 
-import model.users.*;
+import model.users.Admin;
+import model.users.Customer;
+import model.users.Staff;
+import model.users.User;
 
 public class UserUtil {
 
@@ -10,6 +13,7 @@ public class UserUtil {
      * @param user The User object.
      * @return The user type as a string ("Admin", "Staff", "Customer", or "Unknown").
      */
+    //TODO: determine if we need this (I would say we only need isAdmin and isStaff)
     public static String getUserType(User user) {
         if (user instanceof Admin) {
             return "Admin";

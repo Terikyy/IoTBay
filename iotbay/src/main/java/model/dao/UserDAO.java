@@ -85,7 +85,7 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     // Retrieve a user by email and password (for login authentication)
-    public User authenticate(String email, String password) throws SQLException {
+    public User authenticateUser(String email, String password) throws SQLException {
         String query = "SELECT * FROM User WHERE Email = ? AND Password = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, email);

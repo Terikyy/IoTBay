@@ -9,25 +9,6 @@
         return;
     }
 %>
-<%
-    // Maybe move handling to UserController
-    if ("POST".equalsIgnoreCase(request.getMethod())) {
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        // Use UserController to register the customer
-        User user = UserController.registerCustomer(name, email, password);
-
-        if (user != null) {
-            session.setAttribute("user", user);
-            response.sendRedirect("welcome.jsp");
-            return;
-        } else {
-            out.println("<p>An error occured while registering</p>");
-        }
-    }
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +27,7 @@
 <div class="container">
     <div class="main-container">
         <div class="centered-container">
-            <form action="register.jsp" method="post">
+            <form action="RegistrationController" method="post">
                 <h2>Registration</h2>
                 <label for="name">Name:</label><br>
                 <input type="text" name="name" id="name" required><br>

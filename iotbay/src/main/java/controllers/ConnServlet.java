@@ -1,30 +1,20 @@
 package controllers;
 
-import java.io.IOException;
-
-import java.sql.Connection;
-
-import java.sql.SQLException;
-
-import java.util.logging.Level;
-
-import java.util.logging.Logger;
-
 import jakarta.servlet.ServletException;
-
 import jakarta.servlet.annotation.WebServlet;
-
 import jakarta.servlet.http.HttpServlet;
-
 import jakarta.servlet.http.HttpServletRequest;
-
 import jakarta.servlet.http.HttpServletResponse;
-
 import jakarta.servlet.http.HttpSession;
-
 import model.dao.*;
 
-@WebServlet("/Conservlet")
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@WebServlet("/Connservlet")
 public class ConnServlet extends HttpServlet {
 
     private DBConnector db;
@@ -64,7 +54,7 @@ public class ConnServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         conn = db.openConnection();
-        
+
         try {
             // TODO: Add constructors for the daos (managers)
             adressDAO = new AdressDAO(conn);
@@ -81,7 +71,7 @@ public class ConnServlet extends HttpServlet {
             Logger.getLogger(ConnServlet.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-        
+
         // export the DB manager to the view-session (JSPs)
         session.setAttribute("adressDAO", adressDAO);
         session.setAttribute("cartItemDAO", cartItemDAO);
@@ -96,7 +86,7 @@ public class ConnServlet extends HttpServlet {
     }
 
     @Override // Destroy the servlet and release the resources of the application (terminate
-              // also the db connection)
+    // also the db connection)
     public void destroy() {
 
         try {
