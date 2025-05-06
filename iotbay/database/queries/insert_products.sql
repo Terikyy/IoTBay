@@ -1,0 +1,22 @@
+INSERT INTO Product (ProductID, Name, Description, Price, Stock, ReleaseDate)
+VALUES
+    (1, 'Raspberry Pi 4 Model B', 'A compact computer for IoT projects with 4GB RAM.', 55.00, 100, '2023-01-15'),
+    (2, 'Arduino Uno R3', 'A microcontroller board for IoT prototyping.', 25.00, 200, '2022-11-10'),
+    (3, 'ESP32 Dev Kit', 'A Wi-Fi and Bluetooth-enabled microcontroller.', 12.50, 150, '2023-03-05'),
+    (4, 'Google Nest Hub', 'A smart home hub with a 7-inch display.', 89.99, 50, '2023-02-20'),
+    (5, 'Amazon Echo Dot', 'A smart speaker with Alexa voice assistant.', 49.99, 120, '2023-04-01'),
+    (6, 'Philips Hue Bridge', 'A smart lighting control hub.', 59.99, 80, '2023-01-30'),
+    (7, 'Wyze Cam v3', 'An indoor/outdoor smart security camera.', 35.99, 90, '2023-03-15'),
+    (8, 'Samsung SmartThings Hub', 'A hub for connecting smart home devices.', 69.99, 60, '2023-02-10'),
+    (9, 'Particle Photon', 'A Wi-Fi development kit for IoT projects.', 19.00, 140, '2023-01-25'),
+    (10, 'Ring Video Doorbell', 'A smart doorbell with video and motion detection.', 99.99, 40, '2023-04-10'),
+    (11, 'Sonoff Basic R3', 'A smart switch for home automation.', 8.99, 300, '2023-03-01'),
+    (12, 'Xiaomi Mi Smart Plug', 'A smart plug for remote control of appliances.', 14.99, 250, '2023-02-28'),
+    (13, 'Nest Thermostat', 'A smart thermostat for energy savings.', 129.99, 30, '2023-01-05'),
+    (14, 'TP-Link Kasa Smart Bulb', 'A dimmable smart LED bulb.', 16.99, 200, '2023-03-20'),
+    (15, 'August Smart Lock', 'A smart lock for keyless entry.', 149.99, 25, '2023-04-05'),
+    (16, 'Eufy RoboVac 11S', 'A smart robotic vacuum cleaner.', 199.99, 15, '2023-02-15'),
+    (17, 'Blink Outdoor Camera', 'A wireless weather-resistant security camera.', 79.99, 70, '2023-03-10'),
+    (18, 'Shelly 1PM', 'A smart relay switch with power monitoring.', 13.99, 180, '2023-01-20'),
+    (19, 'Logitech Circle View', 'A home security camera with Apple HomeKit support.', 159.99, 20, '2023-02-25'),
+    (20, 'Ecobee Smart Sensor', 'A smart sensor for room temperature monitoring.', 39.99, 100, '2023-03-30');
