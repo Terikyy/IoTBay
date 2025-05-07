@@ -24,23 +24,22 @@ public abstract class AbstractDAO<T> {
     public abstract int update(T entity) throws SQLException;
 
     // Get all records
-    public abstract List<T> get() throws SQLException;
+    public abstract List<T> getAll() throws SQLException;
 
     // Retrieve by ID
-    public abstract T getById(int id) throws SQLException;
+    public abstract T findById(int id) throws SQLException;
 
     // Delete
-    public abstract int delete(int id) throws SQLException;
+    public abstract int deleteById(int id) throws SQLException;
 
 
     //Helper Functions:
 
     // Retrieve all records from a table
-    protected List<T> getFromTable(String tableName) throws SQLException {
+    protected List<T> queryAllFromTable(String tableName) throws SQLException {
         List<T> results = new ArrayList<>();
-        String query = "SELECT * FROM ?";
+        String query = "SELECT * FROM " + tableName;
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, tableName);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     results.add(mapRow(rs));
@@ -51,13 +50,11 @@ public abstract class AbstractDAO<T> {
     }
 
     // Retrieve records by a specific column value -- I am pretty sure this is not best practice
-    protected List<T> getFromTableByColumn(String tableName, String columnName, Object value) throws SQLException {
+    protected List<T> queryByColumnValue(String tableName, String columnName, Object value) throws SQLException {
         List<T> results = new ArrayList<>();
-        String query = "SELECT * FROM ? WHERE ? = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, tableName);
-            ps.setString(2, columnName);
-            ps.setObject(3, value);
+            ps.setObject(1, value);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     results.add(mapRow(rs));
@@ -68,17 +65,15 @@ public abstract class AbstractDAO<T> {
     }
 
     // Retrieve a single record by ID (assumes primary key is a single column)
-    protected T getFromTableById(String tableName, String idColumn, int id) throws SQLException {
-        return getFromTableByColumn(tableName, idColumn, id).stream().findFirst().orElse(null);
+    protected T queryById(String tableName, String idColumn, int id) throws SQLException {
+        return queryByColumnValue(tableName, idColumn, id).stream().findFirst().orElse(null);
     }
 
     // Delete a record by ID
-    protected int deleteFromTable(String tableName, String idColumn, int id) throws SQLException {
-        String query = "DELETE FROM ? WHERE ? = ?";
+    protected int deleteFromTableById(String tableName, String idColumn, int id) throws SQLException {
+        String query = "DELETE FROM " + tableName + " WHERE " + idColumn + " = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, tableName);
-            ps.setString(2, idColumn);
-            ps.setObject(3, id);
+            ps.setObject(1, id);
             return ps.executeUpdate();
         }
     }

@@ -36,17 +36,17 @@ public class PaymentDAO extends AbstractDAO<Payment> {
     }
 
     @Override
-    public List<Payment> get() throws SQLException {
+    public List<Payment> getAll() throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
     @Override
-    public Payment getById(int id) throws SQLException {
+    public Payment findById(int id) throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int deleteById(int id) throws SQLException {
         throw new UnsupportedOperationException("Delete operation is not implemented yet.");
     }
 }

@@ -9,26 +9,6 @@
         return;
     }
 %>
-<%
-    /*
-    if ("POST".equalsIgnoreCase(request.getMethod())) {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        // Authenticate user using UserController
-        User loggedInUser = UserController.authenticateUser(email, password);
-
-        if (loggedInUser != null) {
-            // Store user in session and redirect to welcome page
-            session.setAttribute("user", loggedInUser);
-            response.sendRedirect("welcome.jsp");
-            return;
-        } else {
-            out.println("<p>Invalid email or password. Please try again.</p>");
-        }
-    }
-    */
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

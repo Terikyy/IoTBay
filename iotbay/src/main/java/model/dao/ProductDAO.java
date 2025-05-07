@@ -36,17 +36,17 @@ public class ProductDAO extends AbstractDAO<Product> {
     }
 
     @Override
-    public List<Product> get() throws SQLException {
+    public List<Product> getAll() throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
     @Override
-    public Product getById(int id) throws SQLException {
+    public Product findById(int id) throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int deleteById(int id) throws SQLException {
         throw new UnsupportedOperationException("Delete operation is not implemented yet.");
     }
 }

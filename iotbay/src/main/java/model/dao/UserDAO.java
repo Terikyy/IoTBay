@@ -70,18 +70,18 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     @Override
-    public List<User> get() throws SQLException {
-        return getFromTable("User");
+    public List<User> getAll() throws SQLException {
+        return queryAllFromTable("User");
     }
 
     @Override
-    public User getById(int id) throws SQLException {
-        return getFromTableById("User", "UserID", id);
+    public User findById(int id) throws SQLException {
+        return queryById("User", "UserID", id);
     }
 
     @Override
-    public int delete(int id) throws SQLException {
-        return deleteFromTable("User", "UserID", id);
+    public int deleteById(int id) throws SQLException {
+        return deleteFromTableById("User", "UserID", id);
     }
 
     // Retrieve a user by email and password (for login authentication)
