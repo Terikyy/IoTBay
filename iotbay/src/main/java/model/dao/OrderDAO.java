@@ -37,17 +37,17 @@ public class OrderDAO extends AbstractDAO<Order> {
     }
 
     @Override
-    public List<Order> get() throws SQLException {
+    public List<Order> getAll() throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
     @Override
-    public Order getById(int id) throws SQLException {
+    public Order findById(int id) throws SQLException {
         throw new UnsupportedOperationException("Get operation is not implemented yet.");
     }
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int deleteById(int id) throws SQLException {
         throw new UnsupportedOperationException("Delete operation is not implemented yet.");
     }
 }
