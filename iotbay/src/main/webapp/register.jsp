@@ -8,6 +8,10 @@
         response.sendRedirect("account.jsp");
         return;
     }
+    String errorMessage = (String) session.getAttribute("error");
+    if (errorMessage != null) {
+        System.out.println(errorMessage);
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">

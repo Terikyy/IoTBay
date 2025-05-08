@@ -1,11 +1,12 @@
 -- noinspection SqlNoDataSourceInspectionForFile
+drop table User;
 
 -- 01 User
 CREATE TABLE User (
     UserID INT PRIMARY KEY,
     AddressID INT,
     Name VARCHAR(50) NOT NULL,
-    Email VARCHAR(50),
+    Email VARCHAR(50) UNIQUE,
     Password VARCHAR(50),
     FOREIGN KEY (AddressID) REFERENCES Address(AddressID)
 );

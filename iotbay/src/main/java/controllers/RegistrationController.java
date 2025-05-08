@@ -29,8 +29,11 @@ public class RegistrationController extends HttpServlet {
             session.removeAttribute("error");
             response.sendRedirect("welcome.jsp");
         } catch (Exception e) {
-            session.setAttribute("error", e.getMessage());
-            response.sendRedirect("register.jsp?error=Registration failed");
+            if (e.getMessage().contains("UNIQUE constraint failed: User.UserID"))
+                session.setAttribute("error", "Whoops! This id is already in use.");
+            else
+                session.setAttribute("error", e.getMessage());
+            response.sendRedirect("register.jsp");
         }
     }
 }
