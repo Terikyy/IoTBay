@@ -24,7 +24,7 @@
     </div>
     <%
         // Check if the user is an admin
-        if (UserUtil.isAdmin(user)) {
+        if (user.isAdmin()) {
     %>
     <a href="user-management.jsp">Manage Users</a>
     <%

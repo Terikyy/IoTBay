@@ -5,13 +5,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.dao.AdminDAO;
+import model.dao.StaffDAO;
 import model.dao.UserDAO;
 import model.users.User;
 
 import java.io.IOException;
 
 @WebServlet("/LoginController")
-public class LoginController extends HttpServlet {
+public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
@@ -19,7 +21,10 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
         try {
-            User user = userDAO.authenticateUser(email, password);
+            User user = UserController.getRoleSpecificUser(userDAO.authenticateUser(email, password),
+                    (AdminDAO) session.getAttribute("adminDAO"),
+                    (StaffDAO) session.getAttribute("staffDAO"));
+
             if (user != null) {
                 session.setAttribute("user", user);
                 response.sendRedirect("welcome.jsp");

@@ -18,22 +18,22 @@
     <link rel="stylesheet" href="css/subpages/welcome.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="assets/images/iotbay_logo.png" alt="IoTBay">
-        </div>
-        <a href="index.jsp">Return to Main Page</a>
-    </header>
-    <div class="container">
-        <div class="main-container">
-            <div class="centered-container">
-                <h2>Login / Registration successful</h2>
-                <p>Welcome, <%= user.getName() %>!</p>
-                <p>You've been recognized as <%= UserUtil.getUserType(user) %>.</p>
-                <a href="account.jsp">Proceed to Account Management</a>
-                <a href="index.jsp">Return to Main Page</a>
-            </div>
+<header>
+    <div class="logo">
+        <img src="assets/images/iotbay_logo.png" alt="IoTBay">
+    </div>
+    <a href="index.jsp">Return to Main Page</a>
+</header>
+<div class="container">
+    <div class="main-container">
+        <div class="centered-container">
+            <h2>Login / Registration successful</h2>
+            <p>Welcome, <%= user.getName() %>!</p>
+            <p>You've been recognized as <%= user.getClass().getSimpleName() %>.</p>
+            <a href="account.jsp">Proceed to Account Management</a>
+            <a href="index.jsp">Return to Main Page</a>
         </div>
     </div>
+</div>
 </body>
 </html>

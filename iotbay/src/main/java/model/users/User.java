@@ -1,8 +1,10 @@
 package model.users;
 
+import jakarta.servlet.http.HttpSession;
 import model.IDObject;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 
 /**
  * Abstract class representing a generic User in the system.
@@ -46,9 +48,15 @@ public abstract class User extends IDObject implements Serializable {
         return this instanceof Admin;
     }
 
+    public abstract Admin setAdmin(HttpSession session) throws SQLException;
+
     public boolean isStaff() {
         return this instanceof Staff;
     }
+
+    public abstract Staff setStaff(HttpSession session) throws SQLException;
+
+    public abstract Customer setCustomer(HttpSession session) throws SQLException;
 
     public String getName() {
         return this.name;

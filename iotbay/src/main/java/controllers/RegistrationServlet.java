@@ -13,7 +13,7 @@ import model.users.User;
 import java.io.IOException;
 
 @WebServlet("/RegistrationController")
-public class RegistrationController extends HttpServlet {
+public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -25,6 +25,8 @@ public class RegistrationController extends HttpServlet {
 
         try {
             IDObject.insert(userDAO, user);
+            session.setAttribute("user", user);
+            response.sendRedirect("welcome.jsp");
         } catch (Exception e) {
             if (e.getMessage().contains("UNIQUE constraint failed: User.Email"))
                 session.setAttribute("error", "Email already exists");
