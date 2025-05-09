@@ -42,6 +42,14 @@ public abstract class User extends IDObject implements Serializable {
         return getId();
     }
 
+    public boolean isAdmin() {
+        return this instanceof Admin;
+    }
+
+    public boolean isStaff() {
+        return this instanceof Staff;
+    }
+
     public String getName() {
         return this.name;
     }
