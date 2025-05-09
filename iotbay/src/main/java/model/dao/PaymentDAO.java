@@ -16,7 +16,6 @@ public class PaymentDAO extends AbstractDAO<Payment> {
     @Override
     protected Payment mapRow(ResultSet rs) throws SQLException {
         return new Payment(
-                rs.getInt("PaymentID"),
                 rs.getInt("OrderID"),
                 rs.getString("PaymentMethod"),
                 rs.getDouble("AmountPaid"),

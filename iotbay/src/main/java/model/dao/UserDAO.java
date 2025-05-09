@@ -25,7 +25,6 @@ public class UserDAO extends AbstractDAO<User> {
     @Override
     protected User mapRow(ResultSet rs) throws SQLException {
         User user = new Customer(
-                rs.getInt("UserID"),
                 rs.getString("Name"),
                 rs.getString("Email"),
                 rs.getString("Password")

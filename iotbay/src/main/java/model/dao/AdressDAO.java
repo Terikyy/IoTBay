@@ -16,7 +16,6 @@ public class AdressDAO extends AbstractDAO<Address> {
     @Override
     protected Address mapRow(ResultSet rs) throws SQLException {
         return new Address(
-                rs.getInt("AddressID"),
                 rs.getString("Name"),
                 rs.getInt("StreetNumber"),
                 rs.getString("StreetName"),

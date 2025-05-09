@@ -16,7 +16,6 @@ public class ProductDAO extends AbstractDAO<Product> {
     @Override
     protected Product mapRow(ResultSet rs) throws SQLException {
         return new Product(
-                rs.getInt("ProductID"),
                 rs.getString("Name"),
                 rs.getString("Description"),
                 rs.getDouble("Price"),

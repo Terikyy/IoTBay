@@ -2,16 +2,15 @@ package model;
 
 import java.util.Date;
 
-public class Payment {
-    private final int paymentID;
+public class Payment extends IDObject {
     private final int orderID;
     private final double amountPaid;
     private final String paymentMethod;
     private final Date paymentDate;
     private String paymentStatus;
 
-    public Payment(int paymentID, int orderID, String paymentMethod, double amountPaid, Date paymentDate, String paymentStatus) {
-        this.paymentID = paymentID;
+    public Payment(int orderID, String paymentMethod, double amountPaid, Date paymentDate, String paymentStatus) {
+        super();
         this.orderID = orderID;
         this.paymentMethod = paymentMethod;
         this.amountPaid = amountPaid;
@@ -20,7 +19,7 @@ public class Payment {
     }
 
     public int getPaymentID() {
-        return paymentID;
+        return getId();
     }
 
     public double getAmountPaid() {

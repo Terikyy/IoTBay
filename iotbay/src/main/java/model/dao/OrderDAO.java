@@ -16,7 +16,6 @@ public class OrderDAO extends AbstractDAO<Order> {
     @Override
     protected Order mapRow(ResultSet rs) throws SQLException {
         return new Order(
-                rs.getInt("OrderID"),
                 rs.getObject("UserID") != null ? rs.getInt("UserID") : null, // Handle nullable UserID
                 rs.getInt("AddressID"),
                 rs.getString("TrackingNumber"),

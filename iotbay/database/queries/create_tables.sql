@@ -1,5 +1,14 @@
 -- noinspection SqlNoDataSourceInspectionForFile
 drop table User;
+drop table Admin;
+drop table Staff;
+drop table Product;
+drop table Payment;
+drop table `Order`;
+drop table CartItem;
+drop table OrderItem;
+drop table Address;
+
 
 -- 01 User
 CREATE TABLE User (

@@ -2,18 +2,17 @@ package model;
 
 import java.util.Date;
 
-public class Order {
-    private final int orderID;
+public class Order extends IDObject {
     private final Integer userID;
     private int addressID; // Not final to allow for address change
     private String trackingNumber;
-    private String orderStatus; 
+    private String orderStatus;
     private final Date orderDate;
     private final double totalPrice;
 
 
-    public Order(int orderID, Integer userID, int addressID, String trackingNumber, String orderStatus, Date orderDate, double totalPrice) {
-        this.orderID = orderID;
+    public Order(Integer userID, int addressID, String trackingNumber, String orderStatus, Date orderDate, double totalPrice) {
+        super();
         this.userID = userID;
         this.addressID = addressID;
         this.trackingNumber = trackingNumber;
@@ -23,7 +22,7 @@ public class Order {
     }
 
     public int getOrderID() {
-        return orderID;
+        return getId();
     }
 
     public Integer getUserID() {

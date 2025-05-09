@@ -2,16 +2,15 @@ package model;
 
 import java.util.Date;
 
-public class Product {
-    private final int productID;
+public class Product extends IDObject {
     private String name;
     private String description;
     private double price;
     private int stock;
     private Date releaseDate;
 
-    public Product(int productID, String name, String description, double price, int stock, Date releaseDate) {
-        this.productID = productID;
+    public Product(String name, String description, double price, int stock, Date releaseDate) {
+        super();
         this.name = name;
         this.description = description;
         this.price = price;
@@ -20,7 +19,7 @@ public class Product {
     }
 
     public int getProductID() {
-        return productID;
+        return getId();
     }
 
     public String getName() {
