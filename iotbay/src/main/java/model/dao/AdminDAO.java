@@ -13,7 +13,7 @@ public class AdminDAO {
     }
 
     // Check if a user is an admin
-    public boolean getById(int userId) throws SQLException {
+    public boolean isAdmin(int userId) throws SQLException {
         String query = "SELECT * FROM Admin WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);

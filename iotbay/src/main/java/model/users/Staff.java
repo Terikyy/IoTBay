@@ -6,7 +6,11 @@ public class Staff extends User {
         super(name, email, password);
     }
 
+    public Staff(int userId, String name, String email, String password) {
+        super(userId, name, email, password);
+    }
+
     public Staff(User user) {
-        super(user.getName(), user.getEmail(), user.getPassword());
+        super(user.getUserID(), user.getName(), user.getEmail(), user.getPassword());
     }
 }

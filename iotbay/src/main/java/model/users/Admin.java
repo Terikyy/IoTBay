@@ -6,8 +6,12 @@ public class Admin extends User {
         super(name, email, password);
     }
 
+    public Admin(int userId, String name, String email, String password) {
+        super(userId, name, email, password);
+    }
+
     public Admin(User user) {
-        super(user.getName(), user.getEmail(), user.getPassword());
+        super(user.getUserID(), user.getName(), user.getEmail(), user.getPassword());
     }
 
 }

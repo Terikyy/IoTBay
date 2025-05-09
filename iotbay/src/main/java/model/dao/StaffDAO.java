@@ -14,7 +14,7 @@ public class StaffDAO {
     }
 
     // Check if a user is a staff member
-    public boolean getById(int userId) throws SQLException {
+    public boolean isStaff(int userId) throws SQLException {
         String query = "SELECT * FROM Staff WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);

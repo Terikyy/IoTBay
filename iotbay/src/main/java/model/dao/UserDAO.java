@@ -32,12 +32,12 @@ public class UserDAO extends AbstractDAO<User> {
         int userId = user.getUserID();
 
         // Check if the user is in the Admin table
-        if (adminDAO.getById(userId)) {
+        if (adminDAO.isAdmin(userId)) {
             return new Admin(user);
         }
 
         // Check if the user is in the Staff table
-        if (staffDAO.getById(userId)) {
+        if (staffDAO.isStaff(userId)) {
             return new Staff(user);
         }
 

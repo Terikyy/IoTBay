@@ -15,6 +15,10 @@ public abstract class IDObject {
         return id;
     }
 
+    protected void setId(int id) {
+        this.id = id;
+    }
+
     public void randomizeID() {
         this.id = (int) (Math.random() * Integer.MAX_VALUE);
     }

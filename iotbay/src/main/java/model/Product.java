@@ -18,6 +18,11 @@ public class Product extends IDObject {
         this.releaseDate = releaseDate;
     }
 
+    public Product(int productId, String name, String description, double price, int stock, Date releaseDate) {
+        this(name, description, price, stock, releaseDate);
+        setId(productId);
+    }
+
     public int getProductID() {
         return getId();
     }

@@ -33,6 +33,11 @@ public abstract class User extends IDObject implements Serializable {
         this.password = password;
     }
 
+    public User(int userID, String name, String email, String password) {
+        this(name, email, password);
+        setId(userID);
+    }
+
     public int getUserID() {
         return getId();
     }

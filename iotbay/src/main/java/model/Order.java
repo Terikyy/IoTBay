@@ -21,6 +21,11 @@ public class Order extends IDObject {
         this.totalPrice = totalPrice;
     }
 
+    public Order(int orderId, Integer userID, int addressID, String trackingNumber, String orderStatus, Date orderDate, double totalPrice) {
+        this(userID, addressID, trackingNumber, orderStatus, orderDate, totalPrice);
+        setId(orderId);
+    }
+
     public int getOrderID() {
         return getId();
     }

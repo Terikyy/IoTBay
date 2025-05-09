@@ -18,6 +18,11 @@ public class Payment extends IDObject {
         this.paymentStatus = paymentStatus;
     }
 
+    public Payment(int paymentId, int orderID, String paymentMethod, double amountPaid, Date paymentDate, String paymentStatus) {
+        this(orderID, paymentMethod, amountPaid, paymentDate, paymentStatus);
+        setId(paymentId);
+    }
+
     public int getPaymentID() {
         return getId();
     }

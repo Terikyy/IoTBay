@@ -29,6 +29,11 @@ public class Address extends IDObject {
         this.state = state;
     }
 
+    public Address(int addressId, String name, int streetNumber, String streetName, int postcode, String suburb, String city, String state) {
+        this(name, streetNumber, streetName, postcode, suburb, city, state);
+        setId(addressId);
+    }
+
     public int getAddressID() {
         return getId();
     }
