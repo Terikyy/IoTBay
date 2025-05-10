@@ -3,6 +3,7 @@ package model.dao;
 import model.Order;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,6 +17,7 @@ public class OrderDAO extends AbstractDAO<Order> {
     @Override
     protected Order mapRow(ResultSet rs) throws SQLException {
         return new Order(
+                rs.getInt("OrderID"),
                 rs.getObject("UserID") != null ? rs.getInt("UserID") : null, // Handle nullable UserID
                 rs.getInt("AddressID"),
                 rs.getString("TrackingNumber"),
@@ -27,26 +29,48 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int insert(Order order) throws SQLException {
-        throw new UnsupportedOperationException("Insert operation is not implemented yet.");
+        String query = "INSERT INTO Order (OrderID, UserID, AddressID, TrackingNumber, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, order.getOrderID());
+            ps.setInt(2, order.getUserID());
+            ps.setInt(3, order.getAddressID());
+            ps.setString(4, order.getTrackingNumber());
+            ps.setString(5, order.getOrderStatus());
+            ps.setDate(6, order.getOrderDate());
+            ps.setDouble(7, order.getTotalPrice());
+
+            return ps.executeUpdate(); // Returns the number of rows affected
+        }
     }
 
     @Override
     public int update(Order order) throws SQLException {
-        throw new UnsupportedOperationException("Update operation is not implemented yet.");
+        String query = "UPDATE Order SET UserID = ?, AddressID = ?, TrackingNumber = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(2, order.getUserID());
+            ps.setInt(3, order.getAddressID());
+            ps.setString(4, order.getTrackingNumber());
+            ps.setString(5, order.getOrderStatus());
+            ps.setDate(6, order.getOrderDate());
+            ps.setDouble(7, order.getTotalPrice());
+            ps.setInt(1, order.getOrderID());
+
+            return ps.executeUpdate(); // Returns the number of rows affected
+        }
     }
 
     @Override
     public List<Order> getAll() throws SQLException {
-        throw new UnsupportedOperationException("Get operation is not implemented yet.");
+        return queryAllFromTable("Order");
     }
 
     @Override
     public Order findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Get operation is not implemented yet.");
+        return queryById("Order", "OrderID", id);
     }
 
     @Override
     public int deleteById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Delete operation is not implemented yet.");
+        return deleteFromTableById("Order", "OrderID", id);
     }
 }
