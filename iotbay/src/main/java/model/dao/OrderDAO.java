@@ -17,7 +17,6 @@ public class OrderDAO extends AbstractDAO<Order> {
     @Override
     protected Order mapRow(ResultSet rs) throws SQLException {
         return new Order(
-                rs.getInt("OrderID"),
                 rs.getObject("UserID") != null ? rs.getInt("UserID") : null, // Handle nullable UserID
                 rs.getInt("AddressID"),
                 rs.getString("TrackingNumber"),
@@ -29,15 +28,14 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int insert(Order order) throws SQLException {
-        String query = "INSERT INTO Order (OrderID, UserID, AddressID, TrackingNumber, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Order (UserID, AddressID, TrackingNumber, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, order.getOrderID());
-            ps.setInt(2, order.getUserID());
-            ps.setInt(3, order.getAddressID());
-            ps.setString(4, order.getTrackingNumber());
-            ps.setString(5, order.getOrderStatus());
-            ps.setDate(6, order.getOrderDate());
-            ps.setDouble(7, order.getTotalPrice());
+            ps.setInt(1, order.getUserID());
+            ps.setInt(2, order.getAddressID());
+            ps.setString(3, order.getTrackingNumber());
+            ps.setString(4, order.getOrderStatus());
+            ps.setDate(5, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setDouble(6, order.getTotalPrice());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -51,9 +49,8 @@ public class OrderDAO extends AbstractDAO<Order> {
             ps.setInt(3, order.getAddressID());
             ps.setString(4, order.getTrackingNumber());
             ps.setString(5, order.getOrderStatus());
-            ps.setDate(6, order.getOrderDate());
+            ps.setDate(6, new java.sql.Date(order.getOrderDate().getTime()));
             ps.setDouble(7, order.getTotalPrice());
-            ps.setInt(1, order.getOrderID());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
