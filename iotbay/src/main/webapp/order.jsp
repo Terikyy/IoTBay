@@ -41,8 +41,8 @@
                 <input type="text" name="subCit" id="subCit" required><br>
                 <label for="zip">Zip Code:</label><br>
                 <input type="text" name="zip" id="zip" required><br>
-                <label for="phoneNumber">Phone Number:</label><br>
-                <input type="text" name="phoneNumber" id="phoneNumber" required><br>
+                <label for="phone">Phone Number:</label><br>
+                <input type="text" name="phone" id="phone" required><br>
                 <input type="submit" value="Order">
             </form>
         </div>
