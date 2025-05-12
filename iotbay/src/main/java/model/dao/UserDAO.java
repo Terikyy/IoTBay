@@ -59,12 +59,13 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public int update(User user) throws SQLException {
-        String query = "UPDATE User SET Name = ?, Email = ?, Password = ? WHERE UserID = ?";
+        String query = "UPDATE User SET Name = ?, Email = ?, Password = ?, AddressId = ? WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
-            ps.setInt(4, user.getUserID());
+            ps.setInt(4, user.getAddressID());
+            ps.setInt(5, user.getUserID());
             return ps.executeUpdate(); // Returns the number of rows affected
         }
     }
