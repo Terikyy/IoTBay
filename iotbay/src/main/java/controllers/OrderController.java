@@ -7,6 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import model.dao.OrderDAO;
+
 @WebServlet("/OrderController")
 public class OrderController extends HttpServlet {
     // Controller for managing orders
@@ -15,7 +17,6 @@ public class OrderController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        // Retrieve form data
         String fName = request.getParameter("fName");
         String lName = request.getParameter("lName");
         String email = request.getParameter("email");
@@ -26,12 +27,9 @@ public class OrderController extends HttpServlet {
         String zip = request.getParameter("zip");
         String phone = request.getParameter("phone");
 
-
-        // Do something with the data
         System.out.println("User: " + fName + " " + lName + " (" + email + ") Address:" + address + " " + country + " "
                             + state + " " + subCit + " " + zip + " " + "Phone Number: " + phone);
 
-        // Forward, redirect, or respond
         response.sendRedirect("payment.jsp");
     }
 }
