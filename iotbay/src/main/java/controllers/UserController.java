@@ -52,26 +52,4 @@ public class UserController {
     public static void deleteUser(int userId) {
         // Logic to delete a user
     }
-
-    public static void updateUserRole(int userId, String role) {
-        if (role.equals("Admin")) {
-            setAdmin(userId);
-        } else if (role.equals("Staff")) {
-            setStaff(userId);
-        } else {
-            setCustomer(userId);
-        }
-    }
-
-    public static void setAdmin(int userId) {
-
-    }
-
-    public static void setStaff(int userId) {
-        // Logic to set a user as staff
-    }
-
-    public static void setCustomer(int userId) {
-        // Logic to set a user as customer
-    }
 }
