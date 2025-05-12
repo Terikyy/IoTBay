@@ -18,7 +18,7 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Cancel Order</a>
+    <a href="index.jsp">Return to Order</a> 
 </header>
 <div class="container">
     <div class="main-container">
