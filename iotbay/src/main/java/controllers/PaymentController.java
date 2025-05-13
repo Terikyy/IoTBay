@@ -46,7 +46,7 @@ public class PaymentController extends HttpServlet {
         System.out.println("Processing payment with card number: " + cardNumber);
 
         // payment object is filelr for now hardcoded values, need to pass in values from cart when ready
-        Payment payment = new Payment(1, "CreditCard", 100.0, new java.util.Date(), "Pending");
+        Payment payment = new Payment(orderId, "CreditCard", 100.0, new java.util.Date(), "Pending");
         IDObject.insert(paymentDAO, payment);
 
         orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
