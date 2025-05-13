@@ -19,7 +19,7 @@ public class ConnServlet extends HttpServlet {
 
     private DBConnector db;
 
-    private AdressDAO adressDAO;
+    private AddressDAO adressDAO;
     private CartItemDAO cartItemDAO;
     private OrderDAO orderDAO;
     private OrderItemDAO orderItemDAO;
