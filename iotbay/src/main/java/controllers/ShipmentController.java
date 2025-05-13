@@ -13,10 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Address;
 import model.ShippingManagement;
 import model.dao.ShipmentDAO;
 
-@WebServlet("/shipment")
+@WebServlet("/ShipmentController")
 public class ShipmentController extends HttpServlet {
     private ShipmentDAO shipmentDAO;
 
@@ -74,8 +75,18 @@ public class ShipmentController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+
+        int stNum = Integer.parseInt(request.getParameter("stNum"));
+        String stName = request.getParameter("stName");
+        String state = request.getParameter("state");
+        String suburb = request.getParameter("suburb");
+        String city = request.getParameter("city");
+        int zip = Integer.parseInt(request.getParameter("zip"));
+        String phone = request.getParameter("phone");
+
+        response.sendRedirect("payment.jsp");
     }
 
     private void listShipments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
