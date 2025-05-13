@@ -30,11 +30,9 @@
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
                 <label for="stNum">Street Number:</label><br>
-                <input type="numbers" name="stNum" id="stNum" required title="Please enter a Street Number">><br>
+                <input type="numbers" name="stNum" id="stNum" required title="Please enter a Street Number"><br>
                 <label for="stName">Street Name:</label><br>
                 <input type="text" name="stName" id="stName" required><br>
-                <label for="country">Country:</label><br>
-                <input type="text" name="country" id="country" required><br>
                 <label for="state">State:</label><br>
                 <input type="text" name="state" id="state" required><br>
                 <label for="suburb">Suburb:</label><br>
