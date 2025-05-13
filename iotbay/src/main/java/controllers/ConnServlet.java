@@ -57,7 +57,7 @@ public class ConnServlet extends HttpServlet {
 
         try {
             // TODO: Add constructors for the daos (managers)
-            adressDAO = new AdressDAO(conn);
+            adressDAO = new AddressDAO(conn);
             cartItemDAO = new CartItemDAO(conn);
             orderDAO = new OrderDAO(conn);
             orderItemDAO = new OrderItemDAO(conn);
