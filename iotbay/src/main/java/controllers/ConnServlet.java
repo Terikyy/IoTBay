@@ -56,7 +56,6 @@ public class ConnServlet extends HttpServlet {
         conn = db.openConnection();
 
         try {
-            // TODO: Add constructors for the daos (managers)
             adressDAO = new AddressDAO(conn);
             cartItemDAO = new CartItemDAO(conn);
             orderDAO = new OrderDAO(conn);
@@ -82,6 +81,15 @@ public class ConnServlet extends HttpServlet {
         session.setAttribute("userDAO", userDAO);
         session.setAttribute("adminDAO", adminDAO);
         session.setAttribute("staffDAO", staffDAO);
+
+        // Get the original requested URL from the referer or a parameter
+        String redirectURL = request.getParameter("redirectURL");
+        if (redirectURL != null && !redirectURL.isEmpty()) {
+            response.sendRedirect(redirectURL);
+        } else {
+            // Default redirect to products list if no specific URL was requested
+            response.sendRedirect(request.getContextPath() + "/products/list");
+        }
 
     }
 

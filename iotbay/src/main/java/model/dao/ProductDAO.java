@@ -20,13 +20,34 @@ public class ProductDAO extends AbstractDAO<Product> {
 
     @Override
     protected Product mapRow(ResultSet rs) throws SQLException {
+        java.util.Date releaseDate = null;
+        
+        // Safely handle date parsing
+        try {
+            // First try standard getDate
+            releaseDate = rs.getDate("ReleaseDate");
+        } catch (SQLException e) {
+            // If that fails, try getting as string and parsing manually
+            String dateStr = rs.getString("ReleaseDate");
+            if (dateStr != null && !dateStr.isEmpty()) {
+                try {
+                    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                    releaseDate = sdf.parse(dateStr);
+                } catch (java.text.ParseException pe) {
+                    System.err.println("Failed to parse date: " + dateStr);
+                    // Set to current date as fallback
+                    releaseDate = new java.util.Date();
+                }
+            }
+        }
+        
         return new Product(
                 rs.getInt("ProductID"),
                 rs.getString("Name"),
                 rs.getString("Description"),
                 rs.getDouble("Price"),
                 rs.getInt("Stock"),
-                rs.getDate("ReleaseDate"),
+                releaseDate,
                 rs.getString("Category")
         );
     }
