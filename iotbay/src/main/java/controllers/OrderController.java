@@ -29,16 +29,15 @@ public class OrderController extends HttpServlet {
         String stName = request.getParameter("stName");
         String country = request.getParameter("country");
         String state = request.getParameter("state");
-        String subCit = request.getParameter("subCit");
+        String suburb = request.getParameter("suburb");
+        String city = request.getParameter("city");
         int zip = Integer.parseInt(request.getParameter("zip"));
         String phone = request.getParameter("phone");
 
-        
-
-        // Address address = new Address(name, address, country, state, subCit, zip);
+        Address address = new Address(name, stNum, stName, zip, suburb, city, state);
 
         System.out.println("User: " + name + " (" + email + ") Address: " + stNum + " " + stName + " " + country + " "
-                            + state + " " + subCit + " " + zip + " " + "Phone Number: " + phone);
+                            + state + " " + suburb + " " + zip + " " + city + " " + "Phone Number: " + phone);
 
         response.sendRedirect("payment.jsp");
     }

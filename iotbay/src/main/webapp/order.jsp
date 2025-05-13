@@ -39,8 +39,10 @@
                 <input type="text" name="country" id="country" required><br>
                 <label for="state">State:</label><br>
                 <input type="text" name="state" id="state" required><br>
-                <label for="subCit">Suburb/City:</label><br>
-                <input type="text" name="subCit" id="subCit" required><br>
+                <label for="city">City:</label><br>
+                <input type="text" name="city" id="city" required><br>
+                <label for="suburb">Suburb:</label><br>
+                <input type="text" name="suburb" id="suburb" required><br>
                 <label for="zip">Zip Code:</label><br>
                 <input type="numbers" name="zip" id="zip" pattern="\d{4}" maxlength="4" required title="Please enter a 4-digit zip code"><br>
                 <label for="phone">Phone Number:</label><br>
