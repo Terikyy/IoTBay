@@ -29,7 +29,11 @@
                 <input type="text" name="name" id="name" required><br>
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
-                <label for="address">Address:</label><br>
+                <label for="stNum">Street Number:</label><br>
+                <input type="numbers" name="stNum" id="stNum" required><br>
+                <label for="stName">Street Name:</label><br>
+                <input type="text" name="stName" id="stName" required><br>
+                <label for="country">Country:</label><br>
                 <input type="text" name="address" id="address" required><br>
                 <label for="country">Country:</label><br>
                 <input type="text" name="country" id="country" required><br>
@@ -38,7 +42,7 @@
                 <label for="subCit">Suburb/City:</label><br>
                 <input type="text" name="subCit" id="subCit" required><br>
                 <label for="zip">Zip Code:</label><br>
-                <input type="text" name="zip" id="zip" required><br>
+                <input type="numbers" name="zip" id="zip" pattern="\d{4}" maxlength="4" required title="Please enter a 4-digit zip code"><br>
                 <label for="phone">Phone Number:</label><br>
                 <input type="text" name="phone" id="phone" required><br>
                 <input type="submit" value="Order">
