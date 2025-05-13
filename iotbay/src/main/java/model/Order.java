@@ -10,6 +10,12 @@ public class Order extends IDObject {
     private final Date orderDate;
     private final double totalPrice;
 
+    public static final String ORDER_STATUS_PENDING = "PENDING";
+    public static final String ORDER_STATUS_PAID = "PAID";
+    public static final String ORDER_STATUS_SHIPPING = "SHIPPING";
+    public static final String ORDER_STATUS_DELIVERED = "DELIVERED";
+    public static final String ORDER_STATUS_CANCELLED = "CANCELLED";
+
 
     public Order(Integer userID, int addressID, String trackingNumber, String orderStatus, Date orderDate, double totalPrice) {
         super();

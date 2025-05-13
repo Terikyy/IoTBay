@@ -19,7 +19,7 @@ public class ConnServlet extends HttpServlet {
 
     private DBConnector db;
 
-    private AddressDAO adressDAO;
+    private AddressDAO addressDAO;
     private CartItemDAO cartItemDAO;
     private OrderDAO orderDAO;
     private OrderItemDAO orderItemDAO;
@@ -56,7 +56,8 @@ public class ConnServlet extends HttpServlet {
         conn = db.openConnection();
 
         try {
-            adressDAO = new AddressDAO(conn);
+            // TODO: Add constructors for the daos (managers)
+            addressDAO = new AddressDAO(conn);
             cartItemDAO = new CartItemDAO(conn);
             orderDAO = new OrderDAO(conn);
             orderItemDAO = new OrderItemDAO(conn);
@@ -72,7 +73,7 @@ public class ConnServlet extends HttpServlet {
         }
 
         // export the DB manager to the view-session (JSPs)
-        session.setAttribute("adressDAO", adressDAO);
+        session.setAttribute("adressDAO", addressDAO);
         session.setAttribute("cartItemDAO", cartItemDAO);
         session.setAttribute("orderDAO", orderDAO);
         session.setAttribute("orderItemDAO", orderItemDAO);
