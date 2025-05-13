@@ -44,6 +44,16 @@ public class OrderController extends HttpServlet {
         response.sendRedirect("shipment.jsp");
     }
 
+    public static Order deletOrder(int orderId, HttpSession session) throws SQLException {
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+
+        Order order = orderDAO.findById(orderId);
+        if (order != null) {
+            orderDAO.deleteById(orderId);
+        }
+        return order;
+    }
+
     public static List<Order> getUserOrders(int userId, HttpSession session) throws SQLException {
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
 
