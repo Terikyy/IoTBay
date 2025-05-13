@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import= "model.ShippingManagement" %>
-<%@ page import= "controllers.ShipmentController" %>
+<%@ page import="model.ShippingManagement" %>
+<%@ page import="controllers.ShipmentController" %>
 <%@ page import="model.users.User" %>
 <%@ page import="controllers.UserController" %>
 <%
@@ -88,7 +88,7 @@
   <!-- Create/Edit form -->
   <div id="formContainer">
     <h3><%= (editing != null) ? "Edit Shipment" : "New Shipment" %></h3>
-    <form method="post" action="shipment">
+    <form method="post" action="ShipmentController">
       <input type="hidden" name="action"
              value="<%= (editing!=null) ? "update" : "create" %>"/>
       <% if (editing != null) { %>
