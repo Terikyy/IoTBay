@@ -73,7 +73,7 @@ public class ConnServlet extends HttpServlet {
         }
 
         // export the DB manager to the view-session (JSPs)
-        session.setAttribute("adressDAO", addressDAO);
+        session.setAttribute("addressDAO", addressDAO);
         session.setAttribute("cartItemDAO", cartItemDAO);
         session.setAttribute("orderDAO", orderDAO);
         session.setAttribute("orderItemDAO", orderItemDAO);

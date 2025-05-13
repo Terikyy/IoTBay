@@ -60,7 +60,7 @@
     padding: 8px 16px;
     font-size: 1em;
     color: #fff;
-    background-color: #007bff;
+    background-color: var(--error);
     border: none;
     border-radius: 4px;
     cursor: pointer;

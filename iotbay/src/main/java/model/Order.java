@@ -4,8 +4,7 @@ import java.util.Date;
 
 public class Order extends IDObject {
     private final Integer userID;
-    private int addressID; // Not final to allow for address change
-    private String trackingNumber;
+    private Integer shipmentID;
     private String orderStatus;
     private final Date orderDate;
     private final double totalPrice;
@@ -17,18 +16,17 @@ public class Order extends IDObject {
     public static final String ORDER_STATUS_CANCELLED = "CANCELLED";
 
 
-    public Order(Integer userID, int addressID, String trackingNumber, String orderStatus, Date orderDate, double totalPrice) {
+    public Order(Integer userID, Integer shipmentID, String orderStatus, Date orderDate, double totalPrice) {
         super();
         this.userID = userID;
-        this.addressID = addressID;
-        this.trackingNumber = trackingNumber;
+        this.shipmentID = shipmentID;
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.totalPrice = totalPrice;
     }
 
-    public Order(int orderId, Integer userID, int addressID, String trackingNumber, String orderStatus, Date orderDate, double totalPrice) {
-        this(userID, addressID, trackingNumber, orderStatus, orderDate, totalPrice);
+    public Order(int orderId, Integer userID, Integer shipmentID, String orderStatus, Date orderDate, double totalPrice) {
+        this(userID, shipmentID, orderStatus, orderDate, totalPrice);
         setId(orderId);
     }
 
@@ -40,20 +38,12 @@ public class Order extends IDObject {
         return userID;
     }
 
-    public int getAddressID() {
-        return addressID;
+    public Integer getShipmentId() {
+        return shipmentID;
     }
 
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
-    }
-
-    public String getTrackingNumber() {
-        return trackingNumber;
-    }
-
-    public void setTrackingNumber(String trackingNumber) {
-        this.trackingNumber = trackingNumber;
+    public void setShipmentID(int shipmentID) {
+        this.shipmentID = shipmentID;
     }
 
     public String getOrderStatus() {
