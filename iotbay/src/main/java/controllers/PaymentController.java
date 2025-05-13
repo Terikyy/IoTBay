@@ -33,6 +33,7 @@ public class PaymentController extends HttpServlet {
         PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
 
+        String nameOnCard = request.getParameter("name-on-card");
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
         String cvv = request.getParameter("cvv");
