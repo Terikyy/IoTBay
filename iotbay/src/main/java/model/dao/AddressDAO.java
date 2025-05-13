@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdressDAO extends AbstractDAO<Address> {
+public class AddressDAO extends AbstractDAO<Address> {
 
-    public AdressDAO(Connection conn) throws SQLException {
+    public AddressDAO(Connection conn) throws SQLException {
         super(conn);
     }
 
