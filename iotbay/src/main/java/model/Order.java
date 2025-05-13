@@ -11,7 +11,7 @@ public class Order extends IDObject {
     private final double totalPrice;
 
     public static final String ORDER_STATUS_PENDING = "PENDING";
-    public static final String ORDER_STATUS_SHIPPED = "PAID";
+    public static final String ORDER_STATUS_PAID = "PAID";
     public static final String ORDER_STATUS_SHIPPING = "SHIPPING";
     public static final String ORDER_STATUS_DELIVERED = "DELIVERED";
     public static final String ORDER_STATUS_CANCELLED = "CANCELLED";

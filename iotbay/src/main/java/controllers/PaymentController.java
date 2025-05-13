@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.IDObject;
+import model.Order;
 import model.Payment;
+import model.dao.OrderDAO;
 import model.dao.PaymentDAO;
 
 import java.io.IOException;
@@ -18,26 +20,23 @@ public class PaymentController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-
-        PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
-        if (paymentDAO == null) {
-            throw new ServletException("PaymentDAO not found in session");
-        }
-
         try {
-            processCreditCardPayment(request, response, paymentDAO);
+            processCreditCardPayment(request, response);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response, PaymentDAO paymentDAO) throws IOException, SQLException {
+    private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        HttpSession session = request.getSession();
+
+        PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
 
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
         String cvv = request.getParameter("cvv");
+        int orderId = (Integer) session.getAttribute("orderId");
 
         if (cardNumber == null || expiryDate == null || cvv == null ||
                 cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
@@ -49,8 +48,10 @@ public class PaymentController extends HttpServlet {
         // payment object is filelr for now hardcoded values, need to pass in values from cart when ready
         Payment payment = new Payment(1, "CreditCard", 100.0, new java.util.Date(), "Pending");
         IDObject.insert(paymentDAO, payment);
+
+        orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
         //redirect to order for now, decide if we want a order confirmation page. what if payment fails? stay here or return to order form?
-        response.sendRedirect("order.jsp");
+        response.sendRedirect("shipment.jsp");
     }
 }
 
