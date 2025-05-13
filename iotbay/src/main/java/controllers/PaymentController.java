@@ -52,7 +52,7 @@ public class PaymentController extends HttpServlet {
 
         orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
         //redirect to order for now, decide if we want a order confirmation page. what if payment fails? stay here or return to order form?
-        response.sendRedirect("shipment.jsp");
+        response.sendRedirect("confirmation.jsp");
     }
 }
 
