@@ -6,6 +6,8 @@ if (request.getAttribute("products") == null) {
 }
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,10 +42,22 @@ if (request.getAttribute("products") == null) {
         </a>
     </div>
     <div class="shopping-cart">
-        <a href="${pageContext.request.contextPath}/cart" class="cart-button">
-            <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
-        </a>
-    </div>
+            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                <% 
+                List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
+                int itemCount = 0;
+                if (cartItems != null) {
+                    for (Map<String, Object> item : cartItems) {
+                        itemCount += (int) item.get("quantity");
+                    }
+                }
+                %>
+                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
+                    <%= itemCount %>
+                </span>
+            </a>
+        </div>
 </header>
 
 <!-- Main container with sidebar and content -->
