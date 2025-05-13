@@ -56,6 +56,15 @@ public class OrderDAO extends AbstractDAO<Order> {
         }
     }
 
+    public int updateStatus(int orderId, String status) throws SQLException {
+        String query = "UPDATE Order SET OrderStatus = ? WHERE OrderID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, status);
+            ps.setInt(2, orderId);
+            return ps.executeUpdate(); // Returns the number of rows affected
+        }
+    }
+
     @Override
     public List<Order> getAll() throws SQLException {
         return queryAllFromTable("Order");

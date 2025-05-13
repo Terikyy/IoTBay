@@ -12,9 +12,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> {
-
     private final StaffDAO staffDAO;
     private final AdminDAO adminDAO;
+
+    private final String tableName = "User";
+    private final String tableId = "id";
 
     public UserDAO(Connection conn) throws SQLException {
         super(conn);
@@ -78,6 +80,10 @@ public class UserDAO extends AbstractDAO<User> {
     @Override
     public User findById(int id) throws SQLException {
         return queryById("User", "UserID", id);
+    }
+
+    public User findByEmail(String email) throws SQLException {
+        return queryByColumnValue(tableName, "Email", email).get(0);
     }
 
     @Override
