@@ -18,33 +18,33 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Return to Order</a> 
+    <a href="index.jsp">Return to Order</a>
 </header>
 <div class="container">
     <div class="main-container">
         <div class="centered-container">
-            <form action="PaymentController" method="post">
-                <h2>Payment</h2>
-
+            <h2>Payment</h2>
+            <form action="PayPalServlet" method="post">
                 <label for="paymentMethod">Payment Method:</label><br>
-                <select name="paymentMethod" id="paymentMethod" required>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="PayPal">PayPal</option>
-                </select><br><br>               
-
-            <div id="cardDetails">
-                <label for="cardNumber">Card Number:</label><br>
-                <input type="text" name="cardNumber" id="cardNumber" required><br>
-                <label for="expiryDate">Expiry Date:</label><br>
-                <input type="text" name="expiryDate" id="expiryDate" required><br>
-                <label for="cvv">CVV:</label><br>
-                <input type="text" name="cvv" id="cvv" required><br>
-            </div>  
+                <select name="paymentMethod" id="paymentMethod" required onchange="this.form.submit()">
+                    <option value="credit-card" selected>Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                </select><br><br>
+            </form>
+            <form action="PaymentController" method="post">
+                <div id="cardDetails">
+                    <label for="cardNumber">Card Number:</label><br>
+                    <input type="number" name="cardNumber" id="cardNumber" required><br>
+                    <label for="expiryDate">Expiry Date:</label><br>
+                    <input type="date" name="expiryDate" id="expiryDate" required><br>
+                    <label for="cvv">CVV:</label><br>
+                    <input type="number" name="cvv" id="cvv" required><br>
+                </div>
 
 
                 <input type="submit" value="Pay Now">
 
-                
+
             </form>
         </div>
     </div>
