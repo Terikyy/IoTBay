@@ -27,7 +27,6 @@ public class OrderController extends HttpServlet {
         String email = request.getParameter("email");
         int stNum = Integer.parseInt(request.getParameter("stNum"));
         String stName = request.getParameter("stName");
-        String country = request.getParameter("country");
         String state = request.getParameter("state");
         String suburb = request.getParameter("suburb");
         String city = request.getParameter("city");
@@ -36,7 +35,7 @@ public class OrderController extends HttpServlet {
 
         Address address = new Address(name, stNum, stName, zip, suburb, city, state);
 
-        System.out.println("User: " + name + " (" + email + ") Address: " + stNum + " " + stName + " " + country + " "
+        System.out.println("User: " + name + " (" + email + ") Address: " + stNum + " " + stName + " "
                             + state + " " + suburb + " " + zip + " " + city + " " + "Phone Number: " + phone);
 
         response.sendRedirect("payment.jsp");
