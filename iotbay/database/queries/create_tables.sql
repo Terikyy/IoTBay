@@ -9,7 +9,6 @@ drop table CartItem;
 drop table OrderItem;
 drop table Address;
 
-
 -- 01 User
 CREATE TABLE User (
     UserID INT PRIMARY KEY,
@@ -47,8 +46,7 @@ CREATE TABLE Product (
 CREATE TABLE `Order` (
     OrderID INT PRIMARY KEY,
     UserID INT,
-    AddressID INT,
-    TrackingNumber VARCHAR(50),
+    ShipmentId VARCHAR(50),
     OrderStatus VARCHAR(20),
     OrderDate DATE,
     TotalPrice NUMERIC(10,2),
@@ -99,3 +97,11 @@ CREATE TABLE CartItem (
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
     FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
+
+CREATE TABLE Shipment (
+    ShipmentID INT PRIMARY KEY,
+    OrderID INT,
+    ShipmentPrice NUMERIC(10,2),
+    TrackingNumber VARCHAR(50),
+    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID)
+);)

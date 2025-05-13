@@ -17,9 +17,8 @@ public class OrderDAO extends AbstractDAO<Order> {
     @Override
     protected Order mapRow(ResultSet rs) throws SQLException {
         return new Order(
-                rs.getObject("UserID") != null ? rs.getInt("UserID") : null, // Handle nullable UserID
-                rs.getInt("AddressID"),
-                rs.getString("TrackingNumber"),
+                rs.getObject("UserID") != null ? rs.getInt("UserID") : null,
+                rs.getInt("ShipmentId"),
                 rs.getString("OrderStatus"),
                 rs.getDate("OrderDate"),
                 rs.getDouble("TotalPrice")
@@ -28,14 +27,13 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int insert(Order order) throws SQLException {
-        String query = "INSERT INTO Order (UserID, AddressID, TrackingNumber, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Order (UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, order.getUserID());
-            ps.setInt(2, order.getAddressID());
-            ps.setString(3, order.getTrackingNumber());
-            ps.setString(4, order.getOrderStatus());
-            ps.setDate(5, new java.sql.Date(order.getOrderDate().getTime()));
-            ps.setDouble(6, order.getTotalPrice());
+            ps.setInt(2, order.getShipmentId());
+            ps.setString(3, order.getOrderStatus());
+            ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setDouble(5, order.getTotalPrice());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -43,14 +41,14 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int update(Order order) throws SQLException {
-        String query = "UPDATE Order SET UserID = ?, AddressID = ?, TrackingNumber = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
+        String query = "UPDATE Order SET UserID = ?, ShipmentId = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(2, order.getUserID());
-            ps.setInt(3, order.getAddressID());
-            ps.setString(4, order.getTrackingNumber());
-            ps.setString(5, order.getOrderStatus());
-            ps.setDate(6, new java.sql.Date(order.getOrderDate().getTime()));
-            ps.setDouble(7, order.getTotalPrice());
+            ps.setInt(1, order.getUserID());
+            ps.setInt(2, order.getShipmentId());
+            ps.setString(3, order.getOrderStatus());
+            ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setDouble(5, order.getTotalPrice());
+            ps.setInt(6, order.getOrderID());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }

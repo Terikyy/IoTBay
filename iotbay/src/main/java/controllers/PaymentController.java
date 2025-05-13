@@ -33,20 +33,21 @@ public class PaymentController extends HttpServlet {
         PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
 
+        String nameOnCard = request.getParameter("name-on-card");
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
         String cvv = request.getParameter("cvv");
         int orderId = (Integer) session.getAttribute("orderId");
 
-        if (cardNumber == null || expiryDate == null || cvv == null ||
-                cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
+        if (nameOnCard == null || cardNumber == null || expiryDate == null || cvv == null ||
+            nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credit card details.");
             return;
         }
         System.out.println("Processing payment with card number: " + cardNumber);
 
         // payment object is filelr for now hardcoded values, need to pass in values from cart when ready
-        Payment payment = new Payment(1, "CreditCard", 100.0, new java.util.Date(), "Pending");
+        Payment payment = new Payment(orderId, "CreditCard", 100.0, new java.util.Date(), "Pending");
         IDObject.insert(paymentDAO, payment);
 
         orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
