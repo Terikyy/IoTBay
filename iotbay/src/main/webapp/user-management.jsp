@@ -20,6 +20,9 @@
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        if (users == null || users.isEmpty()) {
+            response.sendRedirect("index.jsp");
+        }
     %>
 </head>
 <body>

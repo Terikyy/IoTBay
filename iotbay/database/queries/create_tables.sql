@@ -43,7 +43,7 @@ CREATE TABLE Product (
 );
 
 -- 05 Order
-CREATE TABLE `Order` (
+CREATE TABLE Order (
     OrderID INT PRIMARY KEY,
     UserID INT,
     ShipmentId VARCHAR(50),

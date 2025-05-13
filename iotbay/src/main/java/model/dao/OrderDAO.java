@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class OrderDAO extends AbstractDAO<Order> {
+    public static final String TABLE_NAME = "`Order`";
+    public static final String ID_COLUMN_NAME = "OrderID";
+    public static final String USER_ID_COLUMN_NAME = "UserID";
 
     public OrderDAO(Connection conn) throws SQLException {
         super(conn);
@@ -65,16 +68,20 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public List<Order> getAll() throws SQLException {
-        return queryAllFromTable("Order");
+        return queryAllFromTable(TABLE_NAME);
     }
 
     @Override
     public Order findById(int id) throws SQLException {
-        return queryById("Order", "OrderID", id);
+        return queryById(TABLE_NAME, "OrderID", id);
+    }
+
+    public List<Order> findByUserId(int userId) throws SQLException {
+        return queryByColumnValue(TABLE_NAME, "UserID", userId);
     }
 
     @Override
     public int deleteById(int id) throws SQLException {
-        return deleteFromTableById("Order", "OrderID", id);
+        return deleteFromTableById(TABLE_NAME, "OrderID", id);
     }
 }

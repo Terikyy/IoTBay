@@ -13,7 +13,6 @@ import model.users.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +44,9 @@ public class OrderController extends HttpServlet {
         response.sendRedirect("shipment.jsp");
     }
 
-    public static List<Order> getUserOrders(int orderId, HttpSession session) throws SQLException {
-        return new ArrayList<>();
+    public static List<Order> getUserOrders(int userId, HttpSession session) throws SQLException {
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+
+        return orderDAO.findByUserId(userId);
     }
 }
