@@ -6,3 +6,38 @@
     border-right: 1px solid var(--border-light);
     max-height: calc(100vh - 60px); /* Ensures it doesn't exceed viewport height minus header height*/
 }
+
+/* Menu styling */
+.sidebar nav {
+    margin-top: 0.5rem;
+}
+
+.sidebar .menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .menu li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar .menu a {
+    display: block;
+    padding: 0.6rem 0.8rem;
+    color: var(--content-text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .menu a:hover {
+    background-color: var(--content-bg-tertiary);
+    color: var(--content-text-primary);
+}
+
+.sidebar .menu a.active {
+    border: 1px solid var(--accent-primary);
+    color: var(--content-text-primary);
+    font-weight: 500;
+}
