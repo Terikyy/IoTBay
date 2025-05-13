@@ -5,7 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import model.Address;
 import model.dao.AddressDAO;
 
@@ -15,22 +14,11 @@ import java.util.List;
 
 @WebServlet("/address")
 public class AddressController extends HttpServlet {
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-
-        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
-
-
-    }
 
     // Insert Address method
     private void insertAddress(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
         String name = request.getParameter("name");
         int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
         String streetName = request.getParameter("streetName");
@@ -51,6 +39,7 @@ public class AddressController extends HttpServlet {
     // update Address method
     private void updateAddress(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
@@ -72,6 +61,7 @@ public class AddressController extends HttpServlet {
     // Delete Address method
     private void deleteAddress(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
         int id = Integer.parseInt(request.getParameter("id"));
         try {
             addressDAO.deleteById(id);
@@ -84,6 +74,7 @@ public class AddressController extends HttpServlet {
     // List Address method
     private void listAddresses(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
         try {
             List<Address> addresses = addressDAO.getAll();
             request.setAttribute("addressList", addresses);

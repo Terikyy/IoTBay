@@ -1,7 +1,10 @@
 package controllers;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.dao.AdminDAO;
 import model.dao.StaffDAO;
@@ -11,12 +14,27 @@ import model.users.Customer;
 import model.users.Staff;
 import model.users.User;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/UserController")
 public class UserController extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String streetName = request.getParameter("streetName");
+        String streetNumber = request.getParameter("streetNumber");
+        String suburb = request.getParameter("suburb");
+        String postcode = request.getParameter("postalCode");
+        String city = request.getParameter("city");
+        String state = request.getParameter("state");
+    }
+
     public static List<User> getAllUsers(HttpSession session) throws SQLException {
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
         List<User> users = new ArrayList<>();

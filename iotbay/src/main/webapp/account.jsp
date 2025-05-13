@@ -1,5 +1,6 @@
 <%@ page import="model.users.*" %>
 <%@ page import="utils.UserUtil" %>
+<%@ page import="model.Address" %>
 <%@ page session="true" %>
 <%
     // Redirect to login page if user is not logged in
@@ -8,6 +9,8 @@
         response.sendRedirect("login.jsp");
         return;
     }
+
+    Address address = (Address) session.getAttribute("address");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,17 +50,21 @@
                 <p>Address Information:</p>
                 <!-- TODO: Add adress information fields with Adress.java class-->
                 <label for="streetName">Street Name:</label><br>
-                <input type="text" name="streetName" id="streetName" value="<%=%>"><br>
+                <input type="text" name="streetName" id="streetName"
+                       value="<%=address == null ? "" : address.getStreetName()%>"><br>
                 <label for="streetNumber">Street Number:</label><br>
-                <input type="number" name="streetNumber" id="streetNumber" value=""><br>
+                <input type="number" name="streetNumber" id="streetNumber"
+                       value="<%=address == null ? "" : address.getStreetNumber()%>"><br>
                 <label for="suburb">Suburb:</label><br>
-                <input type="text" name="suburb" id="suburb" value=""><br>
+                <input type="text" name="suburb" id="suburb"
+                       value="<%=address == null ? "" : address.getSuburb()%>"><br>
                 <label for="postalCode">Postal Code:</label><br>
-                <input type="number" name="postalCode" id="postalCode" value=""><br>
+                <input type="number" name="postalCode" id="postalCode"
+                       value="<%=address == null ? "" : address.getPostcode()%>"><br>
                 <label for="city">City:</label><br>
-                <input type="text" name="city" id="city" value=""><br>
+                <input type="text" name="city" id="city" value="<%=address == null ? "" : address.getCity()%>"><br>
                 <label for="state">State:</label><br>
-                <input type="text" name="state" id="state" value=""><br>
+                <input type="text" name="state" id="state" value="<%=address == null ? "" : address.getState()%>"><br>
                 <input type="submit" value="Save Changes">
             </form>
             <a href="logout.jsp">Logout</a>
