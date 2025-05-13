@@ -5,13 +5,16 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import model.ShippingManagement;
 
 public class ShipmentDAO extends AbstractDAO<ShippingManagement> {
+    public static final String TABLE_NAME = "`Shipments`";
+    public static final String ID_COLUMN_NAME = "ShipmentID";
+    public static final String ORDER_ID_COLUMN_NAME = "OrderID";
+
+
 
     public ShipmentDAO(Connection conn) throws SQLException {
         super(conn);
@@ -30,10 +33,7 @@ public class ShipmentDAO extends AbstractDAO<ShippingManagement> {
 
     @Override
     public int insert(ShippingManagement shipment) throws SQLException {
-        String sql = """
-            INSERT INTO shipments
-              (order_id, shipment_date, address, delivery_method)
-            VALUES (?, ?, ?, ?)""";
+        String sql = "INSERT INTO shipments (order_id, shipment_date, address, delivery_method) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, shipment.getOrderId());
             ps.setDate(2, Date.valueOf(shipment.getShipmentDate()));
@@ -45,10 +45,7 @@ public class ShipmentDAO extends AbstractDAO<ShippingManagement> {
 
     @Override
     public int update(ShippingManagement shipment) throws SQLException {
-        String sql = """
-            UPDATE shipments
-            SET order_id=?, shipment_date=?, address=?, delivery_method=?
-            WHERE shipment_id=?""";
+        String sql = "UPDATE shipments SET order_id=?, shipment_date=?, address=?, delivery_method=? WHERE shipment_id=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, shipment.getOrderId());
             ps.setDate(2, Date.valueOf(shipment.getShipmentDate()));
@@ -59,47 +56,21 @@ public class ShipmentDAO extends AbstractDAO<ShippingManagement> {
         }
     }
 
-    @Override
-    public int deleteById(int shipmentId) throws SQLException {
-        String sql = "DELETE FROM shipments WHERE shipment_id = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, shipmentId);
-            return ps.executeUpdate();
-        }
-    }
-
+    
     @Override
     public List<ShippingManagement> getAll() throws SQLException {
-        return queryAllFromTable("shipments");
+        return queryAllFromTable("Shipments");
     }
 
     @Override
     public ShippingManagement findById(int id) throws SQLException {
-        String sql = "SELECT * FROM shipments WHERE shipment_id = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapRow(rs);
-                }
-            }
-        }
-        return null;
+        return queryById("Shipments", "ShipmentID", id);
     }
 
-    // NEW: find all shipments on a given date
-    public List<ShippingManagement> findByDate(LocalDate date) throws SQLException {
-        String sql = "SELECT * FROM shipments WHERE shipment_date = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDate(1, Date.valueOf(date));
-            try (ResultSet rs = ps.executeQuery()) {
-                List<ShippingManagement> list = new ArrayList<>();
-                while (rs.next()) {
-                    list.add(mapRow(rs));
-                }
-                return list;
-            }
-        }
+    @Override
+    public int deleteById(int id) throws SQLException {
+        return deleteFromTableById("Shipments", "ShipmentID", id);
     }
+
 
 }
