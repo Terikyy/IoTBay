@@ -40,6 +40,7 @@ CREATE TABLE Product (
     Price DOUBLE(10,2),
     Stock INT,
     ReleaseDate DATE
+    Category VARCHAR(50),
 );
 
 -- 05 Order
