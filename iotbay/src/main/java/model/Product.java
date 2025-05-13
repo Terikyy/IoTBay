@@ -8,18 +8,20 @@ public class Product extends IDObject {
     private double price;
     private int stock;
     private Date releaseDate;
+    private String category;
 
-    public Product(String name, String description, double price, int stock, Date releaseDate) {
+    public Product(String name, String description, double price, int stock, Date releaseDate, String category) {
         super();
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.releaseDate = releaseDate;
+        this.category = category;
     }
 
-    public Product(int productId, String name, String description, double price, int stock, Date releaseDate) {
-        this(name, description, price, stock, releaseDate);
+    public Product(int productId, String name, String description, double price, int stock, Date releaseDate, String category) {
+        this(name, description, price, stock, releaseDate, category);
         setId(productId);
     }
 
@@ -65,5 +67,13 @@ public class Product extends IDObject {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
