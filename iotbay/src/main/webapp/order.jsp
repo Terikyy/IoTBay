@@ -25,10 +25,8 @@
         <div class="centered-container">
             <form action="OrderController" method="post">
                 <h2>Order</h2>
-                <label for="fName">First Name:</label><br>
-                <input type="text" name="fName" id="fName" required><br>
-                <label for="lName">Last Name:</label><br>
-                <input type="text" name="lName" id="lName" required><br>
+                <label for="name">Name:</label><br>
+                <input type="text" name="name" id="name" required><br>
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
                 <label for="address">Address:</label><br>
