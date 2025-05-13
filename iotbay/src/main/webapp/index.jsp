@@ -40,7 +40,7 @@ if (request.getAttribute("products") == null) {
         </a>
     </div>
     <div class="shopping-cart">
-        <a href="${pageContext.request.contextPath}/shopping-cart.jsp" class="cart-button">
+        <a href="${pageContext.request.contextPath}/cart" class="cart-button">
             <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
         </a>
     </div>
