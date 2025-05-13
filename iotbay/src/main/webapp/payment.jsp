@@ -25,13 +25,26 @@
         <div class="centered-container">
             <form action="PaymentController" method="post">
                 <h2>Payment</h2>
+
+                <label for="paymentMethod">Payment Method:</label><br>
+                <select name="paymentMethod" id="paymentMethod" required>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="PayPal">PayPal</option>
+                </select><br><br>               
+
+            <div id="cardDetails">
                 <label for="cardNumber">Card Number:</label><br>
                 <input type="text" name="cardNumber" id="cardNumber" required><br>
                 <label for="expiryDate">Expiry Date:</label><br>
                 <input type="text" name="expiryDate" id="expiryDate" required><br>
                 <label for="cvv">CVV:</label><br>
                 <input type="text" name="cvv" id="cvv" required><br>
-                <input type="submit" value="Pay">
+            </div>  
+
+
+                <input type="submit" value="Pay Now">
+
+                
             </form>
         </div>
     </div>
