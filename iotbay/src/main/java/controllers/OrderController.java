@@ -13,7 +13,9 @@ import model.users.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @WebServlet("/OrderController")
 public class OrderController extends HttpServlet {
@@ -41,5 +43,9 @@ public class OrderController extends HttpServlet {
         session.setAttribute("orderId", order.getOrderID());
 
         response.sendRedirect("shipment.jsp");
+    }
+
+    public static List<Order> getUserOrders(int orderId, HttpSession session) throws SQLException {
+        return new ArrayList<>();
     }
 }
