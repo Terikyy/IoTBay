@@ -30,7 +30,7 @@
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
                 <label for="stNum">Street Number:</label><br>
-                <input type="numbers" name="stNum" id="stNum" required><br>
+                <input type="numbers" name="stNum" id="stNum" required title="Please enter a Street Number">><br>
                 <label for="stName">Street Name:</label><br>
                 <input type="text" name="stName" id="stName" required><br>
                 <label for="country">Country:</label><br>
