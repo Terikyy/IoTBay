@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/subpages/user-management.css">
     <%
         User admin = (User) session.getAttribute("user");
-        if (!admin.isAdmin())
+        if (admin == null || !admin.isAdmin())
             response.sendRedirect("index.jsp");
         List<User> users = null;
         try {

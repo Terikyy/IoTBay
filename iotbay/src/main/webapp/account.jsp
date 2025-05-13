@@ -35,7 +35,7 @@
 <div class="container">
     <div class="main-container">
         <div class="centered-container">
-            <form action="account.jsp" method="post">
+            <form action="UserController" method="post">
                 <h2>Account Management</h2>
                 <p>Personal Information:</p>
                 <label for="name">Name:</label><br>
@@ -46,26 +46,20 @@
                 <input type="password" name="password" id="password" value="<%= user.getPassword() %>"><br>
                 <p>Address Information:</p>
                 <!-- TODO: Add adress information fields with Adress.java class-->
-                <label for="adressLine">Address Line:</label><br>
-                <input type="text" name="adressLine" id="adressLine" value=""><br>
-                <label for="additionalAdressInfo">Additional Address Info:</label><br>
-                <input type="text" name="additionalAdressInfo" id="additionalAdressInfo" value=""><br>
+                <label for="streetName">Street Name:</label><br>
+                <input type="text" name="streetName" id="streetName" value="<%=%>"><br>
+                <label for="streetNumber">Street Number:</label><br>
+                <input type="number" name="streetNumber" id="streetNumber" value=""><br>
+                <label for="suburb">Suburb:</label><br>
+                <input type="text" name="suburb" id="suburb" value=""><br>
                 <label for="postalCode">Postal Code:</label><br>
                 <input type="number" name="postalCode" id="postalCode" value=""><br>
-                <label for="stateCode">State Code:</label><br>
-                <input type="text" name="stateCode" id="stateCode" value=""><br>
+                <label for="city">City:</label><br>
+                <input type="text" name="city" id="city" value=""><br>
+                <label for="state">State:</label><br>
+                <input type="text" name="state" id="state" value=""><br>
                 <input type="submit" value="Save Changes">
             </form>
-            <%
-                if ("POST".equalsIgnoreCase(request.getMethod())) {
-                    user.setName(request.getParameter("name"));
-                    user.setEmail(request.getParameter("email"));
-                    user.setPassword(request.getParameter("password"));
-                    // TODO: add adress saving
-                    session.setAttribute("user", user);
-                    out.println("<p>Changes saved successfully!</p>");
-                }
-            %>
             <a href="logout.jsp">Logout</a>
         </div>
     </div>

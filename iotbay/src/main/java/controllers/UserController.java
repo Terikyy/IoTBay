@@ -1,5 +1,7 @@
 package controllers;
 
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpSession;
 import model.dao.AdminDAO;
 import model.dao.StaffDAO;
@@ -13,7 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserController {
+@WebServlet("/UserController")
+public class UserController extends HttpServlet {
     public static List<User> getAllUsers(HttpSession session) throws SQLException {
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
         List<User> users = new ArrayList<>();
