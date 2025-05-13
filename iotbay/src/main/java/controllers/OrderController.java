@@ -27,6 +27,10 @@ public class OrderController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        if (orderDAO == null) {
+            ConnServlet.updateDAOs(request, response);
+            return;
+        }
 
         //TODO: Add OrderItem stuff
 

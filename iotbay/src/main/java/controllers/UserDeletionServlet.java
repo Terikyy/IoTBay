@@ -17,6 +17,10 @@ public class UserDeletionServlet extends HttpServlet {
         String userId = request.getParameter("userId");
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOs(request, response);
+            return;
+        }
 
         try {
             userDAO.deleteById(Integer.parseInt(userId));

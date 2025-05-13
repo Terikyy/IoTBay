@@ -46,6 +46,14 @@ public class ConnServlet extends HttpServlet {
 
     }
 
+    public static void updateDAOs(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String currentURL = request.getRequestURI();
+        if (request.getQueryString() != null) {
+            currentURL += "?" + request.getQueryString();
+        }
+        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
+    }
+
     @Override // Add the DBConnector, DBManager, Connection instances to the session
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

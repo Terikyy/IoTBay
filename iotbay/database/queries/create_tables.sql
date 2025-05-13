@@ -104,4 +104,11 @@ CREATE TABLE Shipment (
     ShipmentPrice NUMERIC(10,2),
     TrackingNumber VARCHAR(50),
     FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID)
-);)
+);
+
+CREATE TABLE Logs (
+    LogID INT PRIMARY KEY,
+    UserID INT,
+    Action VARCHAR(100),
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
