@@ -1,16 +1,17 @@
 package controllers;
 
+import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Order;
-import model.dao.OrderDAO;
-import model.users.User;
 
-import java.io.IOException;
+import model.dao.OrderDAO;
+import model.dao.UserDAO;
+import model.Order;
+import model.Address;
 
 @WebServlet("/OrderController")
 public class OrderController extends HttpServlet {
@@ -20,17 +21,24 @@ public class OrderController extends HttpServlet {
     private OrderDAO orderDAO;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        throws ServletException, IOException {
 
         String name = request.getParameter("name");
         String email = request.getParameter("email");
+        int stNum = Integer.parseInt(request.getParameter("stNum"));
+        String stName = request.getParameter("stName");
+        String country = request.getParameter("country");
+        String state = request.getParameter("state");
+        String suburb = request.getParameter("suburb");
+        String city = request.getParameter("city");
+        int zip = Integer.parseInt(request.getParameter("zip"));
+        String phone = request.getParameter("phone");
 
-        User user = (User) session.getAttribute("user");
+        Address address = new Address(name, stNum, stName, zip, suburb, city, state);
 
-        Order order = new Order();
+        System.out.println("User: " + name + " (" + email + ") Address: " + stNum + " " + stName + " " + country + " "
+                            + state + " " + suburb + " " + zip + " " + city + " " + "Phone Number: " + phone);
 
-        response.sendRedirect("shipment.jsp");
+        response.sendRedirect("payment.jsp");
     }
 }

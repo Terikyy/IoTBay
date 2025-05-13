@@ -43,6 +43,12 @@ header .search-container {
     height: 40px;
 }
 
+header .search-container form {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
 header .search-container:focus-within {
     border-color: var(--accent-primary);
 }

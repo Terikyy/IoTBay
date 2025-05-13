@@ -83,6 +83,15 @@ public class ConnServlet extends HttpServlet {
         session.setAttribute("adminDAO", adminDAO);
         session.setAttribute("staffDAO", staffDAO);
 
+        // Get the original requested URL from the referer or a parameter
+        String redirectURL = request.getParameter("redirectURL");
+        if (redirectURL != null && !redirectURL.isEmpty()) {
+            response.sendRedirect(redirectURL);
+        } else {
+            // Default redirect to products list if no specific URL was requested
+            response.sendRedirect(request.getContextPath() + "/products/list");
+        }
+
     }
 
     @Override // Destroy the servlet and release the resources of the application (terminate

@@ -33,6 +33,8 @@
             </form>
             <form action="PaymentController" method="post">
                 <div id="cardDetails">
+                    <label for="nameOnCard">Name on Card:</label><br>
+                    <input type="text" name="nameOnCard" id="nameOnCard" required><br>
                     <label for="cardNumber">Card Number:</label><br>
                     <input type="number" name="cardNumber" id="cardNumber" required><br>
                     <label for="expiryDate">Expiry Date:</label><br>

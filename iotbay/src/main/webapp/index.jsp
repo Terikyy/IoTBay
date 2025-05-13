@@ -1,39 +1,48 @@
+<%
+// Redirect to products list if accessed directly
+if (request.getAttribute("products") == null) {
+    response.sendRedirect(request.getContextPath() + "/products/list");
+    return;
+}
+%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="contextPath" content="${pageContext.request.contextPath}">
     <title>IOTBay</title>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
 </head>
 <body>
 <!-- Top search bar -->
 <header>
     <div class="logo">
-        <a href="index.jsp">
-            <img src="assets/images/iotbay_logo.png" alt="IoTBay">
+        <a href="${pageContext.request.contextPath}/products/list">
+            <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
         </a>
     </div>
     <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search...">
-        <button class="search-button">
-            <img src="assets/images/search_icon.png" alt="Search">
-        </button>
+        <form action="${pageContext.request.contextPath}/products/list" method="get">
+            <input type="text" class="search-input" name="query" placeholder="Search..." value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
+            <% if(request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
+                <input type="hidden" name="category" value="<%= request.getAttribute("selectedCategory") %>">
+            <% } %>
+            <button type="submit" class="search-button">
+                <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
+            </button>
+        </form>
     </div>
     <div class="account">
-        <a href="account.jsp">
-            <img src="assets/images/account_icon.png" alt="Account">
+        <a href="${pageContext.request.contextPath}/account.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
         </a>
     </div>
     <div class="shopping-cart">
-        <a href="shopping-cart.jsp" class="cart-button">
-            <img src="assets/images/cart_icon.png" alt="Shopping Cart">
+        <a href="${pageContext.request.contextPath}/shopping-cart.jsp" class="cart-button">
+            <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
         </a>
-    </div>
-    <div id="shopping-cart" class="cart-hidden">
-        <h2>Shopping Basket</h2>
-        <ul id="cart-items"></ul>
-        <button id="checkout" onclick="window.location.href='checkout.jsp'">Checkout</button>
     </div>
 </header>
 
@@ -42,26 +51,72 @@
     <div class="sidebar">
         <nav>
             <ul class="menu">
-                <!-- Add categories here -->
+                <!-- Show "All Products" option -->
+                <li>
+                    <a href="${pageContext.request.contextPath}/products/list" 
+                       class="<%= request.getAttribute("selectedCategory") == null || request.getAttribute("selectedCategory").toString().isEmpty() ? "active" : "" %>">All Products</a>
+                </li>
+                <!-- List all categories dynamically -->
+                <% 
+                java.util.List<String> categories = (java.util.List<String>)request.getAttribute("categories");
+                if(categories != null) {
+                    for(String category : categories) { 
+                %>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/products/list?category=<%= category %>" 
+                           class="<%= category.equals(request.getAttribute("selectedCategory")) ? "active" : "" %>"><%= category %></a>
+                    </li>
+                <% 
+                    }
+                } 
+                %>
             </ul>
         </nav>
     </div>
 
     <!-- Main content area -->
     <div class="main-content">
-        <%-- Fetch products dynamically from the backend --%>
-        <%-- Example of product tile --%>
-        <div class="product-tile">
-            <img src="assets/images/products/raspi_micro_2.png" alt="Raspberry Pi Micro 2"
-                 onerror="this.src='assets/images/products/placeholder.png';">
-            <h3>Raspberry Pi Pico 2</h3>
-            <p>$29.99</p>
-            <p>Size: 1 Unit</p>
-            <p>In Stock: 500</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
+        <!-- Display current category if any -->
+        <% if(request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
+            <h2>Category: <%= request.getAttribute("selectedCategory") %></h2>
+        <% } %>
+        
+        <!-- Display search results if searching -->
+        <% if(request.getAttribute("searchQuery") != null && !request.getAttribute("searchQuery").toString().isEmpty()) { %>
+            <h2>Search Results for: <%= request.getAttribute("searchQuery") %></h2>
+        <% } %>
+        
+        <!-- Display message if no products found -->
+        <% 
+        java.util.List<?> products = (java.util.List<?>)request.getAttribute("products");
+        if(products == null || products.isEmpty()) { 
+        %>
+            <p>No products found.</p>
+        <% } else { %>
+        
+        <!-- Display products -->
+        <% 
+        for(Object productObj : products) { 
+            model.Product product = (model.Product)productObj;
+        %>
+            <div class="product-tile">
+                <img src="${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.png" 
+                     alt="<%= product.getName() %>"
+                     onerror="this.src='${pageContext.request.contextPath}/assets/images/products/placeholder.png';">
+                <h3><%= product.getName() %></h3>
+                <p>$<%= product.getPrice() %></p>
+                <p>In Stock: <%= product.getStock() %></p>
+                <a href="${pageContext.request.contextPath}/products/detail/<%= product.getProductID() %>" class="view-details">View Details</a>
+                <button class="add-to-cart" data-product-id="<%= product.getProductID() %>">Add to Cart</button>
+            </div>
+        <% 
+        }
+        } 
+        %>
     </div>
 </div>
+
+<!-- JavaScript for cart functionality -->
+<script src="${pageContext.request.contextPath}/js/cart.js"></script>
 </body>
-<jsp:include page="Connservlet" flush="true"/>
 </html>
