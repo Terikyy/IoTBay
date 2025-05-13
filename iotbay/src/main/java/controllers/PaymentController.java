@@ -39,8 +39,8 @@ public class PaymentController extends HttpServlet {
         String cvv = request.getParameter("cvv");
         int orderId = (Integer) session.getAttribute("orderId");
 
-        if (cardNumber == null || expiryDate == null || cvv == null ||
-                cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
+        if (nameOnCard == null || cardNumber == null || expiryDate == null || cvv == null ||
+            nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credit card details.");
             return;
         }
