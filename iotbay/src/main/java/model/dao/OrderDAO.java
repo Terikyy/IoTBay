@@ -30,7 +30,7 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int insert(Order order) throws SQLException {
-        String query = "INSERT INTO `Order` (UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Order (UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, order.getUserID());
             ps.setInt(2, order.getShipmentId());
