@@ -8,7 +8,19 @@ drop table `Order`;
 drop table CartItem;
 drop table OrderItem;
 drop table Address;
+drop table Shipment;
+drop table Logs;
 
+CREATE TABLE Address (
+     AddressID INT PRIMARY KEY,
+     Name VARCHAR(50) NOT NULL,
+     StreetNumber VARCHAR(10),
+     StreetName VARCHAR(50),
+     Postcode INT CHECK (Postcode BETWEEN 1000 AND 9999),
+     Suburb VARCHAR(50),
+     City VARCHAR(30),
+     State VARCHAR(10)
+);
 -- 01 User
 CREATE TABLE User (
     UserID INT PRIMARY KEY,
@@ -38,20 +50,19 @@ CREATE TABLE Product (
     Description VARCHAR(1000),
     Price DOUBLE(10,2),
     Stock INT,
-    ReleaseDate DATE
-    Category VARCHAR(50),
+    ReleaseDate DATE,
+    Category VARCHAR(50)
 );
 
 -- 05 Order
-CREATE TABLE Order (
+CREATE TABLE `Order` (
     OrderID INT PRIMARY KEY,
     UserID INT,
     ShipmentId VARCHAR(50),
     OrderStatus VARCHAR(20),
     OrderDate DATE,
     TotalPrice NUMERIC(10,2),
-    FOREIGN KEY (UserID) REFERENCES User(UserID),
-    FOREIGN KEY (AddressID) REFERENCES Address(AddressID)
+    FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
 
 -- 06 Payment
@@ -77,16 +88,7 @@ CREATE TABLE OrderItem (
 );
 
 -- 08 Address
-CREATE TABLE Address (
-    AddressID INT PRIMARY KEY,
-    Name VARCHAR(50) NOT NULL,
-    StreetNumber VARCHAR(10),
-    StreetName VARCHAR(50),
-    Postcode INT CHECK (Postcode BETWEEN 1000 AND 9999),
-    Suburb VARCHAR(50),
-    City VARCHAR(30),
-    State VARCHAR(10)
-);
+
 
 -- 09 CartItem
 CREATE TABLE CartItem (

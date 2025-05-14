@@ -34,7 +34,7 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
             ps.setDouble(5, orderItem.getPriceOnOrder());
 
             return ps.executeUpdate(); // Returns the number of rows affected
-         } 
+        }
     }
 
     @Override
@@ -47,12 +47,12 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
             ps.setDouble(5, orderItem.getPriceOnOrder());
 
             return ps.executeUpdate(); // Returns the number of rows affected
-         } 
+        }
     }
 
     @Override
     public List<OrderItem> getAll() throws SQLException {
-        return queryAllFromTable(OrderItem);
+        return queryAllFromTable("OrderItem");
     }
 
     @Override
