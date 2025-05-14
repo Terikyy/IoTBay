@@ -1,39 +1,41 @@
 package controllers;
 
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.ShippingManagement;
 import model.dao.ShipmentDAO;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 
 @WebServlet("/ShipmentController")
 public class ShipmentController extends HttpServlet {
     private ShipmentDAO shipmentDAO;
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
         HttpSession session = request.getSession();
         shipmentDAO = (ShipmentDAO) session.getAttribute("shipmentDAO");
+        if (shipmentDAO == null) {
+            ConnServlet.updateDAOs(request, response);
+            return;
+        }
 
-        
 
         String ShippingId = request.getParameter("ShippingId");
         String orderId = request.getParameter("orderId");
         String shipmentDate = request.getParameter("shipmentDate");
         String address = request.getParameter("address");
         String deliveryMethod = request.getParameter("deliveryMethod");
-        
+
         System.out.println("Shipping ID: " + ShippingId);
         System.out.println("Order ID: " + orderId);
         System.out.println("Shipment Date: " + shipmentDate);
@@ -45,8 +47,9 @@ public class ShipmentController extends HttpServlet {
         // Redirect to a confirmation page or display a success message
         response.sendRedirect("index.jsp");
 
-        
+
     }
+
     public static List<ShippingManagement> getUserOrders(int userId, int orderId, HttpSession session) throws SQLException {
         ShipmentDAO shipmentDAO = (ShipmentDAO) session.getAttribute("ShipmentDAO");
 
