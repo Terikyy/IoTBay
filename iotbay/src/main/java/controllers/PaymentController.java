@@ -30,17 +30,27 @@ public class PaymentController extends HttpServlet {
     private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         HttpSession session = request.getSession();
 
+        System.out.println("Test1");
         PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
+        if (paymentDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        if (orderDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
 
-        String nameOnCard = request.getParameter("name-on-card");
+        String nameOnCard = request.getParameter("nameOnCard");
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
         String cvv = request.getParameter("cvv");
-        int orderId = (Integer) session.getAttribute("orderId");
+        //int orderId = (Integer) session.getAttribute("orderId");
+        int orderId = 1;
 
         if (nameOnCard == null || cardNumber == null || expiryDate == null || cvv == null ||
-            nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
+                nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credit card details.");
             return;
         }

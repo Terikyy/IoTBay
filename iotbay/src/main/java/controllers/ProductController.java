@@ -24,7 +24,7 @@ public class ProductController extends HttpServlet {
 
         ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
         if (productDAO == null) {
-            ConnServlet.updateDAOs(request, response);
+            ConnServlet.updateDAOsGET(request, response);
             return;
         }
 

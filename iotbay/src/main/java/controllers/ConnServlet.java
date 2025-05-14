@@ -46,12 +46,20 @@ public class ConnServlet extends HttpServlet {
 
     }
 
-    public static void updateDAOs(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public static void updateDAOsGET(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String currentURL = request.getRequestURI();
         if (request.getQueryString() != null) {
             currentURL += "?" + request.getQueryString();
         }
         response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
+    }
+
+    public static void updateDAOsPOST(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String currentURL = request.getRequestURI();
+        if (request.getQueryString() != null) {
+            currentURL += "?" + request.getQueryString();
+        }
+        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL + "&method=POST");
     }
 
     @Override // Add the DBConnector, DBManager, Connection instances to the session

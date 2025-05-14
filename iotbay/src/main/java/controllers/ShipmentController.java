@@ -25,7 +25,7 @@ public class ShipmentController extends HttpServlet {
         HttpSession session = request.getSession();
         shipmentDAO = (ShipmentDAO) session.getAttribute("shipmentDAO");
         if (shipmentDAO == null) {
-            ConnServlet.updateDAOs(request, response);
+            ConnServlet.updateDAOsGET(request, response);
             return;
         }
 

@@ -27,7 +27,7 @@ public class PaymentDAO extends AbstractDAO<Payment> {
 
     @Override
     public int insert(Payment payment) throws SQLException {    //add a new payment record to the databse. invole an INSERT sql statement
-        String query = "INSERT INTO Payment (OrderID, PaymentMethod, AmountPaid, PaymentDate, PaymentStatus) VALUES (?. ?. ?. ?. ?)";
+        String query = "INSERT INTO Payment (OrderID, PaymentMethod, AmountPaid, PaymentDate, PaymentStatus) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, payment.getOrderID());
             ps.setString(2, payment.getPaymentMethod());

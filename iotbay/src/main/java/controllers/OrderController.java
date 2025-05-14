@@ -28,7 +28,7 @@ public class OrderController extends HttpServlet {
         HttpSession session = request.getSession();
         orderDAO = (OrderDAO) session.getAttribute("orderDAO");
         if (orderDAO == null) {
-            ConnServlet.updateDAOs(request, response);
+            ConnServlet.updateDAOsGET(request, response);
             return;
         }
 

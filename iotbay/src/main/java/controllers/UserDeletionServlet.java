@@ -18,7 +18,7 @@ public class UserDeletionServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
         if (userDAO == null) {
-            ConnServlet.updateDAOs(request, response);
+            ConnServlet.updateDAOsGET(request, response);
             return;
         }
 
