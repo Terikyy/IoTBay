@@ -30,7 +30,7 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int insert(Order order) throws SQLException {
-        String query = "INSERT INTO Order (UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `Order` (UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, order.getUserID());
             ps.setInt(2, order.getShipmentId());
@@ -44,7 +44,7 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int update(Order order) throws SQLException {
-        String query = "UPDATE Order SET UserID = ?, ShipmentId = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
+        String query = "UPDATE `Order` SET UserID = ?, ShipmentId = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, order.getUserID());
             ps.setInt(2, order.getShipmentId());
@@ -58,7 +58,7 @@ public class OrderDAO extends AbstractDAO<Order> {
     }
 
     public int updateStatus(int orderId, String status) throws SQLException {
-        String query = "UPDATE Order SET OrderStatus = ? WHERE OrderID = ?";
+        String query = "UPDATE `Order` SET OrderStatus = ? WHERE OrderID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, status);
             ps.setInt(2, orderId);
