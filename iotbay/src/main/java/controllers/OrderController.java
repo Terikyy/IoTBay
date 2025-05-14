@@ -32,8 +32,6 @@ public class OrderController extends HttpServlet {
             return;
         }
 
-        //TODO: Add OrderItem stuff
-
         User user = (User) session.getAttribute("user");
         Integer userId = user == null ? null : user.getUserID();
 
