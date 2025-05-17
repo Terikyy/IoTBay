@@ -1,18 +1,28 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.dao.*;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import model.dao.AddressDAO;
+import model.dao.AdminDAO;
+import model.dao.CartItemDAO;
+import model.dao.DBConnector;
+import model.dao.OrderDAO;
+import model.dao.OrderItemDAO;
+import model.dao.PaymentDAO;
+import model.dao.ProductDAO;
+import model.dao.ShippingDAO;
+import model.dao.StaffDAO;
+import model.dao.UserDAO;
 
 @WebServlet("/Connservlet")
 public class ConnServlet extends HttpServlet {
@@ -28,6 +38,7 @@ public class ConnServlet extends HttpServlet {
     private UserDAO userDAO;
     private AdminDAO adminDAO;
     private StaffDAO staffDAO;
+    private ShippingDAO shippingDAO;
 
     private Connection conn;
 
@@ -82,6 +93,7 @@ public class ConnServlet extends HttpServlet {
             userDAO = new UserDAO(conn);
             adminDAO = new AdminDAO(conn);
             staffDAO = new StaffDAO(conn);
+            shippingDAO = new ShippingDAO(conn);
 
         } catch (SQLException ex) {
             Logger.getLogger(ConnServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,6 +110,7 @@ public class ConnServlet extends HttpServlet {
         session.setAttribute("userDAO", userDAO);
         session.setAttribute("adminDAO", adminDAO);
         session.setAttribute("staffDAO", staffDAO);
+        session.setAttribute("shippingDAO", shippingDAO);
 
         // Get the original requested URL from the referer or a parameter
         String redirectURL = request.getParameter("redirectURL");

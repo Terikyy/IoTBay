@@ -121,7 +121,6 @@
         (List<ShippingManagement>) request.getAttribute("shipments");
     ShippingManagement edit = 
         (ShippingManagement) request.getAttribute("updateShipment");
-    Integer userId = (Integer) session.getAttribute("userId");
 %>
 
 <!DOCTYPE html>
@@ -144,6 +143,8 @@
   <div class="main-container">
     <div class="centered-container">
       <h1>Shipping Management</h1>
+
+
 
 <% if (edit == null) { %>
     <!-- CREATE form (blank inputs) -->
@@ -243,7 +244,7 @@
 
   <button type="submit">Search</button>
 </form>
-      <% if(userId != null) { %>
+      
           <h2>Existing Shipments</h2>
 
         <% if (shipments == null || shipments.isEmpty()) { %>
@@ -257,20 +258,23 @@
       <p>Method:      <%= s.getShippingMethod() %></p>
       <p>Address:     <%= s.getAddress() %></p>
 
-      <a href="ShippingController?action=update&shipmentId=<%= s.getShipmentId() %>"
-         class="btn-edit"> <button> Edit </button></a>
+        <!-- EDIT: GET form with a submit button -->
+      <form action="ShippingController" method="get" style="display:inline;">
+        <input type="hidden" name="action" value="update"/>
+        <input type="hidden" name="shipmentId" value="<%= s.getShipmentId() %>"/>
+        <button type="submit" class="btn-primary">Update</button>
+      </form>
 
+      <!-- DELETE: POST form with a submit button -->
       <form action="ShippingController" method="post" style="display:inline;">
         <input type="hidden" name="action" value="delete"/>
         <input type="hidden" name="shipmentId" value="<%= s.getShipmentId() %>"/>
-        <button type="submit">Delete</button>
+        <button type="submit" class="btn-primary">Delete</button>
       </form>
-    </div>
+          </div>
   <% } %>  <!-- closes for -->
 <% } %>    <!-- closes if/else -->
-<% } else { %>
-  <p><em>Log in to view and manage your shipments.</em></p>
-<% } %>      <!-- closes outer if/else -->
+
       </form>
     </div>
   </div>
