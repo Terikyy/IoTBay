@@ -1,70 +1,280 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--
 <%@ page import="java.util.List" %>
-<%@ page import= "model.ShippingManagement" %>
-<%@ page import= "controllers.ShipmentController" %>
+<%@ page import="model.ShippingManagement" %>
 <%@ page import="model.Order" %>
-<%@ page import="controllers.OrderController" %>
+<%@ page session="true" %>
+
+<%
+    List<ShippingManagement> shipments =
+        (List<ShippingManagement>) request.getAttribute("shipments");
+
+        Order order = (Order) request.getAttribute("order");
+%>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shipping Management</title>
-  <link rel="stylesheet" href="css/subpages/payment.css">
+  <link rel="stylesheet" href="css/subpages/shippingManagement.css">
 </head>
 <body>
 <header>
-  <div class="logo">
-    <img src="assets/images/iotbay_logo.png" alt="IoTBay">
-  </div>
-  <a href="index.jsp">Return to Main Page</a>
+    <div class="logo">
+        <img src="assets/images/iotbay_logo.png" alt="IoTBay">
+    </div>
+    <a href="index.jsp">Return to Main Page</a>
 </header>
 
+<!-- Create a new shipment -->
+<div class="container">
+  <div class="main-container">
+    <div class="centered-container">
+      <form action="ShippingController" method="post">
+       
+       <div class="card create-form">
+        <h2>Create New Shipment</h2>
+
+        <div class="form-group">
+          <<% if (order != null) { %>
+          <!-- Hidden OrderID field -->
+          <input type="hidden" name="orderId" value="<%= order.getOrderID() %>" />
+          <p>Creating shipment for Order #<%= order.getOrderID() %></p>
+          <% } else { %>
+            <p style="color:red;">No order selected, cannot create shipment.</p>
+          <% } %>
+          </div>
+
+        <div class="form-group">
+          <label for="shipmentDate">Shipment Date:</label>
+          <input type="date" name="shipmentDate" id="shipmentDate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="shippingMethod">Shipping Method:</label>
+          <select name="shippingMethod" id="shippingMethod" required>
+            <option value="">Select a shipping method</option>
+            <option value="Standard">Standard</option>
+            <option value="Express">Express</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input type="text" name="address" id="address" required>
+        </div>
+
+        <button type="submit" name="action" value="create">Create</button>
+      </div> <br>
+      </form>
+      </div>
+      </div>
+      </div>
+
+      <!-- Update/Delete shipment -->
+      <form action="ShippingController" method="post">
+      <div class="container">
+        <div class="main-container">
+          <div class="centered-container">
+          <h2>Existing Shipments</h2>
+
+        <% if (shipments == null || shipments.isEmpty()) { %>
+          <p>No shipments found.</p>
+        <% } else { %>
+          <p>Created Shipment Details</p>
+
+        <% for (ShippingManagement s : shipments) { %>
+          <div class="card">
+            <h3>Shipment ID: <%= s.getShipmentId() %></h3>
+            <p>Order ID:    <%= s.getOrderId() %></p>
+            <p>Date:        <%= s.getShipmentDate() %></p>
+            <p>Method:      <%= s.getShippingMethod() %></p>
+            <p>Address:     <%= s.getAddress() %></p>
+
+            <input type="hidden" name="shipmentId"     value="<%= s.getShipmentId() %>"/>
+            <input type="hidden" name="orderId"        value="<%= s.getOrderId() %>"/>
+            <input type="hidden" name="shipmentDate"   value="<%= s.getShipmentDate() %>"/>
+            <input type="hidden" name="shippingMethod" value="<%= s.getShippingMethod() %>"/>
+            <input type="hidden" name="address"        value="<%= s.getAddress() %>"/>
+
+            <button type="submit" name="action" value="update">Update</button>
+            <button type="submit" name="action" value="delete">Delete</button>
+          </div>
+        <% } %>
+        <% } %>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html> 
+--%>
+
+<%@ page import="java.util.List" %>
+<%@ page import="model.ShippingManagement" %>
+<%@ page import="model.Order" %>
+<%@ page session="true" %>
+
+<%
+    List<ShippingManagement> shipments =
+        (List<ShippingManagement>) request.getAttribute("shipments");
+    ShippingManagement edit = 
+        (ShippingManagement) request.getAttribute("updateShipment");
+    Integer userId = (Integer) session.getAttribute("userId");
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Management</title>
+  <link rel="stylesheet" href="css/subpages/shippingManagement.css">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="assets/images/iotbay_logo.png" alt="IoTBay">
+    </div>
+    <a href="index.jsp">Return to Main Page</a>
+</header>
 
 <div class="container">
   <div class="main-container">
     <div class="centered-container">
       <h1>Shipping Management</h1>
-      <form action="ShipmentController" method="post">
-        <label for="shippingMethod">Shipping Method:</label><br>
-        <select name="shippingMethod" id="shippingMethod" required>
-          <option value="Standard">Standard</option>
-          <option value="Express">Express</option>
-        </select><br><br>
 
-        <label for="stName">Street name:</label><br>
-        <input type="text" name="stName" id="stName" required><br>
-        <label for="suburb">Suburb:</label><br>
-        <input type="text" name="suburb" id="suburb" required><br>
-        <label for="state">State:</label><br>
-                <input type="text" name="state" id="state" required><br>
-        <label for="Address">Address</label><br>
-        <input type="text" name="Address" id="Address" required><br>
+<% if (edit == null) { %>
+    <!-- CREATE form (blank inputs) -->
+    <form action="ShippingController" method="post">
+      <input type="hidden" name="action" value="create"/>
+      <div class="form-group">
+        <label>Order ID:</label>
+        <input type="text" name="orderId" required/>
+      </div>
+      <div class="form-group">
+        <label>Date:</label>
+        <input type="date" name="shipmentDate" required/>
+      </div>
+      <div class="form-group">
+        <label>Method:</label>
+        <select name="shippingMethod" required>
+          <option value="">Select</option>
+          <option>Standard</option>
+          <option>Express</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Address:</label>
+        <input type="text" name="address" required/>
+      </div>
+      <button>Create</button>
+    </form>
+  <% } else { %>
+    <!-- EDIT form (pre-populated from `edit`) -->
+    <form action="ShippingController" method="post">
+      <input type="hidden" name="action" value="update"/>
+      <input type="hidden" name="shipmentId" value="<%= edit.getShipmentId() %>"/>
 
-        <label for="Date">Date</label><br>
-        <input type="Date" name="Date" id="Date" required><br>
-        
-        <h2>Shipments</h2>
-                <% if (ShippingManagement.isEmpty()) { %>
-                <p>No Shipment found.</p>
-                <% } else { %>
-                <p>Click on an Shipment to view its details.</p>
-                <% } %>
-                <% for (ShippingManagement shipmentManagement : ShippingManagement) { %>
-                <div class="order-card">
-                    <h3>Shipment ID: <%= shipmentManagement.getShipmentId() %>
-                    </h3>
-                    <p>Order ID: <%= order.getOrderDate() %>
-                    </p>
-                    <input type="hidden" name="ShipmentId" value="<%= order.getShipmentId() %>">
-                    <input type="submit" value="View Shipment Details">
-                </div>
+      <div class="form-group">
+        <label>Order ID:</label>
+        <input type="text" name="orderId"
+               value="<%= edit.getOrderId() %>" readonly/>
+      </div>
+      <div class="form-group">
+        <label>Date:</label>
+        <input type="date" name="shipmentDate"
+               value="<%= edit.getShipmentDate() %>" required/>
+      </div>
+      <div class="form-group">
+        <label>Method:</label>
+        <select name="shippingMethod" required>
+          <option value="Standard"
+            <%= "Standard".equals(edit.getShippingMethod())?"selected":"" %>>
+            Standard
+          </option>
+          <option value="Express"
+            <%= "Express".equals(edit.getShippingMethod())?"selected":"" %>>
+            Express
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Address:</label>
+        <input type="text" name="address"
+               value="<%= edit.getAddress() %>" required/>
+      </div>
+      <button>Save Changes</button>
+      <a href="ShippingController"><button> Cancel </button></a>
+    </form>
+  <% } %>
+  </div>
+  </div>
+  </div>
 
-        <input type="submit" value="Submit">
+<!-- Update/Delete shipment -->
+  <div class="container">
+  <div class="main-container">
+    <div class="centered-container">
+    <!-- Search form -->
+<form action="ShippingController" method="get" class="search-form">
+  <input type="hidden" name="action" value="search"/>
+
+  <div class="form-group">
+  <label for="shipmentIdSearch">Shipment ID:</label>
+  <input
+    type="number"
+    name="shipmentId"
+    id="shipmentIdSearch"
+    placeholder="e.g. 42"
+  />
+  </div>
+
+  <div class="form-group">
+  <label for="dateSearch">Shipment Date:</label>
+  <input 
+    type="date"
+    name="shipmentDate"
+    id="dateSearch"
+  />
+  </div>
+
+
+  <button type="submit">Search</button>
+</form>
+      <% if(userId != null) { %>
+          <h2>Existing Shipments</h2>
+
+        <% if (shipments == null || shipments.isEmpty()) { %>
+  <p>No shipments found.</p>
+<% } else { %>
+  <% for (ShippingManagement s : shipments) { %>
+    <div class="card">
+      <h3>Shipment ID: <%= s.getShipmentId() %></h3>
+      <p>Order ID:    <%= s.getOrderId() %></p>
+      <p>Date:        <%= s.getShipmentDate() %></p>
+      <p>Method:      <%= s.getShippingMethod() %></p>
+      <p>Address:     <%= s.getAddress() %></p>
+
+      <a href="ShippingController?action=update&shipmentId=<%= s.getShipmentId() %>"
+         class="btn-edit"> <button> Edit </button></a>
+
+      <form action="ShippingController" method="post" style="display:inline;">
+        <input type="hidden" name="action" value="delete"/>
+        <input type="hidden" name="shipmentId" value="<%= s.getShipmentId() %>"/>
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  <% } %>  <!-- closes for -->
+<% } %>    <!-- closes if/else -->
+<% } else { %>
+  <p><em>Log in to view and manage your shipments.</em></p>
+<% } %>      <!-- closes outer if/else -->
       </form>
     </div>
   </div>
 </div>
 </body>
 </html>
+
