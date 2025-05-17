@@ -176,13 +176,23 @@ public class ShippingController extends HttpServlet {
     // Create a new shipment
     private void createShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
 
-        String address = request.getParameter("address");
-        String shippingMethod = request.getParameter("shippingMethod");
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
-        ShippingManagement shipment = new ShippingManagement(0, orderId, LocalDate.now(), address, shippingMethod, false);
-        shippingDAO.insert(shipment);
-        listShipments(request, response);
-    }
+        String address       = request.getParameter("address");
+        String shippingMethod= request.getParameter("shippingMethod");
+        int orderId          = Integer.parseInt(request.getParameter("orderId"));
+
+        // 2) insert and grab the new ShipmentID
+        ShippingManagement shipment =
+        new ShippingManagement(0, orderId, LocalDate.now(),
+                               address, shippingMethod, false);
+        int newShipmentId = shippingDAO.insert(shipment);
+
+        // 3) redirect to payment.jsp with both IDs
+        String url = String.format(
+        "%s/payment.jsp?orderId=%d&shipmentId=%d",
+        request.getContextPath(), orderId, newShipmentId
+    );
+    response.sendRedirect(url);
+}
 
     // Update an existing shipment
     private void updateShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
