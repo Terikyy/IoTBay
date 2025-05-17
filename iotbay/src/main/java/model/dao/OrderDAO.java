@@ -30,13 +30,14 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int insert(Order order) throws SQLException {
-        String query = "INSERT INTO `Order` (UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `Order` (OrderID, UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, order.getUserID());
-            ps.setNull(2, java.sql.Types.INTEGER);
-            ps.setString(3, order.getOrderStatus());
-            ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
-            ps.setDouble(5, order.getTotalPrice());
+            ps.setInt(1, order.getOrderID());
+            ps.setInt(2, order.getUserID());
+            ps.setNull(3, java.sql.Types.INTEGER);
+            ps.setString(4, order.getOrderStatus());
+            ps.setDate(5, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setDouble(6, order.getTotalPrice());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
