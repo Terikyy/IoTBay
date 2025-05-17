@@ -33,7 +33,7 @@ public class OrderDAO extends AbstractDAO<Order> {
         String query = "INSERT INTO `Order` (UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, order.getUserID());
-            ps.setInt(2, order.getShipmentId());
+            ps.setNull(2, java.sql.Types.INTEGER);
             ps.setString(3, order.getOrderStatus());
             ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
             ps.setDouble(5, order.getTotalPrice());
