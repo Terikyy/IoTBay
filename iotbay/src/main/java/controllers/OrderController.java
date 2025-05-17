@@ -43,7 +43,7 @@ public class OrderController extends HttpServlet {
         }
         session.setAttribute("orderId", order.getOrderID());
 
-        response.sendRedirect("shipment.jsp");
+        response.sendRedirect("shippingManagement.jsp");
     }
 
     public static Order deletOrder(int orderId, HttpSession session) throws SQLException {
