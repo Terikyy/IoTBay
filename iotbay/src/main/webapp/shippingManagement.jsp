@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.ShippingManagement" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ page import="model.Order" %>
 <%@ page session="true" %>
 
@@ -24,7 +25,7 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Return to Main Page</a>
+    <a href="shopping-cart.jsp">Return to cart</a>
 </header>
 
 <div class="container">
@@ -33,26 +34,29 @@
       <h1>Shipping Management</h1>
 
 
-
-<% if (edit == null) { %>
+<% 
+  boolean hasShipments = shipments != null && !shipments.isEmpty();
+%>
+<% if (!hasShipments && edit == null) { %>
     <!-- CREATE form (blank inputs) -->
     <form action="ShippingController" method="post">
       <input type="hidden" name="action" value="create"/>
        <input type="hidden" name="orderId" value="<%= oid != null ? oid : "" %>"/>
 
-    <div class="form-group">
-      <label>Order ID:</label>
-      <input type="text"
-             value="<%= oid != null ? oid : "" %>"
-             readonly class="readonly-field"/>
-    </div>
-
-
+      <div class="form-group">
+        <label>Order ID:</label>
+        <input type="text"
+        value="<%= oid != null ? oid : "" %>" 
+        disabled class="no-interact"/>
+      </div>
 
       <div class="form-group">
         <label>Date:</label>
-        <input type="date" name="shipmentDate" required/>
+        <input type="date" name="shipmentDate" required 
+        value="<%= LocalDate.now().toString() %>" 
+        disabled class="no-interact"/>
       </div>
+
       <div class="form-group">
         <label>Method:</label>
         <select name="shippingMethod" required>
@@ -65,23 +69,34 @@
         <label>Address:</label>
         <input type="text" name="address" required/>
       </div>
+      
       <button>Create</button>
     </form>
-  <% } else { %>
-    <!-- EDIT form (pre-populated from `edit`) -->
+
+    <% } else if (edit != null) { %>
+    <!-- EDIT form -->
     <form action="ShippingController" method="post">
       <input type="hidden" name="action" value="update"/>
       <input type="hidden" name="shipmentId" value="<%= edit.getShipmentId() %>"/>
 
       <div class="form-group">
-        <label>Order ID:</label>
-        <input type="text" name="orderId"
-               value="<%= edit.getOrderId() %>" readonly/>
+      <!-- This will submit order id after change -->
+        <input 
+          type="hidden" 
+          name="orderId" 
+          value="<%= edit.getOrderId() %>" />
+
+      <!-- This one decorative and non-interactive -->
+        <input 
+          type="text" 
+          value="<%= edit.getOrderId() %>" 
+          disabled 
+          class="readonly-field"/>
       </div>
       <div class="form-group">
         <label>Date:</label>
         <input type="date" name="shipmentDate"
-               value="<%= edit.getShipmentDate() %>" required/>
+               value="<%= edit.getShipmentDate() %>" disabled class="no-interact"/>
       </div>
       <div class="form-group">
         <label>Method:</label>
@@ -105,46 +120,13 @@
       <a href="ShippingController"><button> Cancel </button></a>
     </form>
   <% } %>
-  </div>
-  </div>
-  </div>
+
+
+
+  
 
 <!-- Update/Delete shipment -->
-  <div class="container">
-  <div class="main-container">
-    <div class="centered-container">
-    <!-- Search form -->
-<form action="ShippingController" method="get" class="search-form">
-  <input type="hidden" name="action" value="search"/>
-
-  <div class="form-group">
-  <label for="shipmentIdSearch">Shipment ID:</label>
-  <input
-    type="number"
-    name="shipmentId"
-    id="shipmentIdSearch"
-    placeholder="e.g. 42"
-  />
-  </div>
-
-  <div class="form-group">
-  <label for="dateSearch">Shipment Date:</label>
-  <input 
-    type="date"
-    name="shipmentDate"
-    id="dateSearch"
-  />
-  </div>
-
-
-  <button type="submit">Search</button>
-</form>
-      
-          <h2>Existing Shipments</h2>
-
-        <% if (shipments == null || shipments.isEmpty()) { %>
-  <p>No shipments found.</p>
-<% } else { %>
+<% if (shipments != null && !shipments.isEmpty()) { %>
   <% for (ShippingManagement s : shipments) { %>
     <div class="card">
       <h3>Shipment ID: <%= s.getShipmentId() %></h3>
@@ -167,8 +149,9 @@
         <button type="submit" class="btn-primary">Delete</button>
       </form>
           </div>
-  <% } %>  <!-- closes for -->
-<% } %>    <!-- closes if/else -->
+      <% } %>
+    <% } %>
+  
 
 
 

@@ -140,6 +140,17 @@ public class ShippingDAO extends AbstractDAO<ShippingManagement> {
         }
     }
 
+    public List<ShippingManagement> findByOrderId(int orderId) throws SQLException {
+    String sql = "SELECT * FROM ShippingManagement WHERE OrderID = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, orderId);
+        ResultSet rs = ps.executeQuery();
+        List<ShippingManagement> list = new ArrayList<>();
+        while (rs.next()) list.add(mapRow(rs));
+        return list;
+    }
+}
+
 
 
 
