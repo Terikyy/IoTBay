@@ -55,6 +55,8 @@
                     </h3>
                     <p>Order Date: <%= order.getOrderDate() %>
                     </p>
+                    <p>Order Status: <%= order.getOrderStatus() %>
+                    </p>
                     <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
                     <input type="submit" value="View Order Details">
                 </div>
