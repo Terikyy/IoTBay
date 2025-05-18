@@ -194,7 +194,6 @@ public class ShippingController extends HttpServlet {
         
         HttpSession session = request.getSession();
         session.setAttribute("orderId", orderId);
-        // redirect to payment.jsp with NO ID in the URL
         response.sendRedirect(request.getContextPath() + "/payment.jsp");
     }
 
@@ -210,7 +209,6 @@ public class ShippingController extends HttpServlet {
 
         HttpSession session = request.getSession();
         session.setAttribute("orderId", orderId);
-        // redirect to payment.jsp with NO ID in the URL
         response.sendRedirect(request.getContextPath() + "/payment.jsp");
     }
 

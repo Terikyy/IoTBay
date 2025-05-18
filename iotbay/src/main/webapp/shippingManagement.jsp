@@ -74,7 +74,7 @@
     </form>
 
     <% } else if (edit != null) { %>
-    <!-- EDIT form (pre-populated from `edit`) -->
+    <!-- EDIT form -->
     <form action="ShippingController" method="post">
       <input type="hidden" name="action" value="update"/>
       <input type="hidden" name="shipmentId" value="<%= edit.getShipmentId() %>"/>
