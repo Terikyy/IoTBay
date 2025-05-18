@@ -6,7 +6,7 @@
 @import '../components/header.css';
 @import '../components/forms.css';
 
-/* Subpage-specific styles */
+/* Shipping Subpage-specific styles */
 .centered-container {
     max-width: 400px;
     margin: 0 auto;
@@ -24,12 +24,12 @@
     padding: 1rem;
   }
   
-  /* group each label + control */
+ 
   .form-group {
     margin-bottom: 1.5rem;
   }
   
-  /* label styling */
+  
   .form-group label {
     display: block;
     margin-bottom: 0.5rem;
@@ -37,7 +37,7 @@
     font-size: 1rem;
   }
   
-  /* shared input/select styles */
+  
   .form-group input[type="text"],
   .form-group input[type="date"],
   .form-group input[type="number"],
@@ -53,13 +53,13 @@
     transition: border-color 0.2s ease, background-color 0.2s ease;
   }
   
-  /* placeholder styling */
+  
   .form-group input::placeholder {
     color: #6c757d;
     opacity: 1;
   }
   
-  /* focus state */
+  
   .form-group input:focus,
   .form-group select:focus {
     outline: none;
@@ -68,7 +68,7 @@
     box-shadow: 0 0 0 0.2rem rgba(102, 175, 233, 0.25);
   }
   
-  /* standalone submit button */
+  
   .btn-primary {
     display: inline-block;
     padding: 0.6rem 1.2rem;
@@ -87,5 +87,10 @@
   .btn-primary:hover {
     background-color: #0056b3;
     border-color: #004085;
+  }
+
+  input.no-interact {
+    pointer-events: none;   
+    user-select: none;      
   }
     
