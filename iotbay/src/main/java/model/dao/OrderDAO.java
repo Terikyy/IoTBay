@@ -69,20 +69,20 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public List<Order> getAll() throws SQLException {
-        return queryAllFromTable(TABLE_NAME);
+        return queryAllFromTable("`Order`");
     }
 
     @Override
     public Order findById(int id) throws SQLException {
-        return queryById(TABLE_NAME, "OrderID", id);
+        return queryById("`Order`", "OrderID", id);
     }
 
     public List<Order> findByUserId(int userId) throws SQLException {
-        return queryByColumnValue(TABLE_NAME, "UserID", userId);
+        return queryByColumnValue("`Order`", "UserID", userId);
     }
 
     @Override
     public int deleteById(int id) throws SQLException {
-        return deleteFromTableById(TABLE_NAME, "OrderID", id);
+        return deleteFromTableById("`Order`", "OrderID", id);
     }
 }

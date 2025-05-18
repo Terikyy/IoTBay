@@ -41,15 +41,14 @@
 </header>
 <div class="container">
     <div class="main-container">
-        <div class="centered-container">
-            <form action="OrderController" method="post">
-                <h2>Orders</h2>
-                <% if (orders.isEmpty()) { %>
-                <p>No orders found.</p>
-                <% } else { %>
-                <p>Click on an order to view its details.</p>
-                <% } %>
-                <% for (Order order : orders) { %>
+        <div class="centered-container"> 
+            <h2>Orders</h2>
+            <% if (orders.isEmpty()) { %>
+            <p>No orders found.</p>
+            <% } else { %>
+            <p>Click on an order to view its details.</p>
+            <% } %>
+            <% for (Order order : orders) { %>
                 <div class="order-card">
                     <h3>Order ID: <%= order.getOrderID() %>
                     </h3>
@@ -57,11 +56,21 @@
                     </p>
                     <p>Order Status: <%= order.getOrderStatus() %>
                     </p>
-                    <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
-                    <input type="submit" value="View Order Details">
+
+                    <form action="OrderUpdateServlet" method="post"> 
+                        <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
+                        <button type="submit"> 
+                            View Order Details
+                        </button>
+                    </form>
+                    <form action="OrderDeletionServlet" method="post">
+                        <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
+                        <button type="submit" <%= !"PENDING".equals(order.getOrderStatus()) ? "disabled" : "" %>>
+                            Delete
+                        </button>
+                    </form> 
                 </div>
-                <% } %>
-            </form>
+            <% } %>
         </div>
     </div>
 </div>
