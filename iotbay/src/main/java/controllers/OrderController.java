@@ -23,7 +23,8 @@ import java.util.Map;
 @WebServlet("/OrderController")
 public class OrderController extends HttpServlet {
     // Controller for managing orders
-    // This class will handle order-related operations such as creating, updating, and deleting orders and order items.
+    // This class will handle order-related operations such as creating, updating,
+    // and deleting orders and order items.
 
     private OrderDAO orderDAO;
     // private OrderItemDAO orderItemDAO;
@@ -41,8 +42,8 @@ public class OrderController extends HttpServlet {
 
         // orderItemDAO = (OrderItemDAO) session.getAttribute("orderitemDAO");
         // if (orderItemDAO == null) {
-        //     ConnServlet.updateDAOsGET(request, response);
-        //     return;
+        // ConnServlet.updateDAOsGET(request, response);
+        // return;
         // }
 
         User user = (User) session.getAttribute("user");
@@ -56,31 +57,36 @@ public class OrderController extends HttpServlet {
         }
         System.out.println("Received total price: " + totalPrice);
 
-        Order order = new Order(userId, Order.ORDER_STATUS_PENDING, new Date(), totalPrice); // TODO: Add total amount calculation
+        Order order = new Order(userId, Order.ORDER_STATUS_PENDING, new Date(), totalPrice); // TODO: Add total amount
+                                                                                             // calculation
         try {
-            IDObject.insert(orderDAO, order);   
+            IDObject.insert(orderDAO, order);
         } catch (SQLException e) {
             System.out.println("Error inserting order: " + e.getMessage());
             throw new RuntimeException(e);
         }
         session.setAttribute("orderId", order.getOrderID());
+        session.setAttribute("totalPrice", order.getTotalPrice());
 
-        // List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
+        // <-- Add this line
+        // List<Map<String, Object>> cartItems = (List<Map<String, Object>>)
+        // session.getAttribute("cartItems");
 
         // if (cartItems != null) {
-        //     for (Map<String, Object> cartItem : cartItems) {
-        //         Product product = (Product) cartItem.get("product");
-        //         int productId = product.getProductID();
-        //         int quantity = (int) cartItem.get("quantity");
-        //         double price = product.getPrice();
+        // for (Map<String, Object> cartItem : cartItems) {
+        // Product product = (Product) cartItem.get("product");
+        // int productId = product.getProductID();
+        // int quantity = (int) cartItem.get("quantity");
+        // double price = product.getPrice();
 
-        //         OrderItem orderItem = new OrderItem(order.getOrderID(), productId, quantity, price);
-        //         try {
-        //             orderItemDAO.insert(orderItem); 
-        //         } catch (SQLException e) {
-        //             throw new RuntimeException(e);
-        //         }
-        //     }
+        // OrderItem orderItem = new OrderItem(order.getOrderID(), productId, quantity,
+        // price);
+        // try {
+        // orderItemDAO.insert(orderItem);
+        // } catch (SQLException e) {
+        // throw new RuntimeException(e);
+        // }
+        // }
         // }
 
         // session.setAttribute("orderCreated", true);
@@ -88,13 +94,13 @@ public class OrderController extends HttpServlet {
         // session.removeAttribute("cartItems");
         // session.removeAttribute("cartTotal");
         // session.removeAttribute("cart");
-        
+
         System.out.println("Redirecting to shippingManagement.jsp...");
         response.sendRedirect("shippingManagement.jsp");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         Boolean orderCreated = (Boolean) session.getAttribute("orderCreated");
 
@@ -139,11 +145,12 @@ public class OrderController extends HttpServlet {
         return orderDAO.findByUserId(userId);
     }
 
-    public static Order getOrderById(int orderId, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    public static Order getOrderById(int orderId, HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
         HttpSession session = request.getSession();
 
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
-        
+
         if (orderDAO == null) {
             ConnServlet.updateDAOsGET(request, response);
             return null;
