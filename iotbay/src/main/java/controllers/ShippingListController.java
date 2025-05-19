@@ -46,9 +46,9 @@ public class ShippingListController extends HttpServlet {
         if (userID != null) {
             all = shippingDAO.findByUserId(userID);
         } else {
-            Integer lastId = (Integer)session.getAttribute("lastShipmentId");
-            if (lastId != null) {
-              ShippingManagement one = shippingDAO.findById(lastId);
+            Integer guestId = (Integer)session.getAttribute("lastShipmentId");
+            if (guestId != null) {
+              ShippingManagement one = shippingDAO.findById(guestId);
               all = one==null
                  ? Collections.emptyList()
                  : Collections.singletonList(one);
@@ -57,35 +57,41 @@ public class ShippingListController extends HttpServlet {
             }
         }
 
-        // Show All Shipments Button
-        if (request.getParameter("showAll")!=null) {
-            request.setAttribute("shipments", all);
-            request.getRequestDispatcher("/shippingList.jsp").forward(request,response);
-            return;
-        }
-
         // otherwise filter by shipmentId and/or shipmentDate
         String sid  = request.getParameter("shipmentId");
         String date = request.getParameter("shipmentDate");
+
+        boolean noFilters = (sid == null || sid.isEmpty())
+                 && (date == null || date.isEmpty());
+        if (request.getParameter("showAll") != null || noFilters) {
+            request.setAttribute("shipments", all);
+            request.getRequestDispatcher("/shippingList.jsp")
+                .forward(request, response);
+            return;
+        }
+
         List<ShippingManagement> filtered = all;
         // Filter by shipmentId and/or shipmentDate
-        if (sid!=null && !sid.isEmpty() && date!=null && !date.isEmpty()) {
-            int id = Integer.parseInt(sid);
-            LocalDate d = LocalDate.parse(date);
-            filtered = all.stream()
-            .filter(s->s.getShipmentId()==id && s.getShipmentDate().equals(d))
+        if (!sid.isEmpty() && !date.isEmpty()) {
+        int id = Integer.parseInt(sid);
+        LocalDate d = LocalDate.parse(date);
+        filtered = all.stream()
+
+            .filter(s -> s.getShipmentId() == id
+                       && s.getShipmentDate().equals(d))
             .collect(Collectors.toList());
-        }else if (sid!=null && !sid.isEmpty()) { //filter by shipmentId only
-            int id = Integer.parseInt(sid);
-            filtered = filtered.stream()
-                                   .filter(s -> s.getShipmentId() == id)
-                                   .collect(Collectors.toList());
+        } else if (!sid.isEmpty()) { //filter by shipmentId only
+        int id = Integer.parseInt(sid);
+        filtered = filtered.stream()
+            .filter(s -> s.getShipmentId() == id)
+            .collect(Collectors.toList());
         }else if (date!=null && !date.isEmpty()) { //filter by shipmentDate only
             LocalDate d = LocalDate.parse(date);
             filtered = filtered.stream()
-                                   .filter(s -> s.getShipmentDate().equals(d))
-                                   .collect(Collectors.toList());
+            .filter(s -> s.getShipmentDate().equals(d))
+            .collect(Collectors.toList());
         }
+        
         request.setAttribute("shipments", filtered);
 
         request.getRequestDispatcher("/shippingList.jsp").forward(request, response);
