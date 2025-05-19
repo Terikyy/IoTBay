@@ -132,4 +132,9 @@ public class ConnServlet extends HttpServlet {
 
     }
 
+    public static void updateDAOsGET(HttpSession session) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateDAOsGET'");
+    }
+
 }

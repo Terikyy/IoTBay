@@ -138,4 +138,18 @@ public class OrderController extends HttpServlet {
 
         return orderDAO.findByUserId(userId);
     }
+
+    public static Order getOrderById(int orderId, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        
+        if (orderDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return null;
+        }
+
+        return orderDAO.findById(orderId);
+    }
+
 }

@@ -27,6 +27,21 @@ public class PaymentController extends HttpServlet {
         }
     }
 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
+
+        Double totalPrice = (Double) request.getAttribute("totalPrice");
+        if (totalPrice == null) {
+            totalPrice = 0.0;
+            session.setAttribute("totalPrice", totalPrice);
+        }
+
+        request.setAttribute("totalPrice", totalPrice);
+        request.getRequestDispatcher("payment.jsp").forward(request, response);
+    
+    }
+
     private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         HttpSession session = request.getSession();
 
@@ -46,8 +61,8 @@ public class PaymentController extends HttpServlet {
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
         String cvv = request.getParameter("cvv");
-        //int orderId = (Integer) session.getAttribute("orderId");
-        int orderId = 1;
+        int orderId = (Integer) session.getAttribute("orderId");
+        //int orderId = 1;//get from shipping 
 
         if (nameOnCard == null || cardNumber == null || expiryDate == null || cvv == null ||
                 nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
