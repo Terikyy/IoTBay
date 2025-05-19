@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Order extends IDObject {
     private final Integer userID;
-    private Integer shipmentID;
     private String orderStatus;
     private final Date orderDate;
     private final double totalPrice;
@@ -16,17 +15,16 @@ public class Order extends IDObject {
     public static final String ORDER_STATUS_CANCELLED = "CANCELLED";
 
 
-    public Order(Integer userID, Integer shipmentID, String orderStatus, Date orderDate, double totalPrice) {
+    public Order(Integer userID, String orderStatus, Date orderDate, double totalPrice) {
         super();
         this.userID = userID;
-        this.shipmentID = shipmentID;
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.totalPrice = totalPrice;
     }
 
-    public Order(int orderId, Integer userID, Integer shipmentID, String orderStatus, Date orderDate, double totalPrice) {
-        this(userID, shipmentID, orderStatus, orderDate, totalPrice);
+    public Order(int orderId, Integer userID, String orderStatus, Date orderDate, double totalPrice) {
+        this(userID, orderStatus, orderDate, totalPrice);
         setId(orderId);
     }
 
@@ -36,14 +34,6 @@ public class Order extends IDObject {
 
     public Integer getUserID() {
         return userID;
-    }
-
-    public Integer getShipmentId() {
-        return shipmentID;
-    }
-
-    public void setShipmentID(int shipmentID) {
-        this.shipmentID = shipmentID;
     }
 
     public String getOrderStatus() {

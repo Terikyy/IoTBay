@@ -1,11 +1,10 @@
-<%@ page import="controllers.UserController" %>
 <%@ page import="model.users.User" %>
 <%@ page session="true" %>
 <%
     // Check if a user is already logged in and if so redirect to welcome page
     User user = (User) session.getAttribute("user");
     if (user != null) {
-        response.sendRedirect("welcome.jsp");
+        response.sendRedirect("account-management.jsp");
         return;
     }
 %>
@@ -29,6 +28,11 @@
         <div class="centered-container">
             <form action="LoginController" method="get">
                 <h2>Login</h2>
+                <% if (session.getAttribute("error") != null) {%>
+                <div class="error-message">
+                    <%= session.getAttribute("error") %>
+                </div>
+                <% } %>
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
                 <label for="password">Password:</label><br>

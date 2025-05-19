@@ -10,15 +10,15 @@ import model.users.User;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/UserRoleServlet")
-public class UserRoleServlet extends HttpServlet {
+@WebServlet("/UserCreationServlet")
+public class UserCreationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userRole = request.getParameter("userRole");
         String userId = request.getParameter("userId");
 
         User user = null;
         try {
-            user = UserController.getUserById(Integer.parseInt(userId), request.getSession());
+            user = UserController.getUserById(Integer.parseInt(userId), request, response);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

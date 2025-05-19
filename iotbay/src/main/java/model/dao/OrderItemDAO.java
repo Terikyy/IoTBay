@@ -62,7 +62,7 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
 
     @Override
     public int deleteById(int id) throws SQLException {
-        return deleteFromTableById("OrderItem", "OrderID", id);
+        throw new UnsupportedOperationException("DeleteById is not supported for OrderItemDAO. Use deleteByIds instead.");
     }
 
     public int deleteByIds(int orderId, int productId) throws SQLException {

@@ -23,6 +23,11 @@ import model.users.User;
 public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
 
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -35,8 +40,13 @@ public class UserController extends HttpServlet {
         String state = request.getParameter("state");
     }
 
-    public static List<User> getAllUsers(HttpSession session) throws SQLException {
+    public static List<User> getAllUsers(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return null;
+        }
         List<User> users = new ArrayList<>();
         for (User user : userDAO.getAll()) {
             users.add(getRoleSpecificUser(user,
@@ -46,9 +56,13 @@ public class UserController extends HttpServlet {
         return users;
     }
 
-
-    public static User getUserById(int userId, HttpSession session) throws SQLException {
+    public static User getUserById(int userId, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return null;
+        }
         User user = userDAO.findById(userId);
         return getRoleSpecificUser(user,
                 (AdminDAO) session.getAttribute("adminDAO"),
