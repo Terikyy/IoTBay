@@ -22,7 +22,6 @@ public class OrderDAO extends AbstractDAO<Order> {
         return new Order(
                 rs.getInt("OrderID"),
                 rs.getObject("UserID") != null ? rs.getInt("UserID") : null,
-                rs.getInt("ShipmentId"),
                 rs.getString("OrderStatus"),
                 rs.getDate("OrderDate"),
                 rs.getDouble("TotalPrice")
@@ -31,19 +30,17 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int insert(Order order) throws SQLException {
-        String query = "INSERT INTO `Order` (OrderID, UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `Order` (OrderID, UserID, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, order.getOrderID());
             if (order.getUserID() == null) {
                 ps.setNull(2, java.sql.Types.INTEGER);
             } else {
                 ps.setInt(2, order.getUserID());
-
             }
-            ps.setNull(3, java.sql.Types.INTEGER);
-            ps.setString(4, order.getOrderStatus());
-            ps.setDate(5, new java.sql.Date(order.getOrderDate().getTime()));
-            ps.setDouble(6, order.getTotalPrice());
+            ps.setString(3, order.getOrderStatus());
+            ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setDouble(5, order.getTotalPrice());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -51,19 +48,18 @@ public class OrderDAO extends AbstractDAO<Order> {
 
     @Override
     public int update(Order order) throws SQLException {
-        String query = "UPDATE `Order` SET UserID = ?, ShipmentId = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
+        String query = "UPDATE `Order` SET UserID = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             if (order.getUserID() == null) {
-                ps.setNull(2, java.sql.Types.INTEGER);
+                ps.setNull(1, java.sql.Types.INTEGER);
             } else {
-                ps.setInt(2, order.getUserID());
+                ps.setInt(1, order.getUserID());
 
             }
-            ps.setInt(2, order.getShipmentId());
-            ps.setString(3, order.getOrderStatus());
-            ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
-            ps.setDouble(5, order.getTotalPrice());
-            ps.setInt(6, order.getOrderID());
+            ps.setString(2, order.getOrderStatus());
+            ps.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setDouble(4, order.getTotalPrice());
+            ps.setInt(5, order.getOrderID());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }

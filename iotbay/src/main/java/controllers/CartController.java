@@ -97,8 +97,10 @@ public class CartController extends HttpServlet {
     private void displayCart(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         try {
+            HttpSession session = request.getSession();
             List<Map<String, Object>> cartItemsWithDetails = getCartItemsWithDetails(request);
             request.setAttribute("cartItems", cartItemsWithDetails);
+            session.setAttribute("cartItems", cartItemsWithDetails);
             
             // Calculate cart total
             double total = 0.0;
