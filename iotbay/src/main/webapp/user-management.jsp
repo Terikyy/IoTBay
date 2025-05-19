@@ -74,16 +74,24 @@
                         </label>
                         <label>
                             <select name="role">
-                                <option value="customer" <%=!user.isStaff()%>>Customer</option>
-                                <option value="staff" <%=user.isStaff()%>>Staff</option>
+                                <option value="customer" <%= user.isStaff() ? "" : "selected" %>>Customer</option>
+                                <option value="staff" <%= user.isStaff() ? "selected" : "" %>>Staff</option>
                             </select>
                         </label>
-                        <button type="submit">Save</button>
+                        <input type="hidden" name="password" value="<%=user.getPassword()%>">
+                        <button type="submit" title="Save changes to this user">Save</button>
+                    </form>
+                    <form action="ResetPasswordServlet" method="post" class="delete-form">
+                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
+                        <button class="delete-button"
+                                onclick="this.form.submit()" title="Reset this user's password">
+                            Reset
+                        </button>
                     </form>
                     <form action="UserDeletionServlet" method="post" class="delete-form">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
                         <button class="delete-button"
-                                onclick="this.form.submit()">
+                                onclick="this.form.submit()" title="Delete this user">
                             Delete
                         </button>
                     </form>
@@ -98,8 +106,10 @@
                             <option value="customer">Customer</option>
                             <option value="staff">Staff</option>
                         </select>
-                        <button type="submit">Create</button>
+                        <button type="submit" title="Create User">Create</button>
                     </form>
+                    <p class="error-message"><%=session.getAttribute("error") == null ? session.getAttribute("error") : ""%>
+                    </p>
                 </div>
 
             </div>
