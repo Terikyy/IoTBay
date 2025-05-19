@@ -46,7 +46,30 @@ public class OrderController extends HttpServlet {
         response.sendRedirect("shippingManagement.jsp");
     }
 
-    public static Order deletOrder(int orderId, HttpSession session) throws SQLException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        if (orderDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return;
+        }
+
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            try {
+                deleteOrder(orderId, session);
+                
+                System.out.println("Order deleted: " + orderId);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        response.sendRedirect("order.jsp");
+    }
+
+    public static Order deleteOrder(int orderId, HttpSession session) throws SQLException {
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
 
         Order order = orderDAO.findById(orderId);

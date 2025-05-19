@@ -57,11 +57,20 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
 
     @Override
     public OrderItem findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Get operation is not implemented yet.");
+        return queryById("OrderItem", "OrderID", id);
     }
 
     @Override
     public int deleteById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Delete operation is not implemented yet.");
+        return deleteFromTableById("OrderItem", "OrderID", id);
+    }
+
+    public int deleteByIds(int orderId, int productId) throws SQLException {
+        String query = "DELETE FROM OrderItem WHERE OrderID = ? AND ProductID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, orderId);
+            ps.setInt(2, productId);
+            return ps.executeUpdate();
+        }
     }
 }
