@@ -113,6 +113,31 @@ public class ShippingDAO extends AbstractDAO<ShippingManagement> {
         }
     }
 
+    public List<ShippingManagement> findByShippingIdAndDate (int shippingId, LocalDate date) throws SQLException {
+        String query = "SELECT * FROM ShippingManagement WHERE ShipmentID = ? AND ShipmentDate = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, shippingId);
+            ps.setString(2, date.toString());
+            ResultSet rs = ps.executeQuery();
+            List<ShippingManagement> shipments = new ArrayList<>();
+            while (rs.next()) {
+                shipments.add(mapRow(rs));
+            }
+            return shipments;
+        }
+    }
+
+    public List<ShippingManagement> findByOrderId(int orderId) throws SQLException {
+        String sql = "SELECT * FROM ShippingManagement WHERE OrderID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            List<ShippingManagement> list = new ArrayList<>();
+            while (rs.next()) list.add(mapRow(rs));
+            return list;
+        }
+    }
+
     public List<ShippingManagement> findByUserId(int userId) throws SQLException {
         String query = "SELECT s.* FROM ShippingManagement s Join `Order` o ON s.OrderID = o.OrderID WHERE o.UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
@@ -140,16 +165,7 @@ public class ShippingDAO extends AbstractDAO<ShippingManagement> {
         }
     }
 
-    public List<ShippingManagement> findByOrderId(int orderId) throws SQLException {
-    String sql = "SELECT * FROM ShippingManagement WHERE OrderID = ?";
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, orderId);
-        ResultSet rs = ps.executeQuery();
-        List<ShippingManagement> list = new ArrayList<>();
-        while (rs.next()) list.add(mapRow(rs));
-        return list;
-    }
-}
+    
 
 
 

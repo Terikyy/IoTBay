@@ -44,10 +44,7 @@ public class ShippingController extends HttpServlet {
 
         
         String action = request.getParameter("action");
-
-
-
-        
+        // Create a new shipment
         if ("create".equals(action)) {
             // 1) read the orderId from the URL
             int orderId = Integer.parseInt(request.getParameter("orderId"));
@@ -75,6 +72,8 @@ public class ShippingController extends HttpServlet {
             return;
         } 
 
+
+        // Update an existing shipment
         if ("update".equals(action)) {
             // load existing Shipment for editing
             String shipmentIdParam = request.getParameter("shipmentId");
@@ -90,8 +89,6 @@ public class ShippingController extends HttpServlet {
                 e.printStackTrace();
                 throw new ServletException("Error finding shipment by ID", e);
             }
-
-
             // forward to JSP
             try {
                 listShipments(request, response);
@@ -101,6 +98,7 @@ public class ShippingController extends HttpServlet {
             }
             return;
         }
+
         else {
             try {
                 listShipments(request, response);
@@ -175,7 +173,6 @@ public class ShippingController extends HttpServlet {
         if (orderId != null) {
           shipments = shippingDAO.findByOrderId(orderId);
         } else {
-          // fallback if no orderId in session
           shipments = List.of();
         }
         request.setAttribute("shipments", shipments);
