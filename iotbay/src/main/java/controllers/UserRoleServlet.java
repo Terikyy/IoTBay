@@ -18,7 +18,7 @@ public class UserRoleServlet extends HttpServlet {
 
         User user = null;
         try {
-            user = UserController.getUserById(Integer.parseInt(userId), request.getSession());
+            user = UserController.getUserById(Integer.parseInt(userId), request, response);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

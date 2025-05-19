@@ -109,7 +109,6 @@ CREATE TABLE Shipment (
 
 CREATE TABLE Logs (
     LogID INT PRIMARY KEY,
-    UserID INT,
-    Action VARCHAR(100),
+    LogMessage VARCHAR(100),
     Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 );

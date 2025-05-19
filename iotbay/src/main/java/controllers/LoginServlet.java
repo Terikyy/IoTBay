@@ -20,6 +20,10 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return;
+        }
         try {
             User user = UserController.getRoleSpecificUser(userDAO.authenticateUser(email, password),
                     (AdminDAO) session.getAttribute("adminDAO"),

@@ -1,28 +1,19 @@
 package controllers;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.dao.AddressDAO;
-import model.dao.AdminDAO;
-import model.dao.CartItemDAO;
-import model.dao.DBConnector;
-import model.dao.OrderDAO;
-import model.dao.OrderItemDAO;
-import model.dao.PaymentDAO;
-import model.dao.ProductDAO;
-import model.dao.ShippingDAO;
-import model.dao.StaffDAO;
-import model.dao.UserDAO;
+import model.dao.*;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/Connservlet")
 public class ConnServlet extends HttpServlet {
@@ -62,7 +53,8 @@ public class ConnServlet extends HttpServlet {
         if (request.getQueryString() != null) {
             currentURL += "?" + request.getQueryString();
         }
-        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
+        String encodedURL = URLEncoder.encode(currentURL, "UTF-8");
+        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + encodedURL);
     }
 
     public static void updateDAOsPOST(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -70,7 +62,8 @@ public class ConnServlet extends HttpServlet {
         if (request.getQueryString() != null) {
             currentURL += "?" + request.getQueryString();
         }
-        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL + "&method=POST");
+        String encodedURL = URLEncoder.encode(currentURL, "UTF-8");
+        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + encodedURL + "&method=POST");
     }
 
     @Override // Add the DBConnector, DBManager, Connection instances to the session

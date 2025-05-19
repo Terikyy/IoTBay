@@ -20,6 +20,10 @@ public class RegistrationServlet extends HttpServlet {
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return;
+        }
 
         User user = new Customer(name, email, password);
 
