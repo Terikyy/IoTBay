@@ -49,11 +49,11 @@
             <% } %>
             <% for (Order order : orders) { %>
                 <div class="order-card">
-                    <h3>Order ID: <%= order.getOrderID() %>
+                    <h3>Order ID: <br>  <%= order.getOrderID() %>
                     </h3>
-                    <p>Order Date: \n<%= order.getOrderDate() %>
+                    <p>Order Date: <br> <%= order.getOrderDate() %>
                     </p>
-                    <p>Order Status: <%= order.getOrderStatus() %>
+                    <p>Order Status: <br>  <%= order.getOrderStatus() %>
                     </p>
                     <p>Total: <%= order.getTotalPrice() %>
                     </p>

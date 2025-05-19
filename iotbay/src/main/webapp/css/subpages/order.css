@@ -18,6 +18,7 @@
 
 .order-card {
     display: flex;
+    justify-content: space-evenly;
     align-items: center;
     border: 1px solid #ccc;
     border-radius: 8px;

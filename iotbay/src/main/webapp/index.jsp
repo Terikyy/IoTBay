@@ -36,10 +36,19 @@ if (request.getAttribute("products") == null) {
             </button>
         </form>
     </div>
+    
+    <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->
+        <a href="${pageContext.request.contextPath}/shippingList.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="ShippingList">
+        </a>
+    </div>
+
     <div class="account">
         <a href="${pageContext.request.contextPath}/account.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
         </a>
+    </div>
+
     </div>
     <div class="shopping-cart">
             <a href="${pageContext.request.contextPath}/cart" class="cart-button">
@@ -58,6 +67,7 @@ if (request.getAttribute("products") == null) {
                 </span>
             </a>
         </div>
+
 </header>
 
 <!-- Main container with sidebar and content -->

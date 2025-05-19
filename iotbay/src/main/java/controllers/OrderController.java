@@ -34,8 +34,15 @@ public class OrderController extends HttpServlet {
 
         User user = (User) session.getAttribute("user");
         Integer userId = user == null ? null : user.getUserID();
+        double totalPrice = 0.0;
+        try {
+            totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
+        } catch (NumberFormatException e) {
+            totalPrice = 0.0;
+        }
+        System.out.println("Received total price: " + totalPrice);
 
-        Order order = new Order(userId, null, Order.ORDER_STATUS_PENDING, new Date(), 0.0); // TODO: Add total amount calculation
+        Order order = new Order(userId, null, Order.ORDER_STATUS_PENDING, new Date(), totalPrice); // TODO: Add total amount calculation
         try {
             IDObject.insert(orderDAO, order);
         } catch (SQLException e) {
