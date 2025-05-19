@@ -34,7 +34,12 @@ public class OrderDAO extends AbstractDAO<Order> {
         String query = "INSERT INTO `Order` (OrderID, UserID, ShipmentId, OrderStatus, OrderDate, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, order.getOrderID());
-            ps.setInt(2, order.getUserID());
+            if (order.getUserID() == null) {
+                ps.setNull(2, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(2, order.getUserID());
+
+            }
             ps.setNull(3, java.sql.Types.INTEGER);
             ps.setString(4, order.getOrderStatus());
             ps.setDate(5, new java.sql.Date(order.getOrderDate().getTime()));
@@ -48,7 +53,12 @@ public class OrderDAO extends AbstractDAO<Order> {
     public int update(Order order) throws SQLException {
         String query = "UPDATE `Order` SET UserID = ?, ShipmentId = ?, OrderStatus = ?, OrderDate = ?, TotalPrice = ? WHERE OrderID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, order.getUserID());
+            if (order.getUserID() == null) {
+                ps.setNull(2, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(2, order.getUserID());
+
+            }
             ps.setInt(2, order.getShipmentId());
             ps.setString(3, order.getOrderStatus());
             ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
