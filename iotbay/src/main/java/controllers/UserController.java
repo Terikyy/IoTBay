@@ -1,5 +1,10 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,11 +18,6 @@ import model.users.Admin;
 import model.users.Customer;
 import model.users.Staff;
 import model.users.User;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/UserController")
 public class UserController extends HttpServlet {
@@ -45,6 +45,7 @@ public class UserController extends HttpServlet {
         }
         return users;
     }
+
 
     public static User getUserById(int userId, HttpSession session) throws SQLException {
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");

@@ -1,0 +1,97 @@
+package controllers;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.ShippingManagement;
+import model.dao.ShippingDAO;
+
+
+
+@WebServlet("/ShippingListController")
+public class ShippingListController extends HttpServlet {
+    private ShippingDAO shippingDAO;
+ 
+
+    // doGet Method
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+            HttpSession session = request.getSession();
+            shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
+            
+        
+        try {
+            if (shippingDAO == null) {
+                String currentURL = request.getRequestURI();
+                if (request.getQueryString() != null) {
+                    currentURL += "?" + request.getQueryString();
+                }
+                response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
+                return;
+        }
+
+        Integer userID = (Integer)session.getAttribute("userID");
+        List<ShippingManagement> all;
+        if (userID != null) {
+            all = shippingDAO.findByUserId(userID);
+        } else {
+            Integer lastId = (Integer)session.getAttribute("lastShipmentId");
+            if (lastId != null) {
+              ShippingManagement one = shippingDAO.findById(lastId);
+              all = one==null
+                 ? Collections.emptyList()
+                 : Collections.singletonList(one);
+            } else {
+              all = Collections.emptyList();
+            }
+        }
+
+        // Show All Shipments Button
+        if (request.getParameter("showAll")!=null) {
+            request.setAttribute("shipments", all);
+            request.getRequestDispatcher("/shippingList.jsp").forward(request,response);
+            return;
+        }
+
+        // otherwise filter by shipmentId and/or shipmentDate
+        String sid  = request.getParameter("shipmentId");
+        String date = request.getParameter("shipmentDate");
+        List<ShippingManagement> filtered = all;
+        // Filter by shipmentId and/or shipmentDate
+        if (sid!=null && !sid.isEmpty() && date!=null && !date.isEmpty()) {
+            int id = Integer.parseInt(sid);
+            LocalDate d = LocalDate.parse(date);
+            filtered = all.stream()
+            .filter(s->s.getShipmentId()==id && s.getShipmentDate().equals(d))
+            .collect(Collectors.toList());
+        }else if (sid!=null && !sid.isEmpty()) { //filter by shipmentId only
+            int id = Integer.parseInt(sid);
+            filtered = filtered.stream()
+                                   .filter(s -> s.getShipmentId() == id)
+                                   .collect(Collectors.toList());
+        }else if (date!=null && !date.isEmpty()) { //filter by shipmentDate only
+            LocalDate d = LocalDate.parse(date);
+            filtered = filtered.stream()
+                                   .filter(s -> s.getShipmentDate().equals(d))
+                                   .collect(Collectors.toList());
+        }
+        request.setAttribute("shipments", filtered);
+
+        request.getRequestDispatcher("/shippingList.jsp").forward(request, response);
+        } catch (SQLException e) {
+            throw new ServletException("Error handling shipment action", e);
+        }
+    }
+}
+
