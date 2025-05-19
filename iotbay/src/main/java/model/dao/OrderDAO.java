@@ -20,6 +20,7 @@ public class OrderDAO extends AbstractDAO<Order> {
     @Override
     protected Order mapRow(ResultSet rs) throws SQLException {
         return new Order(
+                rs.getInt("OrderID"),
                 rs.getObject("UserID") != null ? rs.getInt("UserID") : null,
                 rs.getInt("ShipmentId"),
                 rs.getString("OrderStatus"),

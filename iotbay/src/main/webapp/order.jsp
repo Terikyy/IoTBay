@@ -2,7 +2,6 @@
 <%@ page import="controllers.UserController" %>
 <%@ page import="model.Order" %>
 <%@ page import="controllers.OrderController" %>
-<%@ page import="model.dao.OrderDAO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page session="true" %>
@@ -37,7 +36,7 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Cancel Order</a>
+    <a href="index.jsp">Return to Home Page</a>
 </header>
 <div class="container">
     <div class="main-container">
@@ -52,9 +51,11 @@
                 <div class="order-card">
                     <h3>Order ID: <%= order.getOrderID() %>
                     </h3>
-                    <p>Order Date: <%= order.getOrderDate() %>
+                    <p>Order Date: \n<%= order.getOrderDate() %>
                     </p>
                     <p>Order Status: <%= order.getOrderStatus() %>
+                    </p>
+                    <p>Total: <%= order.getTotalPrice() %>
                     </p>
 
                     <form action="OrderUpdateServlet" method="post"> 
@@ -63,7 +64,8 @@
                             View Order Details
                         </button>
                     </form>
-                    <form action="OrderDeletionServlet" method="post">
+                    <form method="get" action="OrderController">
+                        <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
                         <button type="submit" <%= !"PENDING".equals(order.getOrderStatus()) ? "disabled" : "" %>>
                             Delete
