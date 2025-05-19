@@ -19,7 +19,8 @@ import java.sql.SQLException;
 public class PaymentController extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             processCreditCardPayment(request, response);
         } catch (SQLException e) {
@@ -30,7 +31,6 @@ public class PaymentController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-
         Double totalPrice = (Double) request.getAttribute("totalPrice");
         if (totalPrice == null) {
             totalPrice = 0.0;
@@ -39,10 +39,11 @@ public class PaymentController extends HttpServlet {
 
         request.setAttribute("totalPrice", totalPrice);
         request.getRequestDispatcher("payment.jsp").forward(request, response);
-    
+
     }
 
-    private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, SQLException {
         HttpSession session = request.getSession();
 
         System.out.println("Test1");
@@ -62,7 +63,7 @@ public class PaymentController extends HttpServlet {
         String expiryDate = request.getParameter("expiryDate");
         String cvv = request.getParameter("cvv");
         int orderId = (Integer) session.getAttribute("orderId");
-        //int orderId = 1;//get from shipping 
+        Double totalPrice = (Double) session.getAttribute("totalPrice");
 
         if (nameOnCard == null || cardNumber == null || expiryDate == null || cvv == null ||
                 nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
@@ -71,13 +72,14 @@ public class PaymentController extends HttpServlet {
         }
         System.out.println("Processing payment with card number: " + cardNumber);
 
-        // payment object is filelr for now hardcoded values, need to pass in values from cart when ready
-        Payment payment = new Payment(orderId, "CreditCard", 100.0, new java.util.Date(), "Pending");
+        // payment object is filelr for now hardcoded values, need to pass in values
+        // from cart when ready
+        Payment payment = new Payment(orderId, "CreditCard", totalPrice, new java.util.Date(), "Pending");
         IDObject.insert(paymentDAO, payment);
 
         orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
-        //redirect to order for now, decide if we want a order confirmation page. what if payment fails? stay here or return to order form?
+        // redirect to order for now, decide if we want a order confirmation page. what
+        // if payment fails? stay here or return to order form?
         response.sendRedirect("confirmation.jsp");
     }
 }
-
