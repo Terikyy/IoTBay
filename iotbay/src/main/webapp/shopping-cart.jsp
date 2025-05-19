@@ -130,6 +130,7 @@
                         <span>$<%= df.format(request.getAttribute("cartTotal")) %></span>
                     </div>
                     <form action="${pageContext.request.contextPath}/OrderController" method="post" style="display:inline;">
+                        <input type="hidden" name="totalPrice" value="<%= request.getAttribute("cartTotal") %>">
                         <button type="submit" class="checkout-button">Proceed to Checkout</button>
                     </form>
                     <button type="button" class="clear-cart">Clear Cart</button>
