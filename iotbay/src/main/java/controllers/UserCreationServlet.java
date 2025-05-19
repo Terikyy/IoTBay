@@ -10,8 +10,8 @@ import model.users.User;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/UserRoleServlet")
-public class UserRoleServlet extends HttpServlet {
+@WebServlet("/UserCreationServlet")
+public class UserCreationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userRole = request.getParameter("userRole");
         String userId = request.getParameter("userId");

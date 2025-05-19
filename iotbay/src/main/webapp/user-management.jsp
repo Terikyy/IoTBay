@@ -58,21 +58,50 @@
         <div class="centered-container">
             <h1>User Management</h1>
             <div class="user-management">
-                <% for (User user : users) { %>
+                <% for (User user : users) {
+                    if (user.getUserID() == admin.getUserID()) {
+                        continue; // Skip the admin user
+                    }
+                %>
                 <div class="user-card">
-                    Role: <%= user.isAdmin() ? "Admin" : user.isStaff() ? "Staff" : "Customer"%>
-                    <h2><%= user.getName() %>
-                    </h2>
-                    <p><%= user.getEmail() %>
-                    </p>
-                    <form action="UserDeletionServlet" method="post">
+                    <form action="UserUpdateServlet" method="post">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
-                        <button onclick="this.form.submit()" <%=user.getUserID() == admin.getUserID() ? "disabled" : ""%>>
+                        <label>
+                            <input type="text" name="name" value="<%= user.getName() %>">
+                        </label>
+                        <label>
+                            <input type="email" name="email" value="<%= user.getEmail() %>">
+                        </label>
+                        <label>
+                            <select name="role">
+                                <option value="customer" <%=!user.isStaff()%>>Customer</option>
+                                <option value="staff" <%=user.isStaff()%>>Staff</option>
+                            </select>
+                        </label>
+                        <button type="submit">Save</button>
+                    </form>
+                    <form action="UserDeletionServlet" method="post" class="delete-form">
+                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
+                        <button class="delete-button"
+                                onclick="this.form.submit()">
                             Delete
                         </button>
                     </form>
                 </div>
                 <% } %>
+                <h4>Add New User</h4>
+                <div class="user-card">
+                    <form action="UserCreationServlet" method="post">
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                        <input type="password" required name="password" id="password" placeholder="Password">
+                        <select>
+                            <option value="customer">Customer</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                        <button type="submit">Create</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>

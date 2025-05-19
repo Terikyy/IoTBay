@@ -56,24 +56,22 @@
     cursor: not-allowed !important;
 }
 
-.user-card button {
-    padding: 8px 16px;
-    font-size: 1em;
-    color: #fff;
+.user-card button.delete-button {
     background-color: var(--error);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-left: 8px;
 }
 
-.user-card button:hover {
-    background-color: #0056b3;
+.user-card button.delete-button:hover {
+    background-color: #8d1e29;
 }
 
-.user-card button:disabled {
-    background-color: #cccccc !important;
-    color: #666666 !important;
-    cursor: not-allowed !important;
+.user-card form {
+    flex: 14;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.user-card form.delete-form {
+    flex: 1;
 }
