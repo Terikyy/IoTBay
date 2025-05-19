@@ -44,7 +44,7 @@
     <div class="main-container">
         <div class="centered-container">
             <h2>Payment</h2>
-            <div class="totalPrice">Total Amount: $<%= String.format("%.2f", order.totalPrice) %>
+            <div class="totalPrice">Total Amount: $<%= String.format("%.2f", order.getTotalPrice()) %>
             </div>
             <form action="PayPalServlet" method="post">
                 <label for="paymentMethod">Payment Method:</label><br>
