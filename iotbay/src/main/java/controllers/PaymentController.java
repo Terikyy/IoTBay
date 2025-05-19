@@ -81,4 +81,19 @@ public class PaymentController extends HttpServlet {
 
         response.sendRedirect("confirmation.jsp");
     }
+
+    public static Payment getPaymentById(int paymentId, HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        HttpSession session = request.getSession();
+
+        PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
+
+        if (paymentDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return null;
+        }
+
+        return paymentDAO.findById(paymentId);
+    }
+
 }
