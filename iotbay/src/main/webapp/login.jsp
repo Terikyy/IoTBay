@@ -36,7 +36,7 @@
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
                 <label for="password">Password:</label><br>
-                <input type="password" name="password" id="password" required><br>
+                <input type="password" name="password" id="password"><br>
                 <input type="submit" value="Login">
             </form>
             <p>Don't have an account? <a href="register.jsp">Register here</a></p>

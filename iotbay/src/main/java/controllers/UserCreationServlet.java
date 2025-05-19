@@ -25,29 +25,6 @@ public class UserCreationServlet extends HttpServlet {
         if (user == null)
             throw new ServletException("User not found");
 
-        // Update the user role
-        if (userRole.equalsIgnoreCase("Admin")) {
-            try {
-                user.setAdmin(request.getSession());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else if (userRole.equalsIgnoreCase("Staff")) {
-            try {
-                user.setStaff(request.getSession());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else if (userRole.equalsIgnoreCase("Customer")) {
-            try {
-                user.setCustomer(request.getSession());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            System.out.println(userRole);
-            throw new ServletException("Invalid role");
-        }
 
         response.sendRedirect("user-management.jsp");
     }

@@ -6,14 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.IDObject;
 import model.Order;
 import model.dao.OrderDAO;
 import model.users.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 @WebServlet("/OrderUpdateServlet")
@@ -36,7 +34,7 @@ public class OrderUpdateServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         Integer userId = user == null ? null : user.getUserID();
 
-        response.sendRedirect("order.jsp");
+        response.sendRedirect("update-order.jsp");
     }
 
     public static Order deleteOrder(int orderId, HttpSession session) throws SQLException {
