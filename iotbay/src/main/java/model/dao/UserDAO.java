@@ -66,7 +66,11 @@ public class UserDAO extends AbstractDAO<User> {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
-            ps.setInt(4, user.getAddressID());
+            if (user.getAddressID() == null) {
+                ps.setNull(4, java.sql.Types.INTEGER); // Set AddressId to NULL if not provided
+            } else {
+                ps.setInt(4, user.getAddressID());
+            }
             ps.setInt(5, user.getUserID());
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -93,13 +97,16 @@ public class UserDAO extends AbstractDAO<User> {
 
     // Retrieve a user by email and password (for login authentication)
     public User authenticateUser(String email, String password) throws SQLException {
-        String query = "SELECT * FROM User WHERE Email = ? AND Password = ?";
+        String query = "SELECT * FROM User WHERE Email = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, email);
-            ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapRow(rs);
+                    String dbPassword = rs.getString("Password");
+                    if (dbPassword == null || dbPassword.equals(password)) {
+                        return mapRow(rs);
+                    }
+                    return null; // Password does not match
                 }
             }
         }

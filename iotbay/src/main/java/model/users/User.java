@@ -1,8 +1,13 @@
 package model.users;
 
+import controllers.ConnServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.IDObject;
+import model.dao.StaffDAO;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 
@@ -48,15 +53,37 @@ public abstract class User extends IDObject implements Serializable {
         return this instanceof Admin;
     }
 
-    public abstract Admin setAdmin(HttpSession session) throws SQLException;
-
     public boolean isStaff() {
         return this instanceof Staff;
     }
 
-    public abstract Staff setStaff(HttpSession session) throws SQLException;
+    public void setStaff(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+        StaffDAO staffDAO = (StaffDAO) session.getAttribute("staffDAO");
+        if (staffDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
+        try {
+            staffDAO.insert(this.getUserID());
+        } catch (SQLException ignored) {
+        }
+        new Staff(this);
+    }
 
-    public abstract Customer setCustomer(HttpSession session) throws SQLException;
+    public void setCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+        StaffDAO staffDAO = (StaffDAO) session.getAttribute("staffDAO");
+        if (staffDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
+        try {
+            staffDAO.delete(this.getUserID());
+        } catch (SQLException ignored) {
+        }
+        new Customer(this);
+    }
 
     public String getName() {
         return this.name;

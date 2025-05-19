@@ -46,7 +46,8 @@
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" value="<%= user.getEmail() %>" readonly><br>
                 <label for="password">Password:</label><br>
-                <input type="password" name="password" id="password" value="<%= user.getPassword() %>"><br>
+                <input type="password" name="password" id="password" placeholder="Please set a new password!"
+                       value="<%=user.getPassword() == null ? "" : user.getPassword() %>"><br>
                 <p>Address Information:</p>
                 <!-- TODO: Add adress information fields with Adress.java class-->
                 <label for="streetName">Street Name:</label><br>

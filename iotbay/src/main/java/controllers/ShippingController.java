@@ -122,8 +122,6 @@ public class ShippingController extends HttpServlet {
 
             HttpSession session = request.getSession();
 
-                // If not logged in, block all POSTs:
-
             shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
 
             if (shippingDAO == null) {
@@ -182,15 +180,13 @@ public class ShippingController extends HttpServlet {
     // Create a new shipment
     private void createShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
 
-        String address = request.getParameter("address");
+        String address        = request.getParameter("address");
         String shippingMethod = request.getParameter("shippingMethod");
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        int    orderId        = Integer.parseInt(request.getParameter("orderId"));
         ShippingManagement shipment = new ShippingManagement(0, orderId, LocalDate.now(), address, shippingMethod, false);
-        shippingDAO.insert(shipment);
-
-        
+        int newShipmentId = shippingDAO.insert(shipment);
         HttpSession session = request.getSession();
-        session.setAttribute("orderId", orderId);
+        session.setAttribute("lastShipmentId", newShipmentId);
         response.sendRedirect(request.getContextPath() + "/payment.jsp");
     }
 
