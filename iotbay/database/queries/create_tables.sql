@@ -58,7 +58,6 @@ CREATE TABLE Product (
 CREATE TABLE `Order` (
     OrderID INT PRIMARY KEY,
     UserID INT,
-    ShipmentId VARCHAR(50),
     OrderStatus VARCHAR(20),
     OrderDate DATE,
     TotalPrice NUMERIC(10,2),
