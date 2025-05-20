@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.dao.UserDAO;
+import model.users.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -24,6 +25,8 @@ public class UserDeletionServlet extends HttpServlet {
 
         try {
             userDAO.deleteById(Integer.parseInt(userId));
+            User oldUser = userDAO.findById(Integer.parseInt(userId));
+            LogController.createLog(request, response, "Admin deleted user " + oldUser.getEmail());
             response.sendRedirect("user-management.jsp");
         } catch (SQLException e) {
             throw new ServletException("Error deleting user", e);

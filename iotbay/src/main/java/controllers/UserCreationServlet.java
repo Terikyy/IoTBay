@@ -31,8 +31,10 @@ public class UserCreationServlet extends HttpServlet {
 
         try {
             userDAO.insert(user);
+            LogController.createLog(request, response, "Admin created user " + user.getEmail() + " with password " + password);
             if (role.equalsIgnoreCase("staff")) {
                 user.setStaff(request, response);
+                LogController.createLog(request, response, "Admin set role of " + user.getEmail() + "to staff");
             }
         } catch (Exception e) {
             if (e.getMessage().contains("UNIQUE constraint failed: User.Email")) {

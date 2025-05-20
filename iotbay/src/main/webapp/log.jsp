@@ -65,60 +65,23 @@
 </header>
 <div class="container">
     <div class="main-container main-content">
-        <div class="centered-container">
-            <h1>User Management</h1>
-            <p class="error-message">
-            </p>
-            <div class="user-management">
-                <div class="user-card">
-                    <form action="UserUpdateServlet" method="post">
-                        <input type="hidden" name="userId" value="<%= "" %>">
-                        <label>
-                            <input type="text" name="name" value="<%= "" %>">
-                        </label>
-                        <label>
-                            <input type="email" name="email" value="<%= "" %>">
-                        </label>
-                        <label>
-                            <select name="role">
-                                <option value="customer" <%= true ? "" : "selected" %>>Customer</option>
-                                <option value="staff" <%= true ? "selected" : "" %>>Staff</option>
-                            </select>
-                        </label>
-                        <input type="hidden" name="password" value="<%=""%>">
-                        <button type="submit" title="Save changes to this user">Save</button>
-                    </form>
-                    <form action="ResetPasswordServlet" method="post" class="reset-form">
-                        <input type="hidden" name="userId" value="<%= "" %>">
-                        <button class="reset-button"
-                                onclick="this.form.submit()" title="Reset this user's password">
-                            Reset
-                        </button>
-                    </form>
-                    <form action="UserDeletionServlet" method="post" class="delete-form">
-                        <input type="hidden" name="userId" value="<%= "" %>">
-                        <button class="delete-button"
-                                onclick="this.form.submit()" title="Delete this user">
-                            Delete
-                        </button>
-                    </form>
+        <div class="logs-container">
+            <h1 class="logs-title">Logs</h1>
+            <div class="logs">
+                <% if (logs.isEmpty()) { %>
+                <div class="no-logs">No logs found</div>
+                <% } else { %>
+                <% for (int i = 0; i < logs.size(); i++) {
+                    Log log = logs.get(i); %>
+                <div class="log-row">
+                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(log.getTimestamp()) %></span>
+                    <span class="log-message"><%= log.getMessage() %></span>
                 </div>
-                <h4>Add New User</h4>
-                <p class="error-message">
-                    
-                </p>
-                <div class="user-card">
-                    <form action="UserCreationServlet" method="post">
-                        <input type="text" id="name" name="name" placeholder="Name" required>
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                        <input type="password" name="password" id="password" placeholder="Password" required>
-                        <select name="role" id="role" required>
-                            <option value="customer">Customer</option>
-                            <option value="staff">Staff</option>
-                        </select>
-                        <button type="submit" title="Create User">Create</button>
-                    </form>
-                </div>
+                <% if (i < logs.size() - 1) { %>
+                <div class="log-divider"></div>
+                <% } %>
+                <% } %>
+                <% } %>
             </div>
         </div>
     </div>

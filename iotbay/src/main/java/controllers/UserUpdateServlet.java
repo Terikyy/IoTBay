@@ -36,11 +36,18 @@ public class UserUpdateServlet extends HttpServlet {
         User user = new Customer(userId, name, email, password, active, addressID);
 
         try {
+            User oldUser = userDAO.findById(userId);
             userDAO.update(user);
+            if (oldUser.getEmail().equals(user.getEmail()))
+                LogController.createLog(request, response, "Admin updated user " + oldUser.getEmail());
+            else
+                LogController.createLog(request, response, "Admin updated user " + oldUser.getEmail() + ". New email: " + user.getEmail());
             if (role.equalsIgnoreCase("staff")) {
                 user.setStaff(request, response);
+                LogController.createLog(request, response, "Admin set role of " + user.getEmail() + " to staff");
             } else {
                 user.setCustomer(request, response);
+                LogController.createLog(request, response, "Admin set role of " + user.getEmail() + " to staff");
             }
         } catch (SQLException e) {
             if (e.getMessage().contains("UNIQUE constraint failed: User.Email")) {

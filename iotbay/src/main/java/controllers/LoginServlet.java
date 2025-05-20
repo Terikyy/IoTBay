@@ -35,6 +35,7 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 session.setAttribute("user", user);
                 session.setAttribute("userID", user.getId()); // Added By Eric (Jiaming)
+                LogController.createLog(request, response, "User " + user.getEmail() + " logged in");
                 response.sendRedirect("welcome.jsp");
             } else {
                 session.setAttribute("error", "Email / Password mismatch");
