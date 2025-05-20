@@ -1,8 +1,5 @@
 package controllers;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +9,9 @@ import model.dao.AdminDAO;
 import model.dao.StaffDAO;
 import model.dao.UserDAO;
 import model.users.User;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 @WebServlet("/LoginController")
 public class LoginServlet extends HttpServlet {
@@ -31,14 +31,7 @@ public class LoginServlet extends HttpServlet {
                     (AdminDAO) session.getAttribute("adminDAO"),
                     (StaffDAO) session.getAttribute("staffDAO"));
 
-<<<<<<< HEAD
-            if (user != null) {
-                session.setAttribute("user", user);
-                response.sendRedirect("welcome.jsp");
-            } else {
-=======
             if (user == null) {
->>>>>>> 5131ef287d3fbd3d7c6f0e0366dd4f34cf110d27
                 session.setAttribute("error", "Email / Password mismatch");
                 response.sendRedirect("login.jsp");
                 return;
