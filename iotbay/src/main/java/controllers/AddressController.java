@@ -204,7 +204,7 @@ public class AddressController extends HttpServlet {
             int userId = user.getId(); // Assuming User object has a getId() method
             List<Address> addresses = addressDAO.getByUserId(userId); // Fetch addresses by userId
             request.setAttribute("addressList", addresses);
-            request.getRequestDispatcher("addressList.jsp").forward(request, response);
+            request.getRequestDispatcher("address.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error retrieving addresses", e);
         } catch (NumberFormatException e) {

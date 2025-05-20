@@ -98,14 +98,19 @@
                 <label for="state">State:</label><br>
                 <input type="text" name="state" id="state" value="<%=address == null ? "" : address.getState()%>"><br>
                 <input type="submit" value="Save Changes">
+                
             </form>
+            <div>
             <a href="logout.jsp">Logout</a>
+            </div>
+            <div>
+            <!-- Add the Manage Addresses button -->
+            <a href="address.jsp">Address Management</a>
+            </div>
         </div>
     </div>
 </div>
-<!-- Add the Manage Addresses button -->
 <div>
-    <button onclick="window.location.href='address?action=list'">Manage Addresses</button>
 </div>
 </body>
 </html>

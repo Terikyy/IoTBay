@@ -9,7 +9,7 @@
     // Redirect to login page if user is not logged in
 
     // Check if user session exists without using a User object
-<%
+
     String username = (String) session.getAttribute("username");
     if (username == null) {
         response.sendRedirect("login.jsp");
@@ -17,6 +17,7 @@
     }
 %>
 
+<%
 // Retrieve the list of addresses from the request
     List<Address> addressList = (List<Address>) request.getAttribute("addressList");
 %>
@@ -78,11 +79,11 @@
         </thead>
         <tbody>
             <%
-                if (addressList != null) {
+                if (addressList != null && !addressList.isEmpty()) {
                     for (Address address : addressList) {
             %>
             <tr>
-                <td><%= address.getId() %></td>
+                <td><%= address.getAddressID() %></td>
                 <td><%= address.getName() %></td>
                 <td><%= address.getStreetNumber() %></td>
                 <td><%= address.getStreetName() %></td>
@@ -91,8 +92,8 @@
                 <td><%= address.getCity() %></td>
                 <td><%= address.getState() %></td>
                 <td>
-                    <a href="address?action=update&id=<%= address.getAddressId() %>">Edit</a> |
-                    <a href="address?action=delete&id=<%= address.getAddressId() %>" onclick="return confirm('Are you sure?')">Delete</a>
+                    <a href="address?action=update&id=<%= address.getAddressID() %>">Edit</a> |
+                    <a href="address?action=delete&id=<%= address.getAddressID() %>" onclick="return confirm('Are you sure?')">Delete</a>
                 </td>
             </tr>
             <%
