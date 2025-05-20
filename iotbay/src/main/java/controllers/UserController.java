@@ -120,7 +120,17 @@ public class UserController extends HttpServlet {
         }
     }
 
-    public static void deleteUser(int userId) {
-        // Logic to delete a user
+    public static void deleteUser(int userId, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return;
+        }
+
+        userDAO.deleteById(userId);
+        User oldUser = userDAO.findById(userId);
+        LogController.createLog(request, response, "Admin deleted user " + oldUser.getEmail());
+        response.sendRedirect("user-management.jsp");
     }
 }
