@@ -54,16 +54,17 @@ public class ProductDAO extends AbstractDAO<Product> {
 
     @Override
     public int insert(Product product) throws SQLException {
-        String sql = "INSERT INTO Product (Name, Description, Price, Stock, ReleaseDate, Category) " +
-                     "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Product (ProductID, Name, Description, Price, Stock, ReleaseDate, Category) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
         
-        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, product.getName());
-            ps.setString(2, product.getDescription());
-            ps.setDouble(3, product.getPrice());
-            ps.setInt(4, product.getStock());
-            ps.setDate(5, new java.sql.Date(product.getReleaseDate().getTime()));
-            ps.setString(6, product.getCategory());
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, product.getProductID()); // Use the randomly generated ID
+            ps.setString(2, product.getName());
+            ps.setString(3, product.getDescription());
+            ps.setDouble(4, product.getPrice());
+            ps.setInt(5, product.getStock());
+            ps.setDate(6, new java.sql.Date(product.getReleaseDate().getTime()));
+            ps.setString(7, product.getCategory());
             
             int affectedRows = ps.executeUpdate();
             
@@ -71,13 +72,7 @@ public class ProductDAO extends AbstractDAO<Product> {
                 throw new SQLException("Creating product failed, no rows affected.");
             }
             
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
-                } else {
-                    throw new SQLException("Creating product failed, no ID obtained.");
-                }
-            }
+            return product.getProductID();
         }
     }
 

@@ -2,5 +2,166 @@
 @import '../base/variables.css';
 @import '../base/reset.css';
 
+/* Import layout styles */
+@import '../layout/container.css';
+
+
 /* Import component styles */
 @import '../components/header.css';
+@import '../components/forms.css';
+
+/* Main container styling */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--content-bg-primary);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+h1, h2 {
+    color: var(--content-text-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Product form styling */
+.product-form {
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    background-color: var(--content-bg-secondary);
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+/* Grid layout for products */
+.product-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr 1.5fr auto;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Form element styling */
+.product-grid input, 
+.product-grid select, 
+.product-grid textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: var(--content-bg-primary);
+    color: var(--content-text-primary);
+}
+
+/* Special styling for grid elements - these override forms.css for the grid context */
+.product-grid textarea {
+    height: 60px;
+    min-height: unset;
+    resize: vertical;
+}
+
+/* Button styling */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.submit-button {
+    background-color: var(--accent-primary);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: var(--accent-secondary);
+}
+
+/* Delete button specific style */
+
+.delete-button {
+    background-color: var(--error);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+    background-color: #8d1e29; /* Darker red on hover */
+}
+
+/* Column header styling */
+.column-header {
+    font-weight: bold;
+    padding: 12px 8px;
+    background-color: var(--content-bg-tertiary);
+    border-radius: 4px;
+    color: var(--content-text-secondary);
+    margin-bottom: 8px;
+}
+
+/* Message styling */
+.message {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.success {
+    background-color: #d4edda;
+    color: var(--success);
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: var(--error);
+    border: 1px solid #f5c6cb;
+}
+
+/* Add product form specific styling */
+.product-form:first-of-type {
+    background-color: var(--content-bg-tertiary);
+    border: 2px solid var(--accent-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .product-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    .column-header {
+        display: none;
+    }
+    
+    .product-grid textarea {
+        height: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .action-buttons {
+        margin-top: 12px;
+        justify-content: center;
+    }
+}
