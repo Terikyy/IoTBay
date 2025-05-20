@@ -23,13 +23,15 @@ public class ShippingController extends HttpServlet {
 
     // doGet method
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws 
+            ServletException, IOException {
 
         HttpSession session = request.getSession();
 
         shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
         orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        
+        
 
         if (shippingDAO == null || orderDAO == null) {
             String currentURL = request.getRequestURI();
@@ -40,6 +42,7 @@ public class ShippingController extends HttpServlet {
             return;
         }
 
+        
         String action = request.getParameter("action");
         // Create a new shipment
         if ("create".equals(action)) {
@@ -67,7 +70,8 @@ public class ShippingController extends HttpServlet {
                 throw new ServletException("Error listing shipments", e);
             }
             return;
-        }
+        } 
+
 
         // Update an existing shipment
         if ("update".equals(action)) {
@@ -106,92 +110,94 @@ public class ShippingController extends HttpServlet {
 
     }
 
+
+
+
+
+
     // doPost method
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
+            HttpSession session = request.getSession();
 
-        shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
+            shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
 
-        if (shippingDAO == null) {
-            String currentURL = request.getRequestURI();
-            if (request.getQueryString() != null) {
-                currentURL += "?" + request.getQueryString();
+            if (shippingDAO == null) {
+                String currentURL = request.getRequestURI();
+                if (request.getQueryString() != null) {
+                    currentURL += "?" + request.getQueryString();
+                }
+                response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
+                return;
             }
-            response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
+            
+                
+
+            String action = request.getParameter("action");
+    try {
+        switch(action) {
+        case "create":
+            createShipment(request, response);
+            return;
+
+        case "update":
+            updateShipment(request, response);
+            return;
+
+        case "delete":
+            deleteShipment(request, response);
+            return;
+
+        default:
+            listShipments(request, response);
             return;
         }
-
-        String action = request.getParameter("action");
-        try {
-            switch (action) {
-                case "create":
-                    createShipment(request, response);
-                    return;
-
-                case "update":
-                    updateShipment(request, response);
-                    return;
-
-                case "delete":
-                    deleteShipment(request, response);
-                    return;
-
-                default:
-                    listShipments(request, response);
-                    return;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error handling shipment action", e);
-        }
-
+    } catch(SQLException e) {
+        e.printStackTrace();
+        throw new ServletException("Error handling shipment action", e);
     }
 
-    // helper methods
+
+}
+
+    //helper methods
     // List all shipments
-    private void listShipments(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
+    private void listShipments(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         HttpSession session = request.getSession();
         Integer orderId = (Integer) session.getAttribute("orderId");
         List<ShippingManagement> shipments;
         if (orderId != null) {
-            shipments = shippingDAO.findByOrderId(orderId);
+          shipments = shippingDAO.findByOrderId(orderId);
         } else {
-            shipments = List.of();
+          shipments = List.of();
         }
         request.setAttribute("shipments", shipments);
         request.getRequestDispatcher("/shippingManagement.jsp").forward(request, response);
     }
-
+    
     // Create a new shipment
-    private void createShipment(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void createShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
 
-        String address = request.getParameter("address");
+        String address        = request.getParameter("address");
         String shippingMethod = request.getParameter("shippingMethod");
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
-        ShippingManagement shipment = new ShippingManagement(0, orderId, LocalDate.now(), address, shippingMethod,
-                false);
+        int    orderId        = Integer.parseInt(request.getParameter("orderId"));
+        ShippingManagement shipment = new ShippingManagement(0, orderId, LocalDate.now(), address, shippingMethod, false);
         int newShipmentId = shippingDAO.insert(shipment);
         HttpSession session = request.getSession();
         session.setAttribute("lastShipmentId", newShipmentId);
-        session.setAttribute("orderId", orderId);
         response.sendRedirect(request.getContextPath() + "/payment.jsp");
     }
 
     // Update an existing shipment
-    private void updateShipment(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void updateShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int shipmentId = Integer.parseInt(request.getParameter("shipmentId"));
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         String address = request.getParameter("address");
         String shippingMethod = request.getParameter("shippingMethod");
 
-        ShippingManagement shipment = new ShippingManagement(shipmentId, orderId, LocalDate.now(), address,
-                shippingMethod, false);
+        ShippingManagement shipment = new ShippingManagement(shipmentId, orderId, LocalDate.now(), address, shippingMethod, false);
         shippingDAO.update(shipment);
 
         HttpSession session = request.getSession();
@@ -200,8 +206,7 @@ public class ShippingController extends HttpServlet {
     }
 
     // Delete a shipment
-    private void deleteShipment(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void deleteShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int shipmentId = Integer.parseInt(request.getParameter("shipmentId"));
         shippingDAO.deleteById(shipmentId);
         listShipments(request, response);

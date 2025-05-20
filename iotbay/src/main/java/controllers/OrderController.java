@@ -1,5 +1,10 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,17 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.IDObject;
 import model.Order;
-import model.Product;
 import model.dao.OrderDAO;
-import model.dao.OrderItemDAO;
-import model.lineproducts.OrderItem;
 import model.users.User;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @WebServlet("/OrderController")
 public class OrderController extends HttpServlet {
@@ -48,6 +44,7 @@ public class OrderController extends HttpServlet {
 
         User user = (User) session.getAttribute("user");
         Integer userId = user == null ? null : user.getUserID();
+        session.setAttribute("userID", userId);
         double totalPrice = 0.0;
         try {
             totalPrice = Double.parseDouble(request.getParameter("totalPrice"));

@@ -15,12 +15,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ShippingManagement;
 import model.dao.ShippingDAO;
+import model.dao.UserDAO;
 
 
 
 @WebServlet("/ShippingListController")
 public class ShippingListController extends HttpServlet {
     private ShippingDAO shippingDAO;
+    private UserDAO userDAO;
+
+    
  
 
     // doGet Method
@@ -29,6 +33,7 @@ public class ShippingListController extends HttpServlet {
             throws ServletException, IOException {
             HttpSession session = request.getSession();
             shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
+            userDAO = (UserDAO) session.getAttribute("userDAO");
             
         
         try {
@@ -40,18 +45,18 @@ public class ShippingListController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
                 return;
         }
-
+        
+        // Check if the user is logged in
+        // Showing shipments created by customer user
         Integer userID = (Integer)session.getAttribute("userID");
         List<ShippingManagement> all;
-        if (userID != null) {
+        if (userID != null) { // logged in user
             all = shippingDAO.findByUserId(userID);
-        } else {
-            Integer guestId = (Integer)session.getAttribute("lastShipmentId");
+        } else { // guest user
+            Integer guestId = (Integer)session.getAttribute("guestShipping");
             if (guestId != null) {
               ShippingManagement one = shippingDAO.findById(guestId);
-              all = one==null
-                 ? Collections.emptyList()
-                 : Collections.singletonList(one);
+              all = (one == null) ? Collections.emptyList() : Collections.singletonList(one);
             } else {
               all = Collections.emptyList();
             }

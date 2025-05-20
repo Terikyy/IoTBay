@@ -35,10 +35,15 @@
                     <input type="number" name="shipmentId" id="shipmentId" placeholder="e.g. 42"/>
                 </div>
 
+<<<<<<< HEAD
+    <button type="submit">Search</button>
+    <button type="submit" name="showAll" value="true">Show All</button>
+=======
                 <div class="form-group">
                     <label for="shipmentDate">Shipment Date</label>
                     <input type="date" name="shipmentDate" id="shipmentDate"/>
                 </div>
+>>>>>>> 5131ef287d3fbd3d7c6f0e0366dd4f34cf110d27
 
                 <button type="submit">Search</button>
                 <button type="submit" name="showAll" value="1">Show All</button>
