@@ -42,6 +42,20 @@ public class AddressDAO extends AbstractDAO<Address> {
         return addresses;
     }
 
+    public Address findByIdAndUserId(int addressId, int userId) throws SQLException {
+        String sql = "SELECT * FROM Address WHERE AddressID = ? AND UserID = ?";
+        try (var preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setInt(1, addressId);
+            preparedStatement.setInt(2, userId);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapRow(resultSet);
+                }
+            }
+        }
+        return null; // Return null if no matching address is found
+    }
+
     @Override
     public int insert(Address address) throws SQLException {
         String sql = "INSERT INTO Address (Name, StreetNumber, StreetName, Postcode, Suburb, City, State) VALUES (?, ?, ?, ?, ?, ?, ?)";
