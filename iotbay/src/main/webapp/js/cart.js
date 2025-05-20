@@ -8,7 +8,17 @@ document.addEventListener('DOMContentLoaded', function() {
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function() {
             const productId = this.getAttribute('data-product-id');
-            addToCart(productId, 1);
+            
+            // Check for the quantity input on product detail page
+            const quantityInput = document.getElementById('quantity');
+            let quantity = 1;
+            
+            // If quantity input exists, use its value
+            if (quantityInput) {
+                quantity = Math.max(1, parseInt(quantityInput.value) || 1);
+            }
+            
+            addToCart(productId, quantity);
         });
     });
     
