@@ -4,7 +4,7 @@
     // Check if a user is already logged in and if so redirect to welcome page
     User user = (User) session.getAttribute("user");
     if (user != null) {
-        response.sendRedirect("account-management.jsp");
+        response.sendRedirect("account.jsp");
         return;
     }
     String error = (String) session.getAttribute("error");
@@ -28,7 +28,7 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Return to Main Page</a>
+    <a href="index.jsp" title="Main Page">Return to Main Page</a>
 </header>
 <div class="container">
     <div class="main-container">

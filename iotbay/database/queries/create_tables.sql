@@ -8,19 +8,9 @@ drop table `Order`;
 drop table CartItem;
 drop table OrderItem;
 drop table Address;
-drop table Shipment;
-drop table Logs;
+drop table ShippingManagement;
+drop table Log;
 
-CREATE TABLE Address (
-     AddressID INT PRIMARY KEY,
-     Name VARCHAR(50) NOT NULL,
-     StreetNumber VARCHAR(10),
-     StreetName VARCHAR(50),
-     Postcode INT CHECK (Postcode BETWEEN 1000 AND 9999),
-     Suburb VARCHAR(50),
-     City VARCHAR(30),
-     State VARCHAR(10)
-);
 -- 01 User
 CREATE TABLE User (
     UserID INT PRIMARY KEY,
@@ -88,6 +78,16 @@ CREATE TABLE OrderItem (
 );
 
 -- 08 Address
+CREATE TABLE Address (
+     AddressID INT PRIMARY KEY,
+     Name VARCHAR(50) NOT NULL,
+     StreetNumber VARCHAR(10),
+     StreetName VARCHAR(50),
+     Postcode INT CHECK (Postcode BETWEEN 1000 AND 9999),
+     Suburb VARCHAR(50),
+     City VARCHAR(30),
+     State VARCHAR(10)
+);
 
 
 -- 09 CartItem
@@ -100,15 +100,16 @@ CREATE TABLE CartItem (
     FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
 
-CREATE TABLE Shipment (
-    ShipmentID INT PRIMARY KEY,
-    OrderID INT,
-    ShipmentPrice NUMERIC(10,2),
-    TrackingNumber VARCHAR(50),
-    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID)
+CREATE TABLE ShippingManagement (
+    ShipmentID INTEGER PRIMARY KEY AUTOINCREMENT,
+    OrderID INT NOT NULL,
+    ShipmentDate DATE NOT NULL,
+    Address TEXT NOT NULL,
+    ShippingMethod TEXT NOT NULL,
+    IsFinalised BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE Logs (
+CREATE TABLE Log (
     LogID INT PRIMARY KEY,
     LogMessage VARCHAR(100),
     Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP

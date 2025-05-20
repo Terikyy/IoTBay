@@ -48,11 +48,23 @@
             <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
         </a>
     </div>
+    <div class="manage-users" title="Manage Users">
+        <a href="${pageContext.request.contextPath}/user-management.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
+        </a>
+    </div>
     <% } %>
 
     <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->
         <a href="${pageContext.request.contextPath}/shippingList.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="ShippingList">
+        </a>
+    </div>
+
+    
+    <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) --> <!--not best practice-->
+        <a href="${pageContext.request.contextPath}/paymentList.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="PaymentList">
         </a>
     </div>
 
@@ -144,7 +156,13 @@
         <div class="product-tile">
             <img src="${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.png"
                  alt="<%= product.getName() %>"
-                 onerror="this.src='${pageContext.request.contextPath}/assets/images/products/placeholder.png';">
+                 onerror="if (this.src.includes('.png')) { 
+                    this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpg';
+                 } else if (this.src.includes('.jpg')) {
+                    this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpeg';
+                 } else {
+                    this.src='${pageContext.request.contextPath}/assets/images/products/placeholder.png';
+                 }">
             <h3><%= product.getName() %>
             </h3>
             <p>$<%= product.getPrice() %>

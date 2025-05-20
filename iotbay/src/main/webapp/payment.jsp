@@ -17,17 +17,25 @@
     <title>Payment</title>
     <link rel="stylesheet" href="css/subpages/payment.css">
 
-    <%
-        User user = (User) session.getAttribute("user");
-        int orderId = (int) session.getAttribute("orderId");
+ 
 
-        Order order = null;
-        try {
-            order = OrderController.getOrderById(orderId, request, response);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    %>
+    <%
+    User user = (User) session.getAttribute("user");
+    Integer orderIdObj = (Integer) session.getAttribute("orderId");
+    if (orderIdObj == null) {
+        // no orderId in session ⇒ redirect or show error
+        response.sendRedirect("orderSummary.jsp");
+        return;
+    }
+    int orderId = orderIdObj;
+
+    Order order = null;
+    try {
+        order = OrderController.getOrderById(orderId, request, response);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+%>
 
 </head>
 <body>
@@ -35,7 +43,7 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Return to Order</a>
+    <a href="index.jsp" title="Main Page">Return to Order</a>
 
     <a href="${pageContext.request.contextPath}/ShippingController">Back to Shipment</a>
 

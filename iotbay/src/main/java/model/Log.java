@@ -7,17 +7,14 @@ public class Log extends IDObject {
     private final Date timestamp;
 
     public Log(String message) {
-        this(message, null);
-    }
-
-    public Log(String message, Date timestamp) {
         super();
         this.message = message;
-        this.timestamp = timestamp;
+        this.timestamp = null;
     }
 
     public Log(int logId, String message, Date timestamp) {
-        this(message, timestamp);
+        this.message = message;
+        this.timestamp = timestamp;
         setId(logId);
     }
 

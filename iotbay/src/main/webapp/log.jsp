@@ -1,8 +1,10 @@
 <%@ page import="model.users.*" %>
-<%@ page import="java.util.List" %>
 <%@ page import="controllers.UserController" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="java.util.Map" %>
+<%@ page import="model.Log" %>
+<%@ page import="controllers.LogController" %>
+<%@ page import="java.text.DateFormatSymbols" %>
+<%@ page import="java.util.*" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,60 +20,39 @@
         }
         User admin = (User) session.getAttribute("user");
         if (admin == null || !admin.isAdmin()) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("restricted.jsp");
             return;
         }
-        List<User> users = null;
+        List<Log> logs = new ArrayList<>();
         try {
-            users = UserController.queryUsers(query, request, response);
+            logs = LogController.queryLogs(query, request, response).reversed(); // reversed, so the latest logs are on top
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        if (users == null || users.isEmpty()) {
-            response.sendRedirect("index.jsp");
-        }
-        String updateError = (String) session.getAttribute("update-error");
-        if (updateError != null) {
-            session.removeAttribute("update-error");
-        }
-        if (updateError == null) {
-            updateError = "";
-        }
-        String error = (String) session.getAttribute("error");
-        if (error != null) {
-            session.removeAttribute("error");
-        }
-        if (error == null) {
-            error = "";
         }
     %>
 </head>
 <body>
 <header>
     <div class="logo">
-        <a href="${pageContext.request.contextPath}/products/list">
+        <a href="index.jsp" title="Main Page">
             <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
         </a>
     </div>
     <div class="search-container">
-        <form action="user-management.jsp" method="get">
+        <form action="log.jsp" method="get">
             <input type="text" class="search-input" name="query" placeholder="Search..."
-                   value="<%= query %>" autofocus>
+                   value="<%= request.getAttribute("query") != null ? request.getAttribute("query") : "" %>">
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
             </button>
         </form>
     </div>
-    <%
-        User user = (User) session.getAttribute("user");
-        if (user != null && user.isAdmin()) {
-    %>
-    <div class="user-logs" title="User Logs">
-        <a href="${pageContext.request.contextPath}/log.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
+    <div class="manage-users" title="Manage Users">
+        <a href="${pageContext.request.contextPath}/user-management.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
         </a>
     </div>
-    <% } %>
+
     <div class="account">
         <a href="${pageContext.request.contextPath}/account.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
@@ -80,68 +61,24 @@
 </header>
 <div class="container">
     <div class="main-container main-content">
-        <div class="centered-container">
-            <h1>User Management</h1>
-            <p class="error-message">
-                <%=updateError%>
-            </p>
-            <div class="user-management">
-                <%= users.isEmpty() ? "No users found." : ""%>
-                <% for (User user : users) {
-                    if (user.getUserID() == admin.getUserID()) {
-                        continue; // Skip the admin user
-                    }
+        <div class="logs-container">
+            <h1 class="logs-title">Logs</h1>
+            <div class="logs">
+                <% if (logs.isEmpty()) { %>
+                <div class="no-logs">No logs found</div>
+                <% } else { %>
+                <% for (int i = 0; i < logs.size(); i++) {
+                    Log log = logs.get(i);
                 %>
-                <div class="user-card">
-                    <form action="UserUpdateServlet" method="post">
-                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
-                        <label>
-                            <input type="text" name="name" value="<%= user.getName() %>">
-                        </label>
-                        <label>
-                            <input type="email" name="email" value="<%= user.getEmail() %>">
-                        </label>
-                        <label>
-                            <select name="role">
-                                <option value="customer" <%= user.isStaff() ? "" : "selected" %>>Customer</option>
-                                <option value="staff" <%= user.isStaff() ? "selected" : "" %>>Staff</option>
-                            </select>
-                        </label>
-                        <input type="hidden" name="password" value="<%=user.getPassword()%>">
-                        <button type="submit" title="Save changes to this user">Save</button>
-                    </form>
-                    <form action="ResetPasswordServlet" method="post" class="reset-form">
-                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
-                        <button class="reset-button"
-                                onclick="this.form.submit()" title="Reset this user's password">
-                            Reset
-                        </button>
-                    </form>
-                    <form action="UserDeletionServlet" method="post" class="delete-form">
-                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
-                        <button class="delete-button"
-                                onclick="this.form.submit()" title="Delete this user">
-                            Delete
-                        </button>
-                    </form>
+                <div class="log-row">
+                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime() + 1000 * 60 * 60 * 10)) /*Add 10 hours, because database time is in Greenwich Mean Time*/ %></span>
+                    <span class="log-message"><%= log.getMessage() %></span>
                 </div>
+                <% if (i < logs.size() - 1) { %>
+                <div class="log-divider"></div>
                 <% } %>
-                <h4>Add New User</h4>
-                <p class="error-message">
-                    <%=error%>
-                </p>
-                <div class="user-card">
-                    <form action="UserCreationServlet" method="post">
-                        <input type="text" id="name" name="name" placeholder="Name" required>
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                        <input type="password" name="password" id="password" placeholder="Password" required>
-                        <select name="role" id="role" required>
-                            <option value="customer">Customer</option>
-                            <option value="staff">Staff</option>
-                        </select>
-                        <button type="submit" title="Create User">Create</button>
-                    </form>
-                </div>
+                <% } %>
+                <% } %>
             </div>
         </div>
     </div>

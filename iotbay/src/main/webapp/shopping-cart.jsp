@@ -90,7 +90,13 @@
                                     <td class="product-info">
                                         <img src="${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.png" 
                                              alt="<%= product.getName() %>"
-                                             onerror="this.src='${pageContext.request.contextPath}/assets/images/products/placeholder.png';">
+                                             onerror="if (this.src.includes('.png')) { 
+                                                        this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpg';
+                                                    } else if (this.src.includes('.jpg')) {
+                                                        this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpeg';
+                                                    } else {
+                                                        this.src='${pageContext.request.contextPath}/assets/images/products/placeholder.png';
+                                                    }">
                                         <div>
                                             <h3><%= product.getName() %></h3>
                                             <p><%= product.getCategory() %></p>

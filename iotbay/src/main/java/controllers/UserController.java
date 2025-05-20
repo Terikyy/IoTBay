@@ -97,11 +97,39 @@ public class UserController extends HttpServlet {
         }
     }
 
-    public static void updateUser(int userId, String name, String email, String password) {
-        // Logic to update an existing user
+    public static void updateUser(User user, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
+
+        User oldUser = userDAO.findById(user.getUserID());
+        userDAO.update(user);
+        if (oldUser.getEmail().equals(user.getEmail()))
+            LogController.createLog(request, response, "Admin updated user " + oldUser.getEmail());
+        else
+            LogController.createLog(request, response, "Admin updated user " + oldUser.getEmail() + ". New email: " + user.getEmail());
+        if (user.isStaff()) {
+            user.setStaff(request, response);
+            LogController.createLog(request, response, "Admin set role of " + user.getEmail() + " to staff");
+        } else {
+            user.setCustomer(request, response);
+            LogController.createLog(request, response, "Admin set role of " + user.getEmail() + " to staff");
+        }
     }
 
-    public static void deleteUser(int userId) {
-        // Logic to delete a user
+    public static void deleteUser(int userId, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return;
+        }
+
+        User oldUser = userDAO.findById(userId);
+        userDAO.deleteById(userId);
+        LogController.createLog(request, response, "Admin deleted user " + oldUser.getEmail());
     }
 }

@@ -18,7 +18,7 @@
         }
         User admin = (User) session.getAttribute("user");
         if (admin == null || !admin.isAdmin()) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("restricted.jsp");
             return;
         }
         List<User> users = null;
@@ -26,9 +26,6 @@
             users = UserController.queryUsers(query, request, response);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        if (users == null || users.isEmpty()) {
-            response.sendRedirect("index.jsp");
         }
         String updateError = (String) session.getAttribute("update-error");
         if (updateError != null) {
@@ -56,7 +53,7 @@
     <div class="search-container">
         <form action="user-management.jsp" method="get">
             <input type="text" class="search-input" name="query" placeholder="Search..."
-                   value="<%= query %>" autofocus>
+                   value="<%= query %>">
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
             </button>
@@ -72,6 +69,7 @@
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
         </a>
     </div>
+
 </header>
 <div class="container">
     <div class="main-container main-content">
@@ -81,6 +79,25 @@
                 <%=updateError%>
             </p>
             <div class="user-management">
+                <br>
+                <h4>Add New User</h4>
+                <p class="error-message">
+                    <%=error%>
+                </p>
+                <div class="user-card">
+                    <form action="UserCreationServlet" method="post">
+                        <input type="hidden" name="query" value="<%= query %>">
+                        <input type="text" id="name" name="name" placeholder="Name" required>
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <select name="role" id="role" required>
+                            <option value="customer">Customer</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                        <button type="submit" title="Create User">Create</button>
+                    </form>
+                </div>
+                <h4>Existing Users</h4>
                 <%= users.isEmpty() ? "No users found." : ""%>
                 <% for (User user : users) {
                     if (user.getUserID() == admin.getUserID()) {
@@ -89,6 +106,7 @@
                 %>
                 <div class="user-card">
                     <form action="UserUpdateServlet" method="post">
+                        <input type="hidden" name="query" value="<%= query %>">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
                         <label>
                             <input type="text" name="name" value="<%= user.getName() %>">
@@ -120,6 +138,7 @@
                         </button>
                     </form>
                     <form action="ResetPasswordServlet" method="post" class="reset-form">
+                        <input type="hidden" name="query" value="<%= query %>">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
                         <button class="reset-button"
                                 onclick="this.form.submit()" title="Reset this user's password">
@@ -127,6 +146,7 @@
                         </button>
                     </form>
                     <form action="UserDeletionServlet" method="post" class="delete-form">
+                        <input type="hidden" name="query" value="<%= query %>">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
                         <button class="delete-button"
                                 onclick="this.form.submit()" title="Delete this user">
@@ -135,22 +155,6 @@
                     </form>
                 </div>
                 <% } %>
-                <h4>Add New User</h4>
-                <p class="error-message">
-                    <%=error%>
-                </p>
-                <div class="user-card">
-                    <form action="UserCreationServlet" method="post">
-                        <input type="text" id="name" name="name" placeholder="Name" required>
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                        <input type="password" name="password" id="password" placeholder="Password" required>
-                        <select name="role" id="role" required>
-                            <option value="customer">Customer</option>
-                            <option value="staff">Staff</option>
-                        </select>
-                        <button type="submit" title="Create User">Create</button>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

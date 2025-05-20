@@ -6,9 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogDAO extends AbstractDAO<Log> {
+    private final String tableName = "Log";
+    private final String tableId = "LogID";
 
     public LogDAO(Connection conn) throws SQLException {
         super(conn);
@@ -17,20 +20,17 @@ public class LogDAO extends AbstractDAO<Log> {
     @Override
     protected Log mapRow(ResultSet rs) throws SQLException {
         return new Log(
-                rs.getInt("LogID"),
+                rs.getInt(tableId),
                 rs.getString("LogMessage"),
                 rs.getDate("Timestamp")
         );
-
     }
 
     @Override
     public int insert(Log log) throws SQLException {
-        String query = "INSERT INTO Log (LogID, LogMessage, Timestamp) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Log (LogMessage) VALUES (?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, log.getLogId());
-            ps.setString(2, log.getMessage());
-            ps.setDate(3, new java.sql.Date(log.getTimestamp().getTime()));
+            ps.setString(1, log.getMessage());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -43,20 +43,31 @@ public class LogDAO extends AbstractDAO<Log> {
 
     @Override
     public List<Log> getAll() throws SQLException {
-        return queryAllFromTable("Log");
+        return queryAllFromTable(tableName);
+    }
+
+    public List<Log> query(String query) throws SQLException {
+        List<Log> logs = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM Log WHERE LogMessage LIKE ? OR Timestamp LIKE ?";
+        try (PreparedStatement ps = conn.prepareStatement(sqlQuery);) {
+            ps.setString(1, "%" + query + "%");
+            ps.setString(2, "%" + query + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    logs.add(mapRow(rs));
+                }
+            }
+        }
+        return logs;
     }
 
     @Override
     public Log findById(int id) throws SQLException {
-        return queryById("Log", "LogID", id);
+        return queryById(tableName, tableId, id);
     }
 
     @Override
     public int deleteById(int id) throws SQLException {
-        String query = "DELETE FROM Log WHERE LogID = ?";
-        try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate(); // Returns the number of rows affected
-        }
+        throw new UnsupportedOperationException("Logs should not be tampered with!!");
     }
 }
