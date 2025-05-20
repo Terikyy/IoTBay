@@ -1,34 +1,69 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Address;
 import model.dao.AddressDAO;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/address")
 public class AddressController extends HttpServlet {
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if ("list".equals(action)) {
+            listAddresses(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+    
+        if ("insert".equals(action)) {
+            insertAddress(request, response);
+        } else if ("update".equals(action)) {
+            updateAddress(request, response);
+        } else if ("delete".equals(action)) {
+            deleteAddress(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+        }
+    }
+    
+    
     // Insert Address method
     private void insertAddress(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
-        String name = request.getParameter("name");
-        int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
-        String streetName = request.getParameter("streetName");
-        int postcode = Integer.parseInt(request.getParameter("postcode"));
-        String suburb = request.getParameter("suburb");
-        String city = request.getParameter("city");
-        String state = request.getParameter("state");
+        throws IOException {
+        HttpSession session = request.getSession();
+        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
+        if (addressDAO == null) {
+            throw new IOException("AddressDAO is not initialized in the session.");
+        }
 
-        Address newAddress = new Address(name, streetNumber, streetName, postcode, suburb, city, state);
         try {
+            String name = request.getParameter("name");
+            int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
+            String streetName = request.getParameter("streetName");
+            int postcode = Integer.parseInt(request.getParameter("postcode"));
+            String suburb = request.getParameter("suburb");
+            String city = request.getParameter("city");
+            String state = request.getParameter("state");
+
+            Address newAddress = new Address(name, streetNumber, streetName, postcode, suburb, city, state);
             addressDAO.insert(newAddress);
             response.sendRedirect("address?action=list");
         } catch (SQLException e) {
@@ -37,44 +72,63 @@ public class AddressController extends HttpServlet {
     }
 
     // update Address method
-    private void updateAddress(HttpServletRequest request, HttpServletResponse response)
+       private void updateAddress(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
-        String streetName = request.getParameter("streetName");
-        int postcode = Integer.parseInt(request.getParameter("postcode"));
-        String suburb = request.getParameter("suburb");
-        String city = request.getParameter("city");
-        String state = request.getParameter("state");
-
-        Address updatedAddress = new Address(id, name, streetNumber, streetName, postcode, suburb, city, state);
+        HttpSession session = request.getSession();
+        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
+        if (addressDAO == null) {
+            throw new IOException("AddressDAO is not initialized in the session.");
+        }
+    
         try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String name = request.getParameter("name");
+            int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
+            String streetName = request.getParameter("streetName");
+            int postcode = Integer.parseInt(request.getParameter("postcode"));
+            String suburb = request.getParameter("suburb");
+            String city = request.getParameter("city");
+            String state = request.getParameter("state");
+    
+            Address updatedAddress = new Address(id, name, streetNumber, streetName, postcode, suburb, city, state);
             addressDAO.update(updatedAddress);
             response.sendRedirect("address?action=list");
         } catch (SQLException e) {
             throw new IOException("Error updating address", e);
+        } catch (NumberFormatException e) {
+            throw new IOException("Invalid input for address update", e);
         }
     }
 
-    // Delete Address method
-    private void deleteAddress(HttpServletRequest request, HttpServletResponse response)
+    // delete Address method
+        private void deleteAddress(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
-        int id = Integer.parseInt(request.getParameter("id"));
+        HttpSession session = request.getSession();
+        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
+        if (addressDAO == null) {
+            throw new IOException("AddressDAO is not initialized in the session.");
+        }
+    
         try {
+            int id = Integer.parseInt(request.getParameter("id"));
             addressDAO.deleteById(id);
             response.sendRedirect("address?action=list");
         } catch (SQLException e) {
             throw new IOException("Error deleting address", e);
+        } catch (NumberFormatException e) {
+            throw new IOException("Invalid address ID for deletion", e);
         }
     }
 
     // List Address method
-    private void listAddresses(HttpServletRequest request, HttpServletResponse response)
+private void listAddresses(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AddressDAO addressDAO = (AddressDAO) request.getServletContext().getAttribute("addressDAO");
+        HttpSession session = request.getSession();
+        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
+        if (addressDAO == null) {
+            throw new IOException("AddressDAO is not initialized in the session.");
+        }
+
         try {
             List<Address> addresses = addressDAO.getAll();
             request.setAttribute("addressList", addresses);
@@ -84,4 +138,5 @@ public class AddressController extends HttpServlet {
         }
     }
 }
+
 
