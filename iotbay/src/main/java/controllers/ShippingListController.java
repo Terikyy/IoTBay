@@ -47,19 +47,18 @@ public class ShippingListController extends HttpServlet {
             // Check if the user is logged in
             // Showing shipments created by customer user
             User user = (User) session.getAttribute("user");
-            if (user == null) {
-                // If the user is not logged in, redirect to the login page
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
-                return;
-            }
-            Integer userID = user.getId();
-            List<ShippingManagement> all = shippingDAO.findByUserId(userID);
-            Integer guestId = (Integer) session.getAttribute("guestShipping");
-            if (guestId != null) {
-                ShippingManagement one = shippingDAO.findById(guestId);
-                all = (one == null) ? Collections.emptyList() : Collections.singletonList(one);
-            } else {
-                all = Collections.emptyList();
+            List<ShippingManagement> all;
+            if (user != null) { // logged in user
+                int userID = user.getId();
+                all = shippingDAO.findByUserId(userID);
+            } else { // guest user
+                Integer guestId = (Integer) session.getAttribute("guestShipping");
+                if (guestId != null) {
+                    ShippingManagement one = shippingDAO.findById(guestId);
+                    all = (one == null) ? Collections.emptyList() : Collections.singletonList(one);
+                } else {
+                    all = Collections.emptyList();
+                }
             }
 
             // otherwise filter by shipmentId and/or shipmentDate

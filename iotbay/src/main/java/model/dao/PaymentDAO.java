@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentDAO extends AbstractDAO<Payment> {
@@ -17,6 +18,7 @@ public class PaymentDAO extends AbstractDAO<Payment> {
     @Override
     protected Payment mapRow(ResultSet rs) throws SQLException {
         return new Payment(
+                rs.getInt("PaymentID"),
                 rs.getInt("OrderID"),
                 rs.getString("PaymentMethod"),
                 rs.getDouble("AmountPaid"),
@@ -68,6 +70,19 @@ public class PaymentDAO extends AbstractDAO<Payment> {
         // invole a SELECT * FROM Payment WHERE PaymentID = ? sql
         // query
         return queryById("Payment", "PaymentID", id);
+    }
+
+    public List<Payment> findByUserId(int userId) throws SQLException {
+        String query = "SELECT s.* FROM Payment s Join `Order` o ON s.OrderID = o.OrderID WHERE o.UserID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            List<Payment> payments = new ArrayList<>();
+            while (rs.next()) {
+                payments.add(mapRow(rs));
+            }
+            return payments;
+        }
     }
 
     @Override
