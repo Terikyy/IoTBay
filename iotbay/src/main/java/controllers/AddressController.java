@@ -187,30 +187,25 @@ public class AddressController extends HttpServlet {
     // List Address method
     private void listAddresses(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
-        if (addressDAO == null) {
-            throw new IOException("AddressDAO is not initialized in the session.");
-        }
-
-        // Retrieve the user from the session
         User user = (User) session.getAttribute("user");
+
         if (user == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
         try {
-            int userId = user.getId(); // Assuming User object has a getId() method
-            List<Address> addresses = addressDAO.getByUserId(userId); // Fetch addresses by userId
+            int userId = user.getId(); // get the user's ID
+            List<Address> addresses = addressDAO.getByUserId(userId); // fetch by userId
             request.setAttribute("addressList", addresses);
-            request.getRequestDispatcher("address.jsp").forward(request, response);
+            request.getRequestDispatcher("addressList.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error retrieving addresses", e);
-        } catch (NumberFormatException e) {
-            throw new IOException("Invalid user ID for address retrieval", e);
         }
-    }
+        }
 }
 
 

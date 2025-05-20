@@ -3,6 +3,7 @@ package model.dao;
 import model.Address;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,11 +32,11 @@ public class AddressDAO extends AbstractDAO<Address> {
     public List<Address> getByUserId(int userId) throws SQLException {
         List<Address> addresses = new ArrayList<>();
         String sql = "SELECT * FROM Address WHERE UserID = ?";
-        try (var preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
-            try (var resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    addresses.add(mapRow(resultSet));
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, userId);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                addresses.add(mapRow(rs));
                 }
             }
         }
