@@ -21,7 +21,6 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
-        System.out.println("Test 1" + email + password);
         if (userDAO == null) {
             ConnServlet.updateDAOsGET(request, response);
             return;

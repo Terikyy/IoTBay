@@ -35,17 +35,14 @@
 <body>
 <header>
     <div class="logo">
-        <a href="${pageContext.request.contextPath}/products/list">
+        <a href="index.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
         </a>
     </div>
     <div class="search-container">
-        <form action="${pageContext.request.contextPath}/products/list" method="get">
+        <form action="log.jsp" method="get">
             <input type="text" class="search-input" name="query" placeholder="Search..."
-                   value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
-            <% if (request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
-            <input type="hidden" name="category" value="<%= request.getAttribute("selectedCategory") %>">
-            <% } %>
+                   value="<%= request.getAttribute("query") != null ? request.getAttribute("query") : "" %>">
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
             </button>
