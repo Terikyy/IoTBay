@@ -35,7 +35,7 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Return to Order</a>
+    <a href="index.jsp" title="Main Page">Return to Order</a>
 
     <a href="${pageContext.request.contextPath}/ShippingController">Back to Shipment</a>
 

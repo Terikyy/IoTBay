@@ -28,7 +28,7 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Return to Main Page</a>
+    <a href="index.jsp" title="Main Page">Return to Main Page</a>
 </header>
 <div class="container">
     <div class="main-container">

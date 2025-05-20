@@ -79,6 +79,7 @@
                 <%=updateError%>
             </p>
             <div class="user-management">
+                <br>
                 <h4>Add New User</h4>
                 <p class="error-message">
                     <%=error%>
