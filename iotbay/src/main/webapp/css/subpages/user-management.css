@@ -8,7 +8,7 @@
 @import "../layout/container.css";
 
 .centered-container {
-    max-width: 850px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
     background-color: var(--content-bg-primary);
@@ -20,6 +20,7 @@
 .user-card {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 16px;
@@ -52,12 +53,17 @@
     width: 100%;
 }
 
-.user-card form.delete-form {
+.user-card form.address-form {
     flex: 1;
     padding: 5px;
 }
 
 .user-card form.reset-form {
+    flex: 1;
+    padding: 5px;
+}
+
+.user-card form.delete-form {
     flex: 1;
     padding: 5px;
 }
