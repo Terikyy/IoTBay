@@ -32,16 +32,21 @@ public abstract class User extends IDObject implements Serializable {
     // Password should be hashed and salted
     private String password;
     private Integer addressID; // Use Integer since it can be null
+    private boolean active;
 
     public User(String name, String email, String password) {
         super();
         this.name = name;
         this.email = email;
         this.password = password;
+        addressID = null;
+        active = true;
     }
 
-    public User(int userID, String name, String email, String password) {
+    public User(int userID, String name, String email, String password, boolean active, Integer addressID) {
         this(name, email, password);
+        this.active = active;
+        this.addressID = addressID;
         setId(userID);
     }
 
@@ -115,5 +120,13 @@ public abstract class User extends IDObject implements Serializable {
 
     public void setAddressID(Integer addressID) {
         this.addressID = addressID;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

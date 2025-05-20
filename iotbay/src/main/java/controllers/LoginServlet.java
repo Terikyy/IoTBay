@@ -1,7 +1,5 @@
 package controllers;
 
-import java.io.IOException;
-
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +10,9 @@ import model.dao.StaffDAO;
 import model.dao.UserDAO;
 import model.users.User;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 @WebServlet("/LoginController")
 public class LoginServlet extends HttpServlet {
     @Override
@@ -20,10 +21,12 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        System.out.println("Test 1" + email + password);
         if (userDAO == null) {
             ConnServlet.updateDAOsGET(request, response);
             return;
         }
+
         try {
             User user = UserController.getRoleSpecificUser(userDAO.authenticateUser(email, password),
                     (AdminDAO) session.getAttribute("adminDAO"),
@@ -38,6 +41,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
             }
         } catch (Exception e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
             session.setAttribute("error", e.getMessage());
             response.sendRedirect("login.jsp");
         }
