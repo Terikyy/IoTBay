@@ -40,6 +40,7 @@
     </div>
 
     <%
+        // TODO: Check styling for the icons (make unified class)
         User user = (User) session.getAttribute("user");
         if (user != null && user.isAdmin()) {
     %>
@@ -53,6 +54,16 @@
             <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
         </a>
     </div>
+    <% 
+        } 
+
+        if (user != null && (user.isStaff() || user.isAdmin())) { 
+    %>
+    <div class="shopping-cart" title="Inventory Management">
+        <a href="${pageContext.request.contextPath}/inventory.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/inventory_icon.png" alt="Inventory managemnt">
+        </a>
+    </div>
     <% } %>
 
     <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->
@@ -61,7 +72,6 @@
         </a>
     </div>
 
-    
     <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) --> <!--not best practice-->
         <a href="${pageContext.request.contextPath}/paymentList.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="PaymentList">

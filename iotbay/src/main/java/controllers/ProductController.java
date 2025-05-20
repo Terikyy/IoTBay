@@ -17,15 +17,31 @@ import java.util.Date;
 import java.util.List;
 import model.IDObject;
 
+/**
+ * Controller servlet responsible for handling all product-related operations.
+ * Maps to URL pattern "/products/*" and provides functionality for viewing,
+ * searching, filtering, adding, updating, and deleting products.
+ */
 @WebServlet("/products/*")
 public class ProductController extends HttpServlet {
 
+    /**
+     * Handles HTTP GET requests for product operations.
+     * Supports listing all products, filtering by category, searching by name,
+     * viewing product details, and accessing the inventory management page.
+     *
+     * @param request The HTTP request object
+     * @param response The HTTP response object
+     * @throws ServletException If a servlet-specific error occurs
+     * @throws IOException If an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
 
+        // Get the ProductDAO from the session or initialize it if not present
         ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
         if (productDAO == null) {
             ConnServlet.updateDAOsGET(request, response);
@@ -37,7 +53,7 @@ public class ProductController extends HttpServlet {
             String pathInfo = request.getPathInfo();
 
             if (pathInfo == null || pathInfo.equals("/") || pathInfo.equals("/list")) {
-                // Get all products
+                // Handle product listing, searching, and category filtering
                 String category = request.getParameter("category");
                 String searchQuery = request.getParameter("query");
 
@@ -70,8 +86,9 @@ public class ProductController extends HttpServlet {
                 // Forward to the index page
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
             } else if (pathInfo.startsWith("/detail/")) {
-                // Get product detail
+                // Handle product detail view
                 try {
+                    // Extract product ID from URL path
                     int productId = Integer.parseInt(pathInfo.substring("/detail/".length()));
                     Product product = productDAO.findById(productId);
                     if (product != null) {
@@ -84,6 +101,7 @@ public class ProductController extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID");
                 }
             } else if (pathInfo.equals("/inventory")) {
+                // Handle inventory management page
                 try {
                     // Get all products for inventory management
                     List<Product> products = productDAO.getAll();
@@ -110,6 +128,7 @@ public class ProductController extends HttpServlet {
                     request.getRequestDispatcher("/inventory.jsp").forward(request, response);
                 }
             } else {
+                // Handle unrecognized paths
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
@@ -118,12 +137,22 @@ public class ProductController extends HttpServlet {
         }
     }
     
+    /**
+     * Handles HTTP POST requests for product management operations.
+     * Supports adding, updating, and deleting products.
+     *
+     * @param request The HTTP request object
+     * @param response The HTTP response object
+     * @throws ServletException If a servlet-specific error occurs
+     * @throws IOException If an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
         
+        // Get the ProductDAO from the session or initialize it if not present
         ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
         
         if (productDAO == null) {
@@ -131,22 +160,27 @@ public class ProductController extends HttpServlet {
             return;
         }
         
+        // Determine which action to perform based on the form parameter
         String action = request.getParameter("action");
         
         try {
             if ("add".equals(action)) {
-                // Add a new product
+                // Handle adding a new product
                 String name = request.getParameter("name");
                 String description = request.getParameter("description");
                 double price = Double.parseDouble(request.getParameter("price"));
                 int stock = Integer.parseInt(request.getParameter("stock"));
                 String category = request.getParameter("category");
+                
+                // Handle new category creation
                 if ("new_category".equals(category)) {
                     category = request.getParameter("newCategory");
                     if (category == null || category.trim().isEmpty()) {
                         category = "Uncategorized";
                     }
                 }
+                
+                // Parse release date or use default
                 Date releaseDate = parseDate(request.getParameter("releaseDate"));
                 
                 // Create product - IDObject constructor will call randomizeID()
@@ -155,43 +189,62 @@ public class ProductController extends HttpServlet {
                 // Use the static insert method from IDObject which handles ID generation
                 IDObject.insert(productDAO, product);
                 
+                // Redirect back to inventory page with success message
                 response.sendRedirect(request.getContextPath() + "/products/inventory?message=Product+added+successfully");
             } else if ("update".equals(action)) {
-                // Update an existing product
+                // Handle updating an existing product
                 int id = Integer.parseInt(request.getParameter("productId"));
                 String name = request.getParameter("name");
                 String description = request.getParameter("description");
                 double price = Double.parseDouble(request.getParameter("price"));
                 int stock = Integer.parseInt(request.getParameter("stock"));
                 String category = request.getParameter("category");
+                
+                // Handle new category creation
                 if ("new_category".equals(category)) {
                     category = request.getParameter("newCategory");
                     if (category == null || category.trim().isEmpty()) {
                         category = "Uncategorized";
                     }
                 }
+                
+                // Parse release date or use default
                 Date releaseDate = parseDate(request.getParameter("releaseDate"));
                 
+                // Create and update product
                 Product product = new Product(id, name, description, price, stock, releaseDate, category);
                 productDAO.update(product);
                 
+                // Redirect back to inventory page with success message
                 response.sendRedirect(request.getContextPath() + "/products/inventory?message=Product+updated+successfully");
             } else if ("delete".equals(action)) {
-                // Delete a product
+                // Handle deleting a product
                 int id = Integer.parseInt(request.getParameter("productId"));
                 productDAO.deleteById(id);
                 
+                // Redirect back to inventory page with success message
                 response.sendRedirect(request.getContextPath() + "/products/inventory?message=Product+deleted+successfully");
             } else {
+                // Handle invalid action
                 response.sendRedirect(request.getContextPath() + "/products/inventory?error=Invalid+action");
             }
         } catch (SQLException | NumberFormatException e) {
+            // Handle database or parsing errors
             response.sendRedirect(request.getContextPath() + "/products/inventory?error=" + e.getMessage());
         } catch (ParseException e) {
+            // Handle date parsing errors
             response.sendRedirect(request.getContextPath() + "/products/inventory?error=Invalid+date+format");
         }
     }
     
+    /**
+     * Helper method to parse a date string into a Date object.
+     * If the date string is empty or invalid, returns the current date as default.
+     *
+     * @param dateStr The date string in "yyyy-MM-dd" format
+     * @return A Date object representing the parsed date or current date if invalid
+     * @throws ParseException If the date format is invalid
+     */
     private Date parseDate(String dateStr) throws ParseException {
         if (dateStr == null || dateStr.trim().isEmpty()) {
             return new Date(); // Default to current date
