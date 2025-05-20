@@ -61,6 +61,13 @@
         </a>
     </div>
 
+    
+    <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) --> <!--not best practice-->
+        <a href="${pageContext.request.contextPath}/paymentList.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="PaymentList">
+        </a>
+    </div>
+
     <div class="account">
         <a href="${pageContext.request.contextPath}/account.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">

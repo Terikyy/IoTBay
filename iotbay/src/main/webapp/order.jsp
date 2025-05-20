@@ -36,11 +36,11 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="index.jsp">Return to Home Page</a>
+    <a href="index.jsp" title="Main Page">Return to Home Page</a>
 </header>
 <div class="container">
     <div class="main-container">
-        <div class="centered-container"> 
+        <div class="centered-container">
             <h2>Orders</h2>
             <% if (orders.isEmpty()) { %>
             <p>No orders found.</p>
@@ -48,30 +48,30 @@
             <p>Click on an order to view its details.</p>
             <% } %>
             <% for (Order order : orders) { %>
-                <div class="order-card">
-                    <h3>Order ID: <br>  <%= order.getOrderID() %>
-                    </h3>
-                    <p>Order Date: <br> <%= order.getOrderDate() %>
-                    </p>
-                    <p>Order Status: <br>  <%= order.getOrderStatus() %>
-                    </p>
-                    <p>Total: <%= order.getTotalPrice() %>
-                    </p>
+            <div class="order-card">
+                <h3>Order ID: <br> <%= order.getOrderID() %>
+                </h3>
+                <p>Order Date: <br> <%= order.getOrderDate() %>
+                </p>
+                <p>Order Status: <br> <%= order.getOrderStatus() %>
+                </p>
+                <p>Total: <%= order.getTotalPrice() %>
+                </p>
 
-                    <form action="OrderUpdateServlet" method="post"> 
-                        <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
-                        <button type="submit"> 
-                            View Order Details
-                        </button>
-                    </form>
-                    <form method="get" action="OrderController">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
-                        <button type="submit" <%= !"PENDING".equals(order.getOrderStatus()) ? "disabled" : "" %>>
-                            Delete
-                        </button>
-                    </form> 
-                </div>
+                <form action="OrderUpdateServlet" method="post">
+                    <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
+                    <button type="submit">
+                        View Order Details
+                    </button>
+                </form>
+                <form method="get" action="OrderController">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
+                    <button type="submit" <%= !"PENDING".equals(order.getOrderStatus()) ? "disabled" : "" %>>
+                        Delete
+                    </button>
+                </form>
+            </div>
             <% } %>
         </div>
     </div>

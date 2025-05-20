@@ -20,7 +20,7 @@
         }
         User admin = (User) session.getAttribute("user");
         if (admin == null || !admin.isAdmin()) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("restricted.jsp");
             return;
         }
         List<Log> logs = new ArrayList<>();
@@ -34,7 +34,7 @@
 <body>
 <header>
     <div class="logo">
-        <a href="index.jsp">
+        <a href="index.jsp" title="Main Page">
             <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
         </a>
     </div>
