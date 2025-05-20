@@ -103,5 +103,9 @@
         </div>
     </div>
 </div>
+<!-- Add the Manage Addresses button -->
+<div>
+    <button onclick="window.location.href='address?action=list'">Manage Addresses</button>
+</div>
 </body>
 </html>
