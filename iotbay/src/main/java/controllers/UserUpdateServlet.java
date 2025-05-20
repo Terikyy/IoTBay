@@ -28,8 +28,12 @@ public class UserUpdateServlet extends HttpServlet {
         String email = request.getParameter("email");
         String role = request.getParameter("role");
         String password = request.getParameter("password");
+        boolean active = Boolean.parseBoolean(request.getParameter("active"));
+        System.out.println("Active: " + request.getParameter("active"));
+        String addressIDString = request.getParameter("addressID");
+        Integer addressID = addressIDString == null ? null : Integer.parseInt(addressIDString);
 
-        User user = new Customer(userId, name, email, password);
+        User user = new Customer(userId, name, email, password, active, addressID);
 
         try {
             userDAO.update(user);
@@ -39,7 +43,11 @@ public class UserUpdateServlet extends HttpServlet {
                 user.setCustomer(request, response);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            if (e.getMessage().contains("UNIQUE constraint failed: User.Email")) {
+                session.setAttribute("update-error", "Email already exists");
+            } else {
+                session.setAttribute("update-error", e.getMessage());
+            }
         }
 
         response.sendRedirect("user-management.jsp");

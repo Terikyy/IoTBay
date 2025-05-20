@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> {
@@ -30,7 +31,9 @@ public class UserDAO extends AbstractDAO<User> {
                 rs.getInt("UserID"),
                 rs.getString("Name"),
                 rs.getString("Email"),
-                rs.getString("Password")
+                rs.getString("Password"),
+                rs.getBoolean("Active"),
+                rs.getInt("AddressId")
         );
         int userId = user.getUserID();
 
@@ -61,17 +64,22 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public int update(User user) throws SQLException {
-        String query = "UPDATE User SET Name = ?, Email = ?, Password = ?, AddressId = ? WHERE UserID = ?";
+        String query = "UPDATE User SET Name = ?, Email = ?, Password = ?, Active = ? WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
-            if (user.getAddressID() == null) {
-                ps.setNull(4, java.sql.Types.INTEGER); // Set AddressId to NULL if not provided
-            } else {
-                ps.setInt(4, user.getAddressID());
-            }
+            ps.setBoolean(4, user.isActive());
             ps.setInt(5, user.getUserID());
+            return ps.executeUpdate(); // Returns the number of rows affected
+        }
+    }
+
+    public int updateAddress(int userId, int addressId) throws SQLException {
+        String query = "UPDATE User SET AddressId = ? WHERE UserID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, addressId);
+            ps.setInt(2, userId);
             return ps.executeUpdate(); // Returns the number of rows affected
         }
     }
@@ -79,6 +87,21 @@ public class UserDAO extends AbstractDAO<User> {
     @Override
     public List<User> getAll() throws SQLException {
         return queryAllFromTable("User");
+    }
+
+    public List<User> query(String query) throws SQLException {
+        List<User> results = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM User WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
+        try (PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
+            ps.setString(1, "%" + query.toLowerCase() + "%");
+            ps.setString(2, "%" + query.toLowerCase() + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+            }
+        }
+        return results;
     }
 
     @Override

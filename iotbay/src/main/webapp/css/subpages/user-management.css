@@ -5,9 +5,10 @@
 /* Import component styles */
 @import '../components/header.css';
 @import '../components/forms.css';
+@import "../layout/container.css";
 
 .centered-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
     background-color: var(--content-bg-primary);
@@ -19,6 +20,7 @@
 .user-card {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 16px;
@@ -27,51 +29,41 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.user-card h2 {
-    font-size: 1.5em;
-    margin: 0 16px 0 0;
-    color: #333;
-    flex: 1;
-}
-
-.user-card p {
-    font-size: 1em;
-    margin: 0 16px 0 0;
-    color: #555;
-    flex: 2;
-}
-
-.user-card select {
-    padding: 8px;
-    font-size: 1em;
-    margin-right: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-}
-
-.user-card select:disabled {
-    background-color: #cccccc !important;
-    color: #666666 !important;
-    cursor: not-allowed !important;
-}
-
 .user-card button.delete-button {
     background-color: var(--error);
+}
+
+.user-card button.reset-button {
+    background-color: #ff9800;
 }
 
 .user-card button.delete-button:hover {
     background-color: #8d1e29;
 }
 
+.user-card button.reset-button:hover {
+    background-color: #986519;
+}
+
 .user-card form {
     flex: 14;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
+}
+
+.user-card form.address-form {
+    flex: 1;
+    padding: 5px;
+}
+
+.user-card form.reset-form {
+    flex: 1;
+    padding: 5px;
 }
 
 .user-card form.delete-form {
     flex: 1;
+    padding: 5px;
 }

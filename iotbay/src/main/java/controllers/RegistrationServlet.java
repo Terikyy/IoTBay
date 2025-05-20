@@ -21,7 +21,7 @@ public class RegistrationServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
         if (userDAO == null) {
-            ConnServlet.updateDAOsGET(request, response);
+            ConnServlet.updateDAOsPOST(request, response);
             return;
         }
 

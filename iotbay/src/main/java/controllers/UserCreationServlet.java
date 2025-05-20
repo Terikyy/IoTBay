@@ -5,27 +5,42 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.dao.UserDAO;
+import model.users.Customer;
 import model.users.User;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/UserCreationServlet")
 public class UserCreationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userRole = request.getParameter("userRole");
-        String userId = request.getParameter("userId");
-
-        User user = null;
-        try {
-            user = UserController.getUserById(Integer.parseInt(userId), request, response);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        HttpSession session = request.getSession();
+        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
         }
-        if (user == null)
-            throw new ServletException("User not found");
 
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
 
+        User user = new Customer(name, email, password);
+
+        try {
+            userDAO.insert(user);
+            if (role.equalsIgnoreCase("staff")) {
+                user.setStaff(request, response);
+            }
+        } catch (Exception e) {
+            if (e.getMessage().contains("UNIQUE constraint failed: User.Email")) {
+                session.setAttribute("error", "Email already exists");
+            } else {
+                session.setAttribute("error", e.getMessage());
+            }
+        }
         response.sendRedirect("user-management.jsp");
     }
 }

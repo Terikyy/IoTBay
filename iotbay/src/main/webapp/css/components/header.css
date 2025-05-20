@@ -98,7 +98,8 @@ header .search-container .search-button img {
 }
 
 header .account,
-header .shopping-cart {
+header .shopping-cart,
+header .user-logs {
     display: flex;
     align-items: center;
     margin-left: 20px;
@@ -111,7 +112,8 @@ header .header-right {
 }
 
 header .account img,
-header .shopping-cart img {
+header .shopping-cart img,
+header .user-logs img {
     height: 40px;
     width: 40px;
     cursor: pointer;
