@@ -15,6 +15,8 @@ import java.io.IOException;
 @WebServlet("/UserCreationServlet")
 public class UserCreationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String query = request.getParameter("query");
+
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
         if (userDAO == null) {
@@ -43,6 +45,6 @@ public class UserCreationServlet extends HttpServlet {
                 session.setAttribute("error", e.getMessage());
             }
         }
-        response.sendRedirect("user-management.jsp");
+        response.sendRedirect("user-management.jsp?query=" + query);
     }
 }

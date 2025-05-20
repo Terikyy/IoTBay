@@ -31,15 +31,21 @@ public class LoginServlet extends HttpServlet {
                     (AdminDAO) session.getAttribute("adminDAO"),
                     (StaffDAO) session.getAttribute("staffDAO"));
 
-            if (user != null) {
-                session.setAttribute("user", user);
-                session.setAttribute("userID", user.getId()); // Added By Eric (Jiaming)
-                LogController.createLog(request, response, "User " + user.getEmail() + " logged in");
-                response.sendRedirect("welcome.jsp");
-            } else {
+            if (user == null) {
                 session.setAttribute("error", "Email / Password mismatch");
                 response.sendRedirect("login.jsp");
+                return;
             }
+
+            if (!user.isActive()) {
+                session.setAttribute("error", "This user has been deactivated. Please contact the system admin.");
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            session.setAttribute("user", user);
+            session.setAttribute("userID", user.getId()); // Added By Eric (Jiaming)
+            LogController.createLog(request, response, "User " + user.getEmail() + " logged in");
+            response.sendRedirect("welcome.jsp");
         } catch (Exception e) {
             System.out.println(Arrays.toString(e.getStackTrace()));
             session.setAttribute("error", e.getMessage());

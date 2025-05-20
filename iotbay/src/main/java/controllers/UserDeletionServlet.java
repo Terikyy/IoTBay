@@ -12,6 +12,8 @@ import java.sql.SQLException;
 @WebServlet("/UserDeletionServlet")
 public class UserDeletionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String query = request.getParameter("query");
+
         String userId = request.getParameter("userId");
 
 
@@ -20,5 +22,7 @@ public class UserDeletionServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new ServletException("Error deleting user", e);
         }
+
+        response.sendRedirect("user-management.jsp?query=" + query);
     }
 }

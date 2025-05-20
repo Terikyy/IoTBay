@@ -16,6 +16,8 @@ import java.sql.SQLException;
 @WebServlet("/UserUpdateServlet")
 public class UserUpdateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String query = request.getParameter("query");
+
         HttpSession session = request.getSession();
 
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -42,6 +44,6 @@ public class UserUpdateServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("user-management.jsp");
+        response.sendRedirect("user-management.jsp?query=" + query);
     }
 }

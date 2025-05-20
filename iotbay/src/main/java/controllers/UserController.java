@@ -128,9 +128,8 @@ public class UserController extends HttpServlet {
             return;
         }
 
-        userDAO.deleteById(userId);
         User oldUser = userDAO.findById(userId);
+        userDAO.deleteById(userId);
         LogController.createLog(request, response, "Admin deleted user " + oldUser.getEmail());
-        response.sendRedirect("user-management.jsp");
     }
 }
