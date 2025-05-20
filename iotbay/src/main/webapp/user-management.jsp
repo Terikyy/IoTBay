@@ -12,6 +12,7 @@
     <title>User Management</title>
     <link rel="stylesheet" href="css/subpages/user-management.css">
     <%
+        // Random comment to force merge conflict
         String query = request.getParameter("query");
         if (query == null) {
             query = "";
