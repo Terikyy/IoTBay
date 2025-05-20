@@ -1,10 +1,5 @@
 package controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,6 +13,11 @@ import model.users.Admin;
 import model.users.Customer;
 import model.users.Staff;
 import model.users.User;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/UserController")
 public class UserController extends HttpServlet {
@@ -49,6 +49,22 @@ public class UserController extends HttpServlet {
         }
         List<User> users = new ArrayList<>();
         for (User user : userDAO.getAll()) {
+            users.add(getRoleSpecificUser(user,
+                    (AdminDAO) session.getAttribute("adminDAO"),
+                    (StaffDAO) session.getAttribute("staffDAO")));
+        }
+        return users;
+    }
+
+    public static List<User> queryUsers(String query, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return null;
+        }
+        List<User> users = new ArrayList<>();
+        for (User user : userDAO.query(query)) {
             users.add(getRoleSpecificUser(user,
                     (AdminDAO) session.getAttribute("adminDAO"),
                     (StaffDAO) session.getAttribute("staffDAO")));

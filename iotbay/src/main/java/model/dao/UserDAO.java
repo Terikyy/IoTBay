@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> {
@@ -79,6 +80,21 @@ public class UserDAO extends AbstractDAO<User> {
     @Override
     public List<User> getAll() throws SQLException {
         return queryAllFromTable("User");
+    }
+
+    public List<User> query(String query) throws SQLException {
+        List<User> results = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM User WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
+        try (PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
+            ps.setString(1, "%" + query.toLowerCase() + "%");
+            ps.setString(2, "%" + query.toLowerCase() + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+            }
+        }
+        return results;
     }
 
     @Override

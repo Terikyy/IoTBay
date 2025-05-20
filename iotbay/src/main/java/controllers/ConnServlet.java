@@ -30,6 +30,7 @@ public class ConnServlet extends HttpServlet {
     private AdminDAO adminDAO;
     private StaffDAO staffDAO;
     private ShippingDAO shippingDAO;
+    private LogDAO logDAO;
 
     private Connection conn;
 
@@ -87,6 +88,7 @@ public class ConnServlet extends HttpServlet {
             adminDAO = new AdminDAO(conn);
             staffDAO = new StaffDAO(conn);
             shippingDAO = new ShippingDAO(conn);
+            logDAO = new LogDAO(conn);
 
         } catch (SQLException ex) {
             Logger.getLogger(ConnServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,6 +106,7 @@ public class ConnServlet extends HttpServlet {
         session.setAttribute("adminDAO", adminDAO);
         session.setAttribute("staffDAO", staffDAO);
         session.setAttribute("shippingDAO", shippingDAO);
+        session.setAttribute("logDAO", logDAO);
 
         // Get the original requested URL from the referer or a parameter
         String redirectURL = request.getParameter("redirectURL");

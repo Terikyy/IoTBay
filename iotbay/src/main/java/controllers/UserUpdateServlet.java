@@ -39,7 +39,11 @@ public class UserUpdateServlet extends HttpServlet {
                 user.setCustomer(request, response);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            if (e.getMessage().contains("UNIQUE constraint failed: User.Email")) {
+                session.setAttribute("update-error", "Email already exists");
+            } else {
+                session.setAttribute("update-error", e.getMessage());
+            }
         }
 
         response.sendRedirect("user-management.jsp");
