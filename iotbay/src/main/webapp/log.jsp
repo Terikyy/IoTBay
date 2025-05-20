@@ -6,6 +6,8 @@
 <%@ page import="model.Log" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="controllers.LogController" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.text.DateFormatSymbols" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,9 +71,10 @@
                 <div class="no-logs">No logs found</div>
                 <% } else { %>
                 <% for (int i = 0; i < logs.size(); i++) {
-                    Log log = logs.get(i); %>
+                    Log log = logs.get(i);
+                %>
                 <div class="log-row">
-                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(log.getTimestamp()) %></span>
+                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(log.getTimestamp()) %></span>
                     <span class="log-message"><%= log.getMessage() %></span>
                 </div>
                 <% if (i < logs.size() - 1) { %>
