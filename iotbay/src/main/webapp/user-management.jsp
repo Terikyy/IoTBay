@@ -104,8 +104,8 @@
                         </label>
                         <label>
                             <select name="active">
-                                <option value="<%=true%>>" <%= user.isActive() ? "selected" : "" %>>Active</option>
-                                <option value="<%=false%>>" <%= !user.isActive() ? "selected" : "" %>>Inactive</option>
+                                <option value="<%=true%>" <%= user.isActive() ? "selected" : "" %>>Active</option>
+                                <option value="<%=false%>" <%= !user.isActive() ? "selected" : "" %>>Inactive</option>
                                 ">
                             </select>
                         </label>

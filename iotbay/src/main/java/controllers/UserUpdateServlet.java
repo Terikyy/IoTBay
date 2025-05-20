@@ -28,8 +28,10 @@ public class UserUpdateServlet extends HttpServlet {
         String email = request.getParameter("email");
         String role = request.getParameter("role");
         String password = request.getParameter("password");
-        Boolean active = Boolean.parseBoolean(request.getParameter("active"));
-        Integer addressID = Integer.parseInt(request.getParameter("addressID"));
+        boolean active = Boolean.parseBoolean(request.getParameter("active"));
+        System.out.println("Active: " + request.getParameter("active"));
+        String addressIDString = request.getParameter("addressID");
+        Integer addressID = addressIDString == null ? null : Integer.parseInt(addressIDString);
 
         User user = new Customer(userId, name, email, password, active, addressID);
 
