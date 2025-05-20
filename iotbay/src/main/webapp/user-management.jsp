@@ -18,7 +18,7 @@
         }
         User admin = (User) session.getAttribute("user");
         if (admin == null || !admin.isAdmin()) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("restricted.jsp");
             return;
         }
         List<User> users = null;

@@ -4,7 +4,7 @@
     // Check if a user is already logged in and if so redirect to welcome page
     User user = (User) session.getAttribute("user");
     if (user != null) {
-        response.sendRedirect("account-management.jsp");
+        response.sendRedirect("account.jsp");
         return;
     }
     String error = (String) session.getAttribute("error");
