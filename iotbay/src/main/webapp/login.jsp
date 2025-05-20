@@ -7,6 +7,13 @@
         response.sendRedirect("account-management.jsp");
         return;
     }
+    String error = (String) session.getAttribute("error");
+    if (error != null) {
+        session.removeAttribute("error");
+    }
+    if (error == null) {
+        error = "";
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,16 +35,14 @@
         <div class="centered-container">
             <form action="LoginController" method="get">
                 <h2>Login</h2>
-                <% if (session.getAttribute("error") != null) {%>
                 <div class="error-message">
-                    <%= session.getAttribute("error") %>
+                    <%= error %>
                 </div>
-                <% } %>
                 <label for="email">Email:</label><br>
                 <input type="email" name="email" id="email" required><br>
                 <label for="password">Password:</label><br>
                 <input type="password" name="password" id="password"><br>
-                <input type="submit" value="Login">
+                <input type="submit">
             </form>
             <p>Don't have an account? <a href="register.jsp">Register here</a></p>
         </div>

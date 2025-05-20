@@ -28,8 +28,10 @@ public class UserUpdateServlet extends HttpServlet {
         String email = request.getParameter("email");
         String role = request.getParameter("role");
         String password = request.getParameter("password");
+        Boolean active = Boolean.parseBoolean(request.getParameter("active"));
+        Integer addressID = Integer.parseInt(request.getParameter("addressID"));
 
-        User user = new Customer(userId, name, email, password);
+        User user = new Customer(userId, name, email, password, active, addressID);
 
         try {
             userDAO.update(user);

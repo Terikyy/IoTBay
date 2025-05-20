@@ -62,16 +62,11 @@
             </button>
         </form>
     </div>
-    <%
-        User user = (User) session.getAttribute("user");
-        if (user != null && user.isAdmin()) {
-    %>
     <div class="user-logs" title="User Logs">
         <a href="${pageContext.request.contextPath}/log.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
         </a>
     </div>
-    <% } %>
     <div class="account">
         <a href="${pageContext.request.contextPath}/account.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
@@ -107,8 +102,22 @@
                                 <option value="staff" <%= user.isStaff() ? "selected" : "" %>>Staff</option>
                             </select>
                         </label>
+                        <label>
+                            <select name="active">
+                                <option value="<%=true%>>" <%= user.isActive() ? "selected" : "" %>>Active</option>
+                                <option value="<%=false%>>" <%= !user.isActive() ? "selected" : "" %>>Inactive</option>
+                                ">
+                            </select>
+                        </label>
+                        <input type="hidden" name="addressId" value="<%= user.getAddressID() %>">
                         <input type="hidden" name="password" value="<%=user.getPassword()%>">
                         <button type="submit" title="Save changes to this user">Save</button>
+                    </form>
+                    <form action="address.jsp" method="post" class="address-form">
+                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
+                        <button type="submit">
+                            Address
+                        </button>
                     </form>
                     <form action="ResetPasswordServlet" method="post" class="reset-form">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">

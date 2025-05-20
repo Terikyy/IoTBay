@@ -11,12 +11,12 @@ public class Customer extends User {
         super(name, email, password);
     }
 
-    public Customer(int userId, String name, String email, String password) {
-        super(userId, name, email, password);
+    public Customer(int userId, String name, String email, String password, boolean active, Integer addressID) {
+        super(userId, name, email, password, active, addressID);
     }
 
     public Customer(User user) {
-        super(user.getUserID(), user.getName(), user.getEmail(), user.getPassword());
+        this(user.getUserID(), user.getName(), user.getEmail(), user.getPassword(), user.isActive(), user.getAddressID());
     }
 
     public Staff setStaff(HttpSession session) throws SQLException {
