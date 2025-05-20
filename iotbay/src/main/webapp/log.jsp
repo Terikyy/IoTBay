@@ -1,13 +1,10 @@
 <%@ page import="model.users.*" %>
-<%@ page import="java.util.List" %>
 <%@ page import="controllers.UserController" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="model.Log" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="controllers.LogController" %>
-<%@ page import="java.util.Locale" %>
 <%@ page import="java.text.DateFormatSymbols" %>
+<%@ page import="java.util.*" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +25,7 @@
         }
         List<Log> logs = new ArrayList<>();
         try {
-            logs = LogController.queryLogs(query, request, response);
+            logs = LogController.queryLogs(query, request, response).reversed(); // reversed, so the latest logs are on top
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +71,7 @@
                     Log log = logs.get(i);
                 %>
                 <div class="log-row">
-                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(log.getTimestamp()) %></span>
+                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime() + 1000 * 60 * 60 * 10)) /*Add 10 hours, because database time is in Greenwich Mean Time*/ %></span>
                     <span class="log-message"><%= log.getMessage() %></span>
                 </div>
                 <% if (i < logs.size() - 1) { %>
