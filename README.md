@@ -58,3 +58,6 @@ IoTBay is a university project focused on providing an online marketplace for Io
    ```
    http://localhost:8080/webapp/
    ```
+   
+## Additional Notes
+On resetting a users password, the password is set to null, so any password works, until the password is changed

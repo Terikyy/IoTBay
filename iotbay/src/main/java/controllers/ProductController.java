@@ -1,50 +1,44 @@
 package controllers;
 
-import model.Product;
-import model.dao.ProductDAO;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Product;
+import model.dao.ProductDAO;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/products/*")
 public class ProductController extends HttpServlet {
-    
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
-        // Ensure ConnServlet has been called to initialize DAOs
-        if (session.getAttribute("productDAO") == null) {
-            // Pass the current request URL as a parameter
-            String currentURL = request.getRequestURI();
-            if (request.getQueryString() != null) {
-                currentURL += "?" + request.getQueryString();
-            }
-            response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
+
+        ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
+        if (productDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
             return;
         }
-        
-        ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
-        
+
         try {
             // Get the pathInfo to determine what action to perform
             String pathInfo = request.getPathInfo();
-            
+
             if (pathInfo == null || pathInfo.equals("/") || pathInfo.equals("/list")) {
                 // Get all products
                 String category = request.getParameter("category");
                 String searchQuery = request.getParameter("query");
-                
+
                 List<Product> products;
-                
+
                 if (searchQuery != null && !searchQuery.trim().isEmpty()) {
                     // Search by name with optional category filter
                     if (category != null && !category.trim().isEmpty()) {
@@ -59,16 +53,16 @@ public class ProductController extends HttpServlet {
                     // Get all products
                     products = productDAO.getAll();
                 }
-                
+
                 // Get all categories for the sidebar
                 List<String> categories = productDAO.getAllCategories();
-                
+
                 // Set attributes for JSP
                 request.setAttribute("products", products);
                 request.setAttribute("categories", categories);
                 request.setAttribute("selectedCategory", category);
                 request.setAttribute("searchQuery", searchQuery);
-                
+
                 // Forward to the index page
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
             } else if (pathInfo.startsWith("/detail/")) {
@@ -88,7 +82,7 @@ public class ProductController extends HttpServlet {
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-            
+
         } catch (SQLException e) {
             throw new ServletException("Database error", e);
         }

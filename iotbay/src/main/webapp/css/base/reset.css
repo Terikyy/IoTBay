@@ -5,6 +5,10 @@
     font-family: Arial, sans-serif;
 }
 
+.error-message {
+    color: var(--error);
+}
+
 body {
     display: flex;
     flex-direction: column;

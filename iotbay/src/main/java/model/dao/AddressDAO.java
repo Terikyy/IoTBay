@@ -17,6 +17,7 @@ public class AddressDAO extends AbstractDAO<Address> {
     @Override
     protected Address mapRow(ResultSet rs) throws SQLException {
         return new Address(
+                rs.getInt("AddressID"), 
                 rs.getString("Name"),
                 rs.getInt("StreetNumber"),
                 rs.getString("StreetName"),
@@ -25,6 +26,20 @@ public class AddressDAO extends AbstractDAO<Address> {
                 rs.getString("City"),
                 rs.getString("State")
         );
+    }
+
+    public List<Address> getByUserId(int userId) throws SQLException {
+        List<Address> addresses = new ArrayList<>();
+        String sql = "SELECT * FROM Address WHERE UserID = ?";
+        try (var preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    addresses.add(mapRow(resultSet));
+                }
+            }
+        }
+        return addresses;
     }
 
     @Override

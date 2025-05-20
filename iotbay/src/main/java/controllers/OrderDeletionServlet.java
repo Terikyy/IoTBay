@@ -6,27 +6,27 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.dao.UserDAO;
+import model.dao.OrderDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/UserDeletionServlet")
-public class UserDeletionServlet extends HttpServlet {
+@WebServlet("/OrderDeletionServlet")
+public class OrderDeletionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userId = request.getParameter("userId");
+        String orderId = request.getParameter("orderId");
         HttpSession session = request.getSession();
-        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
-        if (userDAO == null) {
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        if (orderDAO == null) {
             ConnServlet.updateDAOsGET(request, response);
             return;
         }
 
         try {
-            userDAO.deleteById(Integer.parseInt(userId));
-            response.sendRedirect("user-management.jsp");
+            orderDAO.deleteById(Integer.parseInt(orderId));
+            response.sendRedirect("order.jsp");
         } catch (SQLException e) {
-            throw new ServletException("Error deleting user", e);
+            throw new ServletException("Error deleting Order", e);
         }
     }
 }

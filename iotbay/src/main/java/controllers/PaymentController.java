@@ -19,7 +19,8 @@ import java.sql.SQLException;
 public class PaymentController extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             processCreditCardPayment(request, response);
         } catch (SQLException e) {
@@ -27,32 +28,72 @@ public class PaymentController extends HttpServlet {
         }
     }
 
-    private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
-        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        Double totalPrice = (Double) request.getAttribute("totalPrice");
+        if (totalPrice == null) {
+            totalPrice = 0.0;
+            session.setAttribute("totalPrice", totalPrice);
+        }
 
-        String nameOnCard = request.getParameter("name-on-card");
+        request.setAttribute("totalPrice", totalPrice);
+        request.getRequestDispatcher("payment.jsp").forward(request, response);
+
+    }
+
+    private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, SQLException {
+        HttpSession session = request.getSession();
+
+        System.out.println("Test1");
+        PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
+        if (paymentDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        if (orderDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
+
+        String nameOnCard = request.getParameter("nameOnCard");
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
         String cvv = request.getParameter("cvv");
         int orderId = (Integer) session.getAttribute("orderId");
+        Double totalPrice = (Double) session.getAttribute("totalPrice");
 
         if (nameOnCard == null || cardNumber == null || expiryDate == null || cvv == null ||
-            nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
+                nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credit card details.");
             return;
         }
         System.out.println("Processing payment with card number: " + cardNumber);
 
-        // payment object is filelr for now hardcoded values, need to pass in values from cart when ready
-        Payment payment = new Payment(orderId, "CreditCard", 100.0, new java.util.Date(), "Pending");
+        Payment payment = new Payment(orderId, "CreditCard", totalPrice, new java.util.Date(), "Pending");
         IDObject.insert(paymentDAO, payment);
 
         orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
-        //redirect to order for now, decide if we want a order confirmation page. what if payment fails? stay here or return to order form?
+
+        session.setAttribute("paymentId", payment.getPaymentID());
+
         response.sendRedirect("confirmation.jsp");
     }
-}
 
+    public static Payment getPaymentById(int paymentId, HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        HttpSession session = request.getSession();
+
+        PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
+
+        if (paymentDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
+            return null;
+        }
+
+        return paymentDAO.findById(paymentId);
+    }
+
+}

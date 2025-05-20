@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import model.dao.*;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -28,6 +29,8 @@ public class ConnServlet extends HttpServlet {
     private UserDAO userDAO;
     private AdminDAO adminDAO;
     private StaffDAO staffDAO;
+    private ShippingDAO shippingDAO;
+    private LogDAO logDAO;
 
     private Connection conn;
 
@@ -44,6 +47,24 @@ public class ConnServlet extends HttpServlet {
 
         }
 
+    }
+
+    public static void updateDAOsGET(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String currentURL = request.getRequestURI();
+        if (request.getQueryString() != null) {
+            currentURL += "?" + request.getQueryString();
+        }
+        String encodedURL = URLEncoder.encode(currentURL, "UTF-8");
+        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + encodedURL);
+    }
+
+    public static void updateDAOsPOST(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String currentURL = request.getRequestURI();
+        if (request.getQueryString() != null) {
+            currentURL += "?" + request.getQueryString();
+        }
+        String encodedURL = URLEncoder.encode(currentURL, "UTF-8");
+        response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + encodedURL + "&method=POST");
     }
 
     @Override // Add the DBConnector, DBManager, Connection instances to the session
@@ -66,6 +87,8 @@ public class ConnServlet extends HttpServlet {
             userDAO = new UserDAO(conn);
             adminDAO = new AdminDAO(conn);
             staffDAO = new StaffDAO(conn);
+            shippingDAO = new ShippingDAO(conn);
+            logDAO = new LogDAO(conn);
 
         } catch (SQLException ex) {
             Logger.getLogger(ConnServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,6 +105,8 @@ public class ConnServlet extends HttpServlet {
         session.setAttribute("userDAO", userDAO);
         session.setAttribute("adminDAO", adminDAO);
         session.setAttribute("staffDAO", staffDAO);
+        session.setAttribute("shippingDAO", shippingDAO);
+        session.setAttribute("logDAO", logDAO);
 
         // Get the original requested URL from the referer or a parameter
         String redirectURL = request.getParameter("redirectURL");
@@ -108,6 +133,11 @@ public class ConnServlet extends HttpServlet {
 
         }
 
+    }
+
+    public static void updateDAOsGET(HttpSession session) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateDAOsGET'");
     }
 
 }

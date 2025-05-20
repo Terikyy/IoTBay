@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> {
@@ -66,7 +67,11 @@ public class UserDAO extends AbstractDAO<User> {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
-            ps.setInt(4, user.getAddressID());
+            if (user.getAddressID() == null) {
+                ps.setNull(4, java.sql.Types.INTEGER); // Set AddressId to NULL if not provided
+            } else {
+                ps.setInt(4, user.getAddressID());
+            }
             ps.setInt(5, user.getUserID());
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -75,6 +80,21 @@ public class UserDAO extends AbstractDAO<User> {
     @Override
     public List<User> getAll() throws SQLException {
         return queryAllFromTable("User");
+    }
+
+    public List<User> query(String query) throws SQLException {
+        List<User> results = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM User WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
+        try (PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
+            ps.setString(1, "%" + query.toLowerCase() + "%");
+            ps.setString(2, "%" + query.toLowerCase() + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+            }
+        }
+        return results;
     }
 
     @Override
@@ -93,13 +113,16 @@ public class UserDAO extends AbstractDAO<User> {
 
     // Retrieve a user by email and password (for login authentication)
     public User authenticateUser(String email, String password) throws SQLException {
-        String query = "SELECT * FROM User WHERE Email = ? AND Password = ?";
+        String query = "SELECT * FROM User WHERE Email = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, email);
-            ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapRow(rs);
+                    String dbPassword = rs.getString("Password");
+                    if (dbPassword == null || dbPassword.equals(password)) {
+                        return mapRow(rs);
+                    }
+                    return null; // Password does not match
                 }
             }
         }
