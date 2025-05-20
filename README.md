@@ -60,4 +60,5 @@ IoTBay is a university project focused on providing an online marketplace for Io
    ```
    
 ## Additional Notes
-On resetting a users password, the password is set to null, so any password works, until the password is changed
+- On resetting a users password, the password is set to null, so any password works, until the password is changed
+- Every clickable item shows the destination of the link as a tooltip

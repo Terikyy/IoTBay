@@ -6,3 +6,64 @@
 @import '../components/header.css';
 @import '../components/forms.css';
 @import "../layout/container.css";
+
+.main-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.logs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+
+    min-width: 600px;
+    padding: 2rem;
+    background-color: var(--content-bg-primary);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    text-align: center;
+}
+
+.logs-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.logs {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.no-logs {
+    text-align: center;
+    color: #888;
+    padding: 1rem 0;
+}
+
+.log-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+}
+
+.log-timestamp {
+    color: #888;
+    font-family: monospace;
+    flex-shrink: 0;
+    margin-right: 2rem;
+}
+
+.log-message {
+    word-break: break-word;
+    flex: 1;
+}
+
+.log-divider {
+    border-bottom: 1px solid #e0e0e0;
+    margin: 0 0 0 0;
+}

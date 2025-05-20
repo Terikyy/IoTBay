@@ -15,6 +15,8 @@ import java.io.IOException;
 @WebServlet("/UserCreationServlet")
 public class UserCreationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String query = request.getParameter("query");
+
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
         if (userDAO == null) {
@@ -31,8 +33,10 @@ public class UserCreationServlet extends HttpServlet {
 
         try {
             userDAO.insert(user);
+            LogController.createLog(request, response, "Admin created user " + user.getEmail() + " with password " + password);
             if (role.equalsIgnoreCase("staff")) {
                 user.setStaff(request, response);
+                LogController.createLog(request, response, "Admin set role of " + user.getEmail() + "to staff");
             }
         } catch (Exception e) {
             if (e.getMessage().contains("UNIQUE constraint failed: User.Email")) {
@@ -41,6 +45,6 @@ public class UserCreationServlet extends HttpServlet {
                 session.setAttribute("error", e.getMessage());
             }
         }
-        response.sendRedirect("user-management.jsp");
+        response.sendRedirect("user-management.jsp?query=" + query);
     }
 }

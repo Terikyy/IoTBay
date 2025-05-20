@@ -46,7 +46,6 @@ public class PaymentController extends HttpServlet {
             throws IOException, SQLException {
         HttpSession session = request.getSession();
 
-        System.out.println("Test1");
         PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
         if (paymentDAO == null) {
             ConnServlet.updateDAOsPOST(request, response);
@@ -77,7 +76,7 @@ public class PaymentController extends HttpServlet {
 
         orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
 
-        session.setAttribute("paymentId", payment.getPaymentID());
+        // session.setAttribute("paymentId", payment.getPaymentID());
 
         response.sendRedirect("confirmation.jsp");
     }

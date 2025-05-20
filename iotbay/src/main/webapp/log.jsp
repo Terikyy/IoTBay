@@ -1,11 +1,10 @@
 <%@ page import="model.users.*" %>
-<%@ page import="java.util.List" %>
 <%@ page import="controllers.UserController" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="model.Log" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="controllers.LogController" %>
+<%@ page import="java.text.DateFormatSymbols" %>
+<%@ page import="java.util.*" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +25,7 @@
         }
         List<Log> logs = new ArrayList<>();
         try {
-            logs = LogController.queryLogs(query, request, response);
+            logs = LogController.queryLogs(query, request, response).reversed(); // reversed, so the latest logs are on top
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -35,17 +34,14 @@
 <body>
 <header>
     <div class="logo">
-        <a href="${pageContext.request.contextPath}/products/list">
+        <a href="index.jsp" title="Main Page">
             <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
         </a>
     </div>
     <div class="search-container">
-        <form action="${pageContext.request.contextPath}/products/list" method="get">
+        <form action="log.jsp" method="get">
             <input type="text" class="search-input" name="query" placeholder="Search..."
-                   value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
-            <% if (request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
-            <input type="hidden" name="category" value="<%= request.getAttribute("selectedCategory") %>">
-            <% } %>
+                   value="<%= request.getAttribute("query") != null ? request.getAttribute("query") : "" %>">
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
             </button>
@@ -65,60 +61,24 @@
 </header>
 <div class="container">
     <div class="main-container main-content">
-        <div class="centered-container">
-            <h1>User Management</h1>
-            <p class="error-message">
-            </p>
-            <div class="user-management">
-                <div class="user-card">
-                    <form action="UserUpdateServlet" method="post">
-                        <input type="hidden" name="userId" value="<%= "" %>">
-                        <label>
-                            <input type="text" name="name" value="<%= "" %>">
-                        </label>
-                        <label>
-                            <input type="email" name="email" value="<%= "" %>">
-                        </label>
-                        <label>
-                            <select name="role">
-                                <option value="customer" <%= true ? "" : "selected" %>>Customer</option>
-                                <option value="staff" <%= true ? "selected" : "" %>>Staff</option>
-                            </select>
-                        </label>
-                        <input type="hidden" name="password" value="<%=""%>">
-                        <button type="submit" title="Save changes to this user">Save</button>
-                    </form>
-                    <form action="ResetPasswordServlet" method="post" class="reset-form">
-                        <input type="hidden" name="userId" value="<%= "" %>">
-                        <button class="reset-button"
-                                onclick="this.form.submit()" title="Reset this user's password">
-                            Reset
-                        </button>
-                    </form>
-                    <form action="UserDeletionServlet" method="post" class="delete-form">
-                        <input type="hidden" name="userId" value="<%= "" %>">
-                        <button class="delete-button"
-                                onclick="this.form.submit()" title="Delete this user">
-                            Delete
-                        </button>
-                    </form>
+        <div class="logs-container">
+            <h1 class="logs-title">Logs</h1>
+            <div class="logs">
+                <% if (logs.isEmpty()) { %>
+                <div class="no-logs">No logs found</div>
+                <% } else { %>
+                <% for (int i = 0; i < logs.size(); i++) {
+                    Log log = logs.get(i);
+                %>
+                <div class="log-row">
+                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime() + 1000 * 60 * 60 * 10)) /*Add 10 hours, because database time is in Greenwich Mean Time*/ %></span>
+                    <span class="log-message"><%= log.getMessage() %></span>
                 </div>
-                <h4>Add New User</h4>
-                <p class="error-message">
-                    
-                </p>
-                <div class="user-card">
-                    <form action="UserCreationServlet" method="post">
-                        <input type="text" id="name" name="name" placeholder="Name" required>
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                        <input type="password" name="password" id="password" placeholder="Password" required>
-                        <select name="role" id="role" required>
-                            <option value="customer">Customer</option>
-                            <option value="staff">Staff</option>
-                        </select>
-                        <button type="submit" title="Create User">Create</button>
-                    </form>
-                </div>
+                <% if (i < logs.size() - 1) { %>
+                <div class="log-divider"></div>
+                <% } %>
+                <% } %>
+                <% } %>
             </div>
         </div>
     </div>
