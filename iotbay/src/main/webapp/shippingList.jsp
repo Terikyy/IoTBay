@@ -42,7 +42,7 @@
     </div>
 
     <button type="submit">Search</button>
-    <button type="submit" name="showAll" value="1">Show All</button>
+    <button type="submit" name="showAll" value="true">Show All</button>
 
   </form>
 
