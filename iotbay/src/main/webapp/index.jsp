@@ -48,6 +48,11 @@
             <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
         </a>
     </div>
+    <div class="manage-users" title="Manage Users">
+        <a href="${pageContext.request.contextPath}/user-management.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
+        </a>
+    </div>
     <% } %>
 
     <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->

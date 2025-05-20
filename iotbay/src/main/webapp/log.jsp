@@ -3,6 +3,9 @@
 <%@ page import="controllers.UserController" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="model.Log" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="controllers.LogController" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,28 +24,11 @@
             response.sendRedirect("login.jsp");
             return;
         }
-        List<User> users = null;
+        List<Log> logs = new ArrayList<>();
         try {
-            users = UserController.queryUsers(query, request, response);
+            logs = LogController.queryLogs(query, request, response);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        if (users == null || users.isEmpty()) {
-            response.sendRedirect("index.jsp");
-        }
-        String updateError = (String) session.getAttribute("update-error");
-        if (updateError != null) {
-            session.removeAttribute("update-error");
-        }
-        if (updateError == null) {
-            updateError = "";
-        }
-        String error = (String) session.getAttribute("error");
-        if (error != null) {
-            session.removeAttribute("error");
-        }
-        if (error == null) {
-            error = "";
         }
     %>
 </head>
@@ -54,24 +40,23 @@
         </a>
     </div>
     <div class="search-container">
-        <form action="user-management.jsp" method="get">
+        <form action="${pageContext.request.contextPath}/products/list" method="get">
             <input type="text" class="search-input" name="query" placeholder="Search..."
-                   value="<%= query %>" autofocus>
+                   value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
+            <% if (request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
+            <input type="hidden" name="category" value="<%= request.getAttribute("selectedCategory") %>">
+            <% } %>
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
             </button>
         </form>
     </div>
-    <%
-        User user = (User) session.getAttribute("user");
-        if (user != null && user.isAdmin()) {
-    %>
-    <div class="user-logs" title="User Logs">
-        <a href="${pageContext.request.contextPath}/log.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
+    <div class="manage-users" title="Manage Users">
+        <a href="${pageContext.request.contextPath}/user-management.jsp">
+            <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
         </a>
     </div>
-    <% } %>
+
     <div class="account">
         <a href="${pageContext.request.contextPath}/account.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
@@ -83,52 +68,44 @@
         <div class="centered-container">
             <h1>User Management</h1>
             <p class="error-message">
-                <%=updateError%>
             </p>
             <div class="user-management">
-                <%= users.isEmpty() ? "No users found." : ""%>
-                <% for (User user : users) {
-                    if (user.getUserID() == admin.getUserID()) {
-                        continue; // Skip the admin user
-                    }
-                %>
                 <div class="user-card">
                     <form action="UserUpdateServlet" method="post">
-                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
+                        <input type="hidden" name="userId" value="<%= "" %>">
                         <label>
-                            <input type="text" name="name" value="<%= user.getName() %>">
+                            <input type="text" name="name" value="<%= "" %>">
                         </label>
                         <label>
-                            <input type="email" name="email" value="<%= user.getEmail() %>">
+                            <input type="email" name="email" value="<%= "" %>">
                         </label>
                         <label>
                             <select name="role">
-                                <option value="customer" <%= user.isStaff() ? "" : "selected" %>>Customer</option>
-                                <option value="staff" <%= user.isStaff() ? "selected" : "" %>>Staff</option>
+                                <option value="customer" <%= true ? "" : "selected" %>>Customer</option>
+                                <option value="staff" <%= true ? "selected" : "" %>>Staff</option>
                             </select>
                         </label>
-                        <input type="hidden" name="password" value="<%=user.getPassword()%>">
+                        <input type="hidden" name="password" value="<%=""%>">
                         <button type="submit" title="Save changes to this user">Save</button>
                     </form>
                     <form action="ResetPasswordServlet" method="post" class="reset-form">
-                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
+                        <input type="hidden" name="userId" value="<%= "" %>">
                         <button class="reset-button"
                                 onclick="this.form.submit()" title="Reset this user's password">
                             Reset
                         </button>
                     </form>
                     <form action="UserDeletionServlet" method="post" class="delete-form">
-                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
+                        <input type="hidden" name="userId" value="<%= "" %>">
                         <button class="delete-button"
                                 onclick="this.form.submit()" title="Delete this user">
                             Delete
                         </button>
                     </form>
                 </div>
-                <% } %>
                 <h4>Add New User</h4>
                 <p class="error-message">
-                    <%=error%>
+                    
                 </p>
                 <div class="user-card">
                     <form action="UserCreationServlet" method="post">

@@ -54,9 +54,12 @@
         </a>
     </div>
     <div class="search-container">
-        <form action="user-management.jsp" method="get">
+        <form action="${pageContext.request.contextPath}/products/list" method="get">
             <input type="text" class="search-input" name="query" placeholder="Search..."
-                   value="<%= query %>" autofocus>
+                   value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
+            <% if (request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
+            <input type="hidden" name="category" value="<%= request.getAttribute("selectedCategory") %>">
+            <% } %>
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
             </button>
@@ -72,6 +75,7 @@
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
         </a>
     </div>
+
 </header>
 <div class="container">
     <div class="main-container main-content">
