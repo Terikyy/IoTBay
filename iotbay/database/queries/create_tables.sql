@@ -28,6 +28,7 @@ CREATE TABLE User (
     Name VARCHAR(50) NOT NULL,
     Email VARCHAR(50) UNIQUE,
     Password VARCHAR(50),
+    Active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (AddressID) REFERENCES Address(AddressID)
 );
 
