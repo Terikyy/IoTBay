@@ -1,7 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="model.Address" %>
-<%@ page import="model.User" %>
+
 <%@ page import="java.util.List" %>
 <%@ page session="true" %>
 <%@ page import="model.users.User" %>
@@ -91,8 +91,8 @@
                 <td><%= address.getCity() %></td>
                 <td><%= address.getState() %></td>
                 <td>
-                    <a href="address?action=update&id=<%= address.getId() %>">Edit</a> |
-                    <a href="address?action=delete&id=<%= address.getId() %>" onclick="return confirm('Are you sure?')">Delete</a>
+                    <a href="address?action=update&id=<%= address.getAddressId() %>">Edit</a> |
+                    <a href="address?action=delete&id=<%= address.getAddressId() %>" onclick="return confirm('Are you sure?')">Delete</a>
                 </td>
             </tr>
             <%

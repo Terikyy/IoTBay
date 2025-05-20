@@ -17,6 +17,8 @@ import model.users.User;
 @WebServlet("/address")
 public class AddressController extends HttpServlet {
 
+  
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,6 +48,7 @@ public class AddressController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
         }
     }
+    
     //edit address method
     private void editAddress(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
