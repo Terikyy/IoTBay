@@ -42,7 +42,7 @@ public class RegistrationServlet extends HttpServlet {
         try {
             IDObject.insert(userDAO, user);
             session.setAttribute("user", user);
-            LogController.createLog(request, response, "User " + user.getEmail() + " registered");
+            LogController.createLog(request, response, "User registered", user.getUserID());
             response.sendRedirect("welcome.jsp");
         } catch (Exception e) {
             if (e.getMessage().contains("UNIQUE constraint failed: User.Email"))

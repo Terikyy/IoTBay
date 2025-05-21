@@ -43,8 +43,8 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
             session.setAttribute("user", user);
-            session.setAttribute("userID", user.getId()); // Added By Eric (Jiaming)
-            LogController.createLog(request, response, "User " + user.getEmail() + " logged in");
+            session.setAttribute("userID", user.getUserID()); // Added By Eric (Jiaming)
+            LogController.createLog(request, response, "User logged in", user.getUserID());
             response.sendRedirect("welcome.jsp");
         } catch (Exception e) {
             System.out.println(Arrays.toString(e.getStackTrace()));

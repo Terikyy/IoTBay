@@ -30,7 +30,7 @@ public class ResetPasswordServlet extends HttpServlet {
             user.setPassword(null);
 
             userDAO.update(user);
-            LogController.createLog(request, response, "Admin reset password of " + user.getEmail());
+            LogController.createLog(request, response, "Password of user was reset", user.getUserID());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

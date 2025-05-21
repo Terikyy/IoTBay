@@ -22,7 +22,8 @@ public class LogDAO extends AbstractDAO<Log> {
         return new Log(
                 rs.getInt(tableId),
                 rs.getString("LogMessage"),
-                rs.getDate("Timestamp")
+                rs.getDate("Timestamp"),
+                rs.getInt("userId")
         );
     }
 

@@ -1,8 +1,8 @@
 package model;
 
-import java.sql.SQLException;
-
 import model.dao.AbstractDAO;
+
+import java.sql.SQLException;
 
 public abstract class IDObject {
     private int id;
@@ -11,7 +11,7 @@ public abstract class IDObject {
         randomizeID();
     }
 
-    public int getId() {
+    protected int getId() {
         return id;
     }
 

@@ -1,9 +1,5 @@
 package controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,16 +10,19 @@ import model.Address;
 import model.dao.AddressDAO;
 import model.users.User;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 @WebServlet("/address")
 public class AddressController extends HttpServlet {
 
-  
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-    
+
         if ("list".equals(action)) {
             listAddresses(request, response);
         } else if ("edit".equals(action)) {
@@ -48,43 +47,43 @@ public class AddressController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
         }
     }
-    
+
     //edit address method
     private void editAddress(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    HttpSession session = request.getSession();
-    AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
-    if (addressDAO == null) {
-        throw new IOException("AddressDAO is not initialized in the session.");
-    }
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
+        if (addressDAO == null) {
+            throw new IOException("AddressDAO is not initialized in the session.");
+        }
 
-    // Retrieve the user from the session
-    User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-
-    try {
-        int userId = user.getId(); // Assuming User object has a getId() method
-        int id = Integer.parseInt(request.getParameter("id"));
-        Address address = addressDAO.findByIdAndUserId(id, userId); // Fetch address by ID and userId
-        if (address == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Address not found or access denied");
+        // Retrieve the user from the session
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login.jsp");
             return;
         }
-        request.setAttribute("address", address);
-        request.getRequestDispatcher("addressForm.jsp").forward(request, response);
-    } catch (SQLException e) {
-        throw new ServletException("Error retrieving address for editing", e);
-    } catch (NumberFormatException e) {
-        throw new IOException("Invalid address ID for editing", e);
+
+        try {
+            int userId = user.getUserID(); // Assuming User object has a getId() method
+            int id = Integer.parseInt(request.getParameter("id"));
+            Address address = addressDAO.findByIdAndUserId(id, userId); // Fetch address by ID and userId
+            if (address == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Address not found or access denied");
+                return;
+            }
+            request.setAttribute("address", address);
+            request.getRequestDispatcher("addressForm.jsp").forward(request, response);
+        } catch (SQLException e) {
+            throw new ServletException("Error retrieving address for editing", e);
+        } catch (NumberFormatException e) {
+            throw new IOException("Invalid address ID for editing", e);
+        }
     }
-}
-    
+
     // Insert Address method
     private void insertAddress(HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+            throws IOException {
         HttpSession session = request.getSession();
         AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
         if (addressDAO == null) {
@@ -110,46 +109,46 @@ public class AddressController extends HttpServlet {
 
     // update Address method
     private void updateAddress(HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
-    HttpSession session = request.getSession();
-    AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
-    if (addressDAO == null) {
-        throw new IOException("AddressDAO is not initialized in the session.");
-    }
+            throws IOException {
+        HttpSession session = request.getSession();
+        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
+        if (addressDAO == null) {
+            throw new IOException("AddressDAO is not initialized in the session.");
+        }
 
-    // Retrieve the user from the session
-    User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-
-    try {
-        int userId = user.getId(); // Assuming User object has a getId() method
-        int id = Integer.parseInt(request.getParameter("id"));
-        Address address = addressDAO.findByIdAndUserId(id, userId); // Validate ownership
-        if (address == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Address not found or access denied");
+        // Retrieve the user from the session
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login.jsp");
             return;
         }
 
-        String name = request.getParameter("name");
-        int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
-        String streetName = request.getParameter("streetName");
-        int postcode = Integer.parseInt(request.getParameter("postcode"));
-        String suburb = request.getParameter("suburb");
-        String city = request.getParameter("city");
-        String state = request.getParameter("state");
+        try {
+            int userId = user.getUserID(); // Assuming User object has a getId() method
+            int id = Integer.parseInt(request.getParameter("id"));
+            Address address = addressDAO.findByIdAndUserId(id, userId); // Validate ownership
+            if (address == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Address not found or access denied");
+                return;
+            }
 
-        Address updatedAddress = new Address(id, name, streetNumber, streetName, postcode, suburb, city, state);
-        addressDAO.update(updatedAddress);
-        response.sendRedirect("address?action=list");
-    } catch (SQLException e) {
-        throw new IOException("Error updating address", e);
-    } catch (NumberFormatException e) {
-        throw new IOException("Invalid input for address update", e);
+            String name = request.getParameter("name");
+            int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
+            String streetName = request.getParameter("streetName");
+            int postcode = Integer.parseInt(request.getParameter("postcode"));
+            String suburb = request.getParameter("suburb");
+            String city = request.getParameter("city");
+            String state = request.getParameter("state");
+
+            Address updatedAddress = new Address(id, name, streetNumber, streetName, postcode, suburb, city, state);
+            addressDAO.update(updatedAddress);
+            response.sendRedirect("address?action=list");
+        } catch (SQLException e) {
+            throw new IOException("Error updating address", e);
+        } catch (NumberFormatException e) {
+            throw new IOException("Invalid input for address update", e);
+        }
     }
-}
 
     // delete Address method
     private void deleteAddress(HttpServletRequest request, HttpServletResponse response)
@@ -168,7 +167,7 @@ public class AddressController extends HttpServlet {
         }
 
         try {
-            int userId = user.getId(); // Assuming User object has a getId() method
+            int userId = user.getUserID(); // Assuming User object has a getId() method
             int id = Integer.parseInt(request.getParameter("id"));
             Address address = addressDAO.findByIdAndUserId(id, userId); // Validate ownership
             if (address == null) {
@@ -182,7 +181,7 @@ public class AddressController extends HttpServlet {
         } catch (NumberFormatException e) {
             throw new IOException("Invalid address ID for deletion", e);
         }
-}
+    }
 
     // List Address method
     private void listAddresses(HttpServletRequest request, HttpServletResponse response)
@@ -198,14 +197,14 @@ public class AddressController extends HttpServlet {
         }
 
         try {
-            int userId = user.getId(); // get the user's ID
+            int userId = user.getUserID(); // get the user's ID
             List<Address> addresses = addressDAO.getByUserId(userId); // fetch by userId
             request.setAttribute("addressList", addresses);
             request.getRequestDispatcher("addressList.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error retrieving addresses", e);
         }
-        }
+    }
 }
 
 

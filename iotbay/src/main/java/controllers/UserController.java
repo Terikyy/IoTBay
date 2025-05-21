@@ -72,6 +72,22 @@ public class UserController extends HttpServlet {
         return users;
     }
 
+    public static void createUser(User user, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
+        UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
+        if (userDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
+
+        userDAO.insert(user);
+        LogController.createLog(request, response, "User was created", user.getUserID());
+        if (user.isStaff()) {
+            user.setStaff(request, response);
+            LogController.createLog(request, response, "User's role was set to staff", user.getUserID());
+        }
+    }
+
     public static User getUserById(int userId, HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         HttpSession session = request.getSession();
         UserDAO userDAO = (UserDAO) session.getAttribute("userDAO");
@@ -108,15 +124,15 @@ public class UserController extends HttpServlet {
         User oldUser = userDAO.findById(user.getUserID());
         userDAO.update(user);
         if (oldUser.getEmail().equals(user.getEmail()))
-            LogController.createLog(request, response, "Admin updated user " + oldUser.getEmail());
+            LogController.createLog(request, response, "User was updated", user.getUserID());
         else
-            LogController.createLog(request, response, "Admin updated user " + oldUser.getEmail() + ". New email: " + user.getEmail());
+            LogController.createLog(request, response, "User was updated - Old E-mail: " + oldUser.getEmail() + ", New E-Mail: " + user.getEmail(), user.getUserID());
         if (user.isStaff()) {
             user.setStaff(request, response);
-            LogController.createLog(request, response, "Admin set role of " + user.getEmail() + " to staff");
+            LogController.createLog(request, response, "User's role was set to staff", user.getUserID());
         } else {
             user.setCustomer(request, response);
-            LogController.createLog(request, response, "Admin set role of " + user.getEmail() + " to staff");
+            LogController.createLog(request, response, "User's role was set to customer", user.getUserID());
         }
     }
 
@@ -130,6 +146,6 @@ public class UserController extends HttpServlet {
 
         User oldUser = userDAO.findById(userId);
         userDAO.deleteById(userId);
-        LogController.createLog(request, response, "Admin deleted user " + oldUser.getEmail());
+        LogController.createLog(request, response, "User was deleted. E-Mail: " + oldUser.getEmail(), userId);
     }
 }

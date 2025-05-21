@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.dao.UserDAO;
 import model.users.Customer;
+import model.users.Staff;
 import model.users.User;
 import utils.ValidatorUtil;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/UserCreationServlet")
 public class UserCreationServlet extends HttpServlet {
@@ -41,15 +43,13 @@ public class UserCreationServlet extends HttpServlet {
         String role = request.getParameter("role");
 
         User user = new Customer(name, email, password);
+        if (role.equalsIgnoreCase("staff")) {
+            user = new Staff(user);
+        }
 
         try {
-            userDAO.insert(user);
-            LogController.createLog(request, response, "Admin created user " + user.getEmail() + " with password " + password);
-            if (role.equalsIgnoreCase("staff")) {
-                user.setStaff(request, response);
-                LogController.createLog(request, response, "Admin set role of " + user.getEmail() + "to staff");
-            }
-        } catch (Exception e) {
+            UserController.createUser(user, request, response);
+        } catch (SQLException e) {
             if (e.getMessage().contains("UNIQUE constraint failed: User.Email")) {
                 session.setAttribute("error", "Email already exists");
             } else {

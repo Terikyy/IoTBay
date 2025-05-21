@@ -1,12 +1,5 @@
 package controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,6 +10,13 @@ import model.ShippingManagement;
 import model.dao.ShippingDAO;
 import model.dao.UserDAO;
 import model.users.User;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @WebServlet("/ShippingListController")
@@ -59,7 +59,7 @@ public class ShippingListController extends HttpServlet {
             User user = (User) session.getAttribute("user");
             List<ShippingManagement> all;
             if (user != null) { // logged in user
-                int userID = user.getId();
+                int userID = user.getUserID();
                 all = shippingDAO.findByUserId(userID);
             } else { // guest user
                 Integer guestId = (Integer) session.getAttribute("guestShipping");

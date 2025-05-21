@@ -1,5 +1,4 @@
 <%@ page import="model.users.User" %>
-<%@ page import="utils.UserUtil" %>
 <%@ page session="true" %>
 <%
     // Redirect to login page if user is not logged in

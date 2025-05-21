@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class LogController {
-    public static void createLog(HttpServletRequest request, HttpServletResponse response, String message) throws IOException, SQLException {
+    public static void createLog(HttpServletRequest request, HttpServletResponse response, String message, int userId) throws IOException, SQLException {
         HttpSession session = request.getSession();
         LogDAO logDAO = (LogDAO) session.getAttribute("logDAO");
         if (logDAO == null) {
@@ -19,7 +19,7 @@ public class LogController {
             return;
         }
 
-        Log log = new Log(message);
+        Log log = new Log(message, userId);
 
         logDAO.insert(log);
     }

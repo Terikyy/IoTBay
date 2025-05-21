@@ -23,7 +23,7 @@
             response.sendRedirect("restricted.jsp");
             return;
         }
-        List<Log> logs = new ArrayList<>();
+        List<Log> logs;
         try {
             logs = LogController.queryLogs(query, request, response).reversed(); // reversed, so the latest logs are on top
         } catch (SQLException e) {
@@ -69,9 +69,11 @@
                 <% } else { %>
                 <% for (int i = 0; i < logs.size(); i++) {
                     Log log = logs.get(i);
+                    User user = UserController.getUserById(log.getUserId(), request, response);
                 %>
                 <div class="log-row">
                     <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime() + 1000 * 60 * 60 * 10)) /*Add 10 hours, because database time is in Greenwich Mean Time*/ %></span>
+                    <span class="log-user"><%= user != null ? user.getEmail() : "User does not exist" %></span>
                     <span class="log-message"><%= log.getMessage() %></span>
                 </div>
                 <% if (i < logs.size() - 1) { %>

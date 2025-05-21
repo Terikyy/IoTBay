@@ -49,7 +49,7 @@ public class PaymentListController extends HttpServlet {
             User user = (User) session.getAttribute("user");
             List<Payment> all;
             if (user != null) { // logged in user
-                int userID = user.getId();
+                int userID = user.getUserID();
                 all = paymentDAO.findByUserId(userID);
             } else { // guest user
                 all = new ArrayList<>();
