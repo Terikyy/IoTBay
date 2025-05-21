@@ -1,5 +1,12 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,13 +17,6 @@ import model.ShippingManagement;
 import model.dao.ShippingDAO;
 import model.dao.UserDAO;
 import model.users.User;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @WebServlet("/ShippingListController")
@@ -42,6 +42,16 @@ public class ShippingListController extends HttpServlet {
                 }
                 response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
                 return;
+            }
+
+            String action = request.getParameter("action");
+            if ("delete".equals(action)) {
+                int id = Integer.parseInt(request.getParameter("shipmentId"));
+                try {
+                    shippingDAO.deleteById(id);
+                } catch (SQLException e) {
+                    throw new ServletException(e);
+                }
             }
 
             // Check if the user is logged in

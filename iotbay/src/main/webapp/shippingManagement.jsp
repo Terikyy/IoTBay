@@ -120,40 +120,7 @@
       <a href="ShippingController"><button> Cancel </button></a>
     </form>
   <% } %>
-
-
-
   
-
-<!-- Update/Delete shipment -->
-<% if (shipments != null && !shipments.isEmpty()) { %>
-  <% for (ShippingManagement s : shipments) { %>
-    <div class="card">
-      <br><h3></strong>Shipment ID: </strong><%= s.getShipmentId() %></h3>
-      <br><p></strong>Order ID:   </strong><%= s.getOrderId() %></p>
-      <br><p></strong>Date:        </strong><%= s.getShipmentDate() %></p>
-      <br><p></strong>Method:      </strong><%= s.getShippingMethod() %></p>
-      <br><p></strong>Address:     </strong><%= s.getAddress() %></p><br>
-
-        <!-- EDIT: GET form with a submit button -->
-      <form action="ShippingController" method="get" style="display:inline;">
-        <input type="hidden" name="action" value="update"/>
-        <input type="hidden" name="shipmentId" value="<%= s.getShipmentId() %>"/>
-        <button type="submit" class="btn-primary">Update</button>
-      </form>
-
-      <!-- DELETE: POST form with a submit button -->
-      <form action="ShippingController" method="post" style="display:inline;">
-        <input type="hidden" name="action" value="delete"/>
-        <input type="hidden" name="shipmentId" value="<%= s.getShipmentId() %>"/>
-        <button type="submit" class="btn-primary">Delete</button>
-      </form>
-          </div>
-      <% } %>
-    <% } %>
-  
-
-
 
 
       </form>

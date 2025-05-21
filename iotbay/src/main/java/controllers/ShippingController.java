@@ -146,10 +146,6 @@ public class ShippingController extends HttpServlet {
             updateShipment(request, response);
             return;
 
-        case "delete":
-            deleteShipment(request, response);
-            return;
-
         default:
             listShipments(request, response);
             return;
@@ -202,14 +198,6 @@ public class ShippingController extends HttpServlet {
 
         HttpSession session = request.getSession();
         session.setAttribute("orderId", orderId);
-        response.sendRedirect(request.getContextPath() + "/payment.jsp");
+        response.sendRedirect(request.getContextPath() + "/ShippingListController?showAll=1");
     }
-
-    // Delete a shipment
-    private void deleteShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        int shipmentId = Integer.parseInt(request.getParameter("shipmentId"));
-        shippingDAO.deleteById(shipmentId);
-        listShipments(request, response);
-    }
-
 }

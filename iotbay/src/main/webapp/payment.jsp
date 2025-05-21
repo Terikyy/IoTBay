@@ -45,8 +45,6 @@
     </div>
     <a href="index.jsp" title="Main Page">Return to Order</a>
 
-    <a href="${pageContext.request.contextPath}/ShippingController">Back to Shipment</a>
-
 </header>
 <div class="container">
     <div class="main-container">
