@@ -127,7 +127,6 @@
                                 ">
                             </select>
                         </label>
-                        <input type="hidden" name="addressId" value="<%= user.getAddressID() %>">
                         <input type="hidden" name="password" value="<%=user.getPassword()%>">
                         <button type="submit" title="Save changes to this user">Save</button>
                     </form>

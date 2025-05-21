@@ -14,12 +14,10 @@ drop table Log;
 -- 01 User
 CREATE TABLE User (
     UserID INT PRIMARY KEY,
-    AddressID INT,
     Name VARCHAR(50) NOT NULL,
     Email VARCHAR(50) UNIQUE,
     Password VARCHAR(50),
-    Active BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (AddressID) REFERENCES Address(AddressID)
+    Active BOOLEAN DEFAULT TRUE
 );
 
 -- 02 Admin
@@ -111,6 +109,7 @@ CREATE TABLE ShippingManagement (
 
 CREATE TABLE Log (
     LogID INT PRIMARY KEY,
+    UserID INT,
     LogMessage VARCHAR(100),
     Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 );

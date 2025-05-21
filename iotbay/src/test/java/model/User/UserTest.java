@@ -55,13 +55,6 @@ public class UserTest {
     }
 
     @Test
-    public void testSetAndGetAddressID() {
-        Integer addressID = 123;
-        user.setAddressID(addressID);
-        assertEquals(addressID, user.getAddressID());
-    }
-
-    @Test
     public void isAdminTest() {
         assertFalse(user.isAdmin());
         Staff staff = new Staff(user);

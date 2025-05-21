@@ -32,8 +32,7 @@ public class UserDAO extends AbstractDAO<User> {
                 rs.getString("Name"),
                 rs.getString("Email"),
                 rs.getString("Password"),
-                rs.getBoolean("Active"),
-                rs.getInt("AddressId")
+                rs.getBoolean("Active")
         );
         int userId = user.getUserID();
 
@@ -71,15 +70,6 @@ public class UserDAO extends AbstractDAO<User> {
             ps.setString(3, user.getPassword());
             ps.setBoolean(4, user.isActive());
             ps.setInt(5, user.getUserID());
-            return ps.executeUpdate(); // Returns the number of rows affected
-        }
-    }
-
-    public int updateAddress(int userId, int addressId) throws SQLException {
-        String query = "UPDATE User SET AddressId = ? WHERE UserID = ?";
-        try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, addressId);
-            ps.setInt(2, userId);
             return ps.executeUpdate(); // Returns the number of rows affected
         }
     }

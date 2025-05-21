@@ -10,12 +10,12 @@ public class Admin extends User {
         super(name, email, password);
     }
 
-    public Admin(int userId, String name, String email, String password, boolean active, Integer addressID) {
-        super(userId, name, email, password, active, addressID);
+    public Admin(int userId, String name, String email, String password, boolean active) {
+        super(userId, name, email, password, active);
     }
 
     public Admin(User user) {
-        super(user.getUserID(), user.getName(), user.getEmail(), user.getPassword(), user.isActive(), user.getAddressID());
+        this(user.getUserID(), user.getName(), user.getEmail(), user.getPassword(), user.isActive());
     }
 
     public Customer setCustomer(HttpSession session) throws SQLException {

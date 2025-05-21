@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import model.users.Customer;
 import model.users.Staff;
 import model.users.User;
+import utils.ValidatorUtil;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -23,13 +24,21 @@ public class UserUpdateServlet extends HttpServlet {
         int userId = Integer.parseInt(request.getParameter("userId"));
         String name = request.getParameter("name");
         String email = request.getParameter("email");
+        if (!ValidatorUtil.isValidEmail(email)) {
+            session.setAttribute("update-error", "Invalid email format");
+            response.sendRedirect("user-management.jsp?query=" + query);
+            return;
+        }
         String role = request.getParameter("role");
         String password = request.getParameter("password");
+        if (!ValidatorUtil.isValidPassword(password)) {
+            session.setAttribute("update-error", "Password must be at least 8 characters long and contain at least one letter and one number");
+            response.sendRedirect("user-management.jsp?query=" + query);
+            return;
+        }
         boolean active = Boolean.parseBoolean(request.getParameter("active"));
-        String addressIDString = request.getParameter("addressID");
-        Integer addressID = addressIDString == null ? null : Integer.parseInt(addressIDString);
 
-        User user = new Customer(userId, name, email, password, active, addressID);
+        User user = new Customer(userId, name, email, password, active);
         if (role.equalsIgnoreCase("staff")) {
             user = new Staff(user);
         }
