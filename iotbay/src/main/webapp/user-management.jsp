@@ -131,12 +131,6 @@
                         <input type="hidden" name="password" value="<%=user.getPassword()%>">
                         <button type="submit" title="Save changes to this user">Save</button>
                     </form>
-                    <form action="address.jsp" method="post" class="address-form">
-                        <input type="hidden" name="userId" value="<%= user.getUserID() %>">
-                        <button type="submit">
-                            Address
-                        </button>
-                    </form>
                     <form action="ResetPasswordServlet" method="post" class="reset-form">
                         <input type="hidden" name="query" value="<%= query %>">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
