@@ -18,7 +18,7 @@ public class IDObjectTest {
     }
 
     private final IDObject idObject;
-    private final int id = 1234;
+    private final int id = Integer.MAX_VALUE;
 
     public IDObjectTest() {
         idObject = new NonAbstractIDObject(id);
@@ -53,11 +53,5 @@ public class IDObjectTest {
 
         // Check that the ID is non-negative
         assertTrue(idObject.getId() >= 0 && idObject.getId() < Integer.MAX_VALUE);
-    }
-
-    @Test
-    public void testInsert() {
-        // This cannot be tested without a database connection
-        // --> Integration test
     }
 }

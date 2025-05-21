@@ -2,16 +2,16 @@ package model;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogTest {
     private final Log log;
     private final String message = "Test log message";
-    private final int id = 1234;
-    private final Date timestamp = new Date();
-    private final int userId = 5678;
+    private final int id = Integer.MAX_VALUE;
+    private final Date timestamp = new Date(System.currentTimeMillis());
+    private final int userId = Integer.MAX_VALUE;
 
     public LogTest() {
         log = new Log(id, message, timestamp, userId);
