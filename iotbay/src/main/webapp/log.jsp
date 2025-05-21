@@ -69,7 +69,13 @@
                 <% } else { %>
                 <% for (int i = 0; i < logs.size(); i++) {
                     Log log = logs.get(i);
-                    User user = UserController.getUserById(log.getUserId(), request, response);
+                    User user;
+                    try {
+                        user = UserController.getUserById(log.getUserId(), request, response);
+                        System.out.println("User: " + log.getUserId());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 %>
                 <div class="log-row">
                     <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime() + 1000 * 60 * 60 * 10)) /*Add 10 hours, because database time is in Greenwich Mean Time*/ %></span>
