@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import model.dao.UserDAO;
 import model.users.Customer;
 import model.users.User;
+import utils.ValidatorUtil;
 
 import java.io.IOException;
 
@@ -26,7 +27,17 @@ public class UserCreationServlet extends HttpServlet {
 
         String name = request.getParameter("name");
         String email = request.getParameter("email");
+        if (!ValidatorUtil.isValidEmail(email)) {
+            session.setAttribute("error", "Invalid email format");
+            response.sendRedirect("user-management.jsp?query=" + query);
+            return;
+        }
         String password = request.getParameter("password");
+        if (!ValidatorUtil.isValidPassword(password)) {
+            session.setAttribute("error", "Password must be at least 8 characters long and contain at least one letter and one number");
+            response.sendRedirect("user-management.jsp?query=" + query);
+            return;
+        }
         String role = request.getParameter("role");
 
         User user = new Customer(name, email, password);

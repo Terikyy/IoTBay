@@ -31,11 +31,6 @@ public class UserUpdateServlet extends HttpServlet {
         }
         String role = request.getParameter("role");
         String password = request.getParameter("password");
-        if (!ValidatorUtil.isValidPassword(password)) {
-            session.setAttribute("update-error", "Password must be at least 8 characters long and contain at least one letter and one number");
-            response.sendRedirect("user-management.jsp?query=" + query);
-            return;
-        }
         boolean active = Boolean.parseBoolean(request.getParameter("active"));
 
         User user = new Customer(userId, name, email, password, active);
