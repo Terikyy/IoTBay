@@ -74,7 +74,12 @@ public abstract class AbstractDAO<T> {
         String query = "DELETE FROM " + tableName + " WHERE " + idColumn + " = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setObject(1, id);
-            return ps.executeUpdate();
+            int result = ps.executeUpdate();
+            if (result > 0) {
+                return result; // Return the number of rows deleted
+            } else {
+                throw new SQLException("No record found with the given ID.");
+            }
         }
     }
 }

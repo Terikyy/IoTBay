@@ -33,10 +33,6 @@ public class AdminDAO {
     }
 
     public boolean delete(int userId) throws SQLException {
-        String query = "DELETE FROM Admin WHERE UserID = ?";
-        try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, userId);
-            return ps.executeUpdate() > 0; // Returns true if a record was deleted
-        }
+        throw new UnsupportedOperationException("System Admin should not be deleted!!");
     }
 }

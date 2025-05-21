@@ -37,7 +37,12 @@ public class StaffDAO {
         String query = "DELETE FROM Staff WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);
-            return ps.executeUpdate(); // Returns the number of rows affected
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                return rowsAffected; // Return the number of rows deleted
+            } else {
+                throw new SQLException("No staff member found with the given UserID.");
+            }
         }
     }
 }

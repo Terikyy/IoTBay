@@ -84,7 +84,6 @@ public class UserController extends HttpServlet {
         LogController.createLog(request, response, "User was created", user.getUserID());
         if (user.isStaff()) {
             user.setStaff(request, response);
-            LogController.createLog(request, response, "User's role was set to staff", user.getUserID());
         }
     }
 
@@ -129,10 +128,8 @@ public class UserController extends HttpServlet {
             LogController.createLog(request, response, "User was updated - Old E-mail: " + oldUser.getEmail() + ", New E-Mail: " + user.getEmail(), user.getUserID());
         if (user.isStaff()) {
             user.setStaff(request, response);
-            LogController.createLog(request, response, "User's role was set to staff", user.getUserID());
         } else {
             user.setCustomer(request, response);
-            LogController.createLog(request, response, "User's role was set to customer", user.getUserID());
         }
     }
 

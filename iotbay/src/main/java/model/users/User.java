@@ -1,10 +1,12 @@
 package model.users;
 
 import controllers.ConnServlet;
+import controllers.LogController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.IDObject;
+import model.dao.LogDAO;
 import model.dao.StaffDAO;
 
 import java.io.IOException;
@@ -51,8 +53,14 @@ public abstract class User extends IDObject implements Serializable {
             ConnServlet.updateDAOsPOST(request, response);
             return;
         }
+        LogDAO logDAO = (LogDAO) session.getAttribute("logDAO");
+        if (logDAO == null) {
+            ConnServlet.updateDAOsPOST(request, response);
+            return;
+        }
         try {
-            staffDAO.insert(this.getUserID());
+            staffDAO.insert(getUserID());
+            LogController.createLog(request, response, "User's role was set to staff", getUserID());
         } catch (SQLException ignored) {
         }
         new Staff(this);
@@ -66,7 +74,8 @@ public abstract class User extends IDObject implements Serializable {
             return;
         }
         try {
-            staffDAO.delete(this.getUserID());
+            staffDAO.delete(getUserID());
+            LogController.createLog(request, response, "User's role was set to customer", getUserID());
         } catch (SQLException ignored) {
         }
         new Customer(this);
