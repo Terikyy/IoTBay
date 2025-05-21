@@ -66,19 +66,19 @@
     </div>
     <% } %>
 
-    <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->
+    <div class="shopping-cart" title = "Shipping List"><!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->
         <a href="${pageContext.request.contextPath}/shippingList.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="ShippingList">
         </a>
     </div>
 
-    <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) --> <!--not best practice-->
+    <div class="shopping-cart" title = "Payment"> <!-- Reusing same style for Shipping List Icon (Add by Braedon) --> <!--not best practice-->
         <a href="${pageContext.request.contextPath}/paymentList.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="PaymentList">
         </a>
     </div>
 
-    <div class="account">
+    <div class="account" title = "Account">
         <a href="${pageContext.request.contextPath}/account.jsp">
             <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
         </a>
@@ -86,7 +86,7 @@
 
 
     </div>
-    <div class="shopping-cart">
+    <div class="shopping-cart" title="Shopping Cart">
         <a href="${pageContext.request.contextPath}/cart" class="cart-button">
             <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
             <%
