@@ -70,41 +70,17 @@
         <div class="centered-container">
             <form action="UserController" method="post">
                 <h2>Account Management</h2>
-                <p>Personal Information:</p>
                 <label for="name">Name:</label><br>
                 <input type="text" name="name" id="name" value="<%= user.getName() %>"><br>
                 <label for="email">Email:</label><br>
-                <input type="email" name="email" id="email" value="<%= user.getEmail() %>" readonly><br>
+                <input type="email" name="email" id="email" value="<%= user.getEmail() %>"><br>
                 <label for="password">Password:</label><br>
                 <input type="password" name="password" id="password" placeholder="Please set a new password!"
                        value="<%=user.getPassword() == null ? "" : user.getPassword() %>"><br>
-                <p>Address Information:</p>
-                <!-- TODO: Add adress information fields with Adress.java class-->
-                <label for="streetName">Street Name:</label><br>
-                <input type="text" name="streetName" id="streetName"
-                       value="<%=address == null ? "" : address.getStreetName()%>"><br>
-                <label for="streetNumber">Street Number:</label><br>
-                <input type="number" name="streetNumber" id="streetNumber"
-                       value="<%=address == null ? "" : address.getStreetNumber()%>"><br>
-                <label for="suburb">Suburb:</label><br>
-                <input type="text" name="suburb" id="suburb"
-                       value="<%=address == null ? "" : address.getSuburb()%>"><br>
-                <label for="postalCode">Postal Code:</label><br>
-                <input type="number" name="postalCode" id="postalCode"
-                       value="<%=address == null ? "" : address.getPostcode()%>"><br>
-                <label for="city">City:</label><br>
-                <input type="text" name="city" id="city" value="<%=address == null ? "" : address.getCity()%>"><br>
-                <label for="state">State:</label><br>
-                <input type="text" name="state" id="state" value="<%=address == null ? "" : address.getState()%>"><br>
                 <input type="submit" value="Save Changes">
-
             </form>
             <div>
-                <a href="logout.jsp">Logout</a>
-            </div>
-            <div>
-                <!-- Add the Manage Addresses button -->
-                <a href="address.jsp">Address Management</a>
+                <a href="logout.jsp">Log Out</a>
             </div>
         </div>
     </div>
