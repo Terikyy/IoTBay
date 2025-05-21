@@ -17,7 +17,8 @@ CREATE TABLE User (
     Name VARCHAR(50) NOT NULL,
     Email VARCHAR(50) UNIQUE,
     Password VARCHAR(50),
-    Active BOOLEAN DEFAULT TRUE
+    Active BOOLEAN DEFAULT TRUE,
+    PhoneNumber VARCHAR(15)
 );
 
 -- 02 Admin

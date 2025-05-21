@@ -29,11 +29,17 @@ public class UserUpdateServlet extends HttpServlet {
             response.sendRedirect("user-management.jsp?query=" + query);
             return;
         }
+        String phoneNumber = request.getParameter("phoneNumber");
+        if (!ValidatorUtil.isValidPhoneNumber(phoneNumber)) {
+            session.setAttribute("update-error", "Invalid phone number format");
+            response.sendRedirect("user-management.jsp?query=" + query);
+            return;
+        }
         String role = request.getParameter("role");
         String password = request.getParameter("password");
         boolean active = Boolean.parseBoolean(request.getParameter("active"));
 
-        User user = new Customer(userId, name, email, password, active);
+        User user = new Customer(userId, name, email, password, phoneNumber, active);
         if (role.equalsIgnoreCase("staff")) {
             user = new Staff(user);
         }

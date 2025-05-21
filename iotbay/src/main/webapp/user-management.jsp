@@ -109,10 +109,14 @@
                         <input type="hidden" name="query" value="<%= query %>">
                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
                         <label>
-                            <input type="text" name="name" value="<%= user.getName() %>">
+                            <input type="text" name="name" value="<%= user.getName() %>" placeholder="Name">
                         </label>
                         <label>
-                            <input type="email" name="email" value="<%= user.getEmail() %>">
+                            <input type="email" name="email" value="<%= user.getEmail() %>" placeholder="Email">
+                        </label>
+                        <label>
+                            <input type="text" name="phoneNumber" value="<%= user.getPhoneNumber() %>"
+                                   placeholder="Phone Number">
                         </label>
                         <label>
                             <select name="role">

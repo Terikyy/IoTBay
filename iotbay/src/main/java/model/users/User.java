@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public abstract class User extends IDObject implements Serializable {
     private String name;
     private String email;
-    // Password should be hashed and salted
+    private String phoneNumber;
     private String password;
     private boolean active;
 
@@ -28,8 +28,9 @@ public abstract class User extends IDObject implements Serializable {
         active = true;
     }
 
-    public User(int userID, String name, String email, String password, boolean active) {
+    public User(int userID, String name, String email, String password, String phoneNumber, boolean active) {
         this(name, email, password);
+        this.phoneNumber = phoneNumber;
         this.active = active;
         setId(userID);
     }
@@ -103,6 +104,14 @@ public abstract class User extends IDObject implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isActive() {

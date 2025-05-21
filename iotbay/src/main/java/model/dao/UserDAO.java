@@ -32,6 +32,7 @@ public class UserDAO extends AbstractDAO<User> {
                 rs.getString("Name"),
                 rs.getString("Email"),
                 rs.getString("Password"),
+                rs.getString("PhoneNumber"),
                 rs.getBoolean("Active")
         );
         int userId = user.getUserID();
@@ -63,13 +64,14 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public int update(User user) throws SQLException {
-        String query = "UPDATE User SET Name = ?, Email = ?, Password = ?, Active = ? WHERE UserID = ?";
+        String query = "UPDATE User SET Name = ?, Email = ?, Password = ?, Active = ?, PhoneNumber = ? WHERE UserID = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
             ps.setBoolean(4, user.isActive());
-            ps.setInt(5, user.getUserID());
+            ps.setString(5, user.getPhoneNumber());
+            ps.setInt(6, user.getUserID());
             return ps.executeUpdate(); // Returns the number of rows affected
         }
     }
@@ -81,10 +83,11 @@ public class UserDAO extends AbstractDAO<User> {
 
     public List<User> query(String query) throws SQLException {
         List<User> results = new ArrayList<>();
-        String sqlQuery = "SELECT * FROM User WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
+        String sqlQuery = "SELECT * FROM User WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ? OR LOWER(PhoneNumber) LIKE ?";
         try (PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
             ps.setString(1, "%" + query.toLowerCase() + "%");
             ps.setString(2, "%" + query.toLowerCase() + "%");
+            ps.setString(3, "%" + query.toLowerCase() + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     results.add(mapRow(rs));
