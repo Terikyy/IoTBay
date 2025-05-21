@@ -13,7 +13,7 @@ public class ValidatorUtil {
     }
 
     public static boolean isValidPhoneNumber(String phoneNumber) {
-        String phoneRegex = "^$|^(\\+61|0)[2-478][0-9]{8}$";
+        String phoneRegex = "^$|^(\\+61 ?0?|0)[2-478][0-9]{8}$";
         return phoneNumber.matches(phoneRegex);
     }
 }

@@ -3,6 +3,7 @@ package controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.IDObject;
 import model.Log;
 import model.dao.LogDAO;
 
@@ -21,7 +22,7 @@ public class LogController {
 
         Log log = new Log(message, userId);
 
-        logDAO.insert(log);
+        IDObject.insert(logDAO, log);
     }
 
     // Example method to retrieve logs

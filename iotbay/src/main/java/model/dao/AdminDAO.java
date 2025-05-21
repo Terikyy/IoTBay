@@ -25,11 +25,7 @@ public class AdminDAO {
 
     // Add a user to the Admin table
     public int insert(int userId) throws SQLException {
-        String query = "INSERT INTO Admin (UserID) VALUES (?)";
-        try (PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, userId);
-            return ps.executeUpdate(); // Returns the number of rows affected
-        }
+        throw new UnsupportedOperationException("System Admin should not be added!!");
     }
 
     public boolean delete(int userId) throws SQLException {
