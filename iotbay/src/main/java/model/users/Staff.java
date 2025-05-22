@@ -2,7 +2,7 @@ package model.users;
 
 public class Staff extends User {
 
-    public Staff() {
+    public Staff() { // default constructor
         super();
     }
 

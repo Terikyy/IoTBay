@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Admin extends User {
 
-    public Admin() {
+    public Admin() {// default constructor
         super();
     }
 

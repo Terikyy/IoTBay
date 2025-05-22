@@ -7,7 +7,7 @@ public class Log extends IDObject {
     private Date timestamp;
     private int userId;
 
-    public Log() {
+    public Log() {//default constructor
         super();
     }
 
@@ -42,4 +42,5 @@ public class Log extends IDObject {
     }
 
     // There are no set methods for this class, as it is immutable after creation.
+    // Logs should not be tampered with.
 }

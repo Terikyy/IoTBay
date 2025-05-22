@@ -31,7 +31,7 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
             ps.setInt(1, orderItem.getProductID());
             ps.setInt(2, orderItem.getOrderID());
             ps.setInt(3, orderItem.getQuantity());
-            ps.setDouble(5, orderItem.getPriceOnOrder());
+            ps.setDouble(4, orderItem.getPriceOnOrder());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -44,7 +44,7 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
             ps.setInt(1, orderItem.getProductID());
             ps.setInt(2, orderItem.getOrderID());
             ps.setInt(3, orderItem.getQuantity());
-            ps.setDouble(5, orderItem.getPriceOnOrder());
+            ps.setDouble(4, orderItem.getPriceOnOrder());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
