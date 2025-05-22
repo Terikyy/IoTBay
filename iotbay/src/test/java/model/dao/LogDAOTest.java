@@ -25,6 +25,12 @@ public class LogDAOTest {
 
     @Test
     public void testInsert() throws SQLException {
+        // Check if the log already exists
+        Log existingLog = logDAO.findById(log.getLogId());
+        if (existingLog != null) {
+            cleanUpLog();
+        }
+
         try {
             logDAO.insert(log);
         } catch (Exception e) {
@@ -39,7 +45,10 @@ public class LogDAOTest {
         assertEquals(log.getTimestamp(), result.getTimestamp());
         assertEquals(log.getUserId(), result.getUserId());
 
-        // Clean up the inserted log
+        cleanUpLog();
+    }
+
+    public void cleanUpLog() throws SQLException {
         String query = "DELETE FROM Log WHERE LogID = ?";
         try (PreparedStatement ps = logDAO.conn.prepareStatement(query)) {
             ps.setInt(1, log.getLogId());
