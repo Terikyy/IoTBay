@@ -71,8 +71,10 @@
                     <input type="number" name="cvv" id="cvv" required><br>
                 </div>
 
-
-                <input type="submit" value="Pay Now">
+                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                    <input type="submit" name="action" value="Save" style="flex: 1; margin-right: 10px;">
+                    <input type="submit" name="action" value="Pay Now" style="flex: 1; margin-left: 10px;">
+                </div>
             </form>
         </div>
     </div>

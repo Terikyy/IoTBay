@@ -9,6 +9,10 @@ public class Payment extends IDObject {
     private Date paymentDate;
     private String paymentStatus;
 
+    public static final String PAYMENT_STATUS_PENDING = "PENDING";
+    public static final String PAYMENT_STATUS_COMPLETED = "COMPLETED";  
+    public static final String PAYMENT_STATUS_FAILED = "FAILED"; 
+
     public Payment() {
         super();
     }
