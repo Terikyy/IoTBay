@@ -1,0 +1,22 @@
+insert into ShippingManagement (ShipmentID, OrderID, ShipmentDate, Address, ShippingMethod, isFinalised)
+VALUES 
+    (1,  123, '2025-10-01', '01 Main St, Cityville, ST',           'Standard', 1),
+    (2,  124, '2025-10-02', '02 Oak Rd, Townville, ST',            'Express',  1),
+    (3,  125, '2025-10-03', '03 Pine Ave, Hamlet Springs, ST',     'Standard', 1),
+    (4,  126, '2025-10-04', '04 Maple Ln, Riverside, ST',          'Express',  1),
+    (5,  127, '2025-10-05', '05 Elm Blvd, Metroville, ST',         'Standard', 1),
+    (6,  128, '2025-10-06', '06 Birch Dr, Lakeside, ST',           'Express',  1),
+    (7,  129, '2025-10-07', '07 Cedar Ct, Hilltop, ST',            'Standard', 1),
+    (8,  130, '2025-10-08', '08 Spruce Way, Meadowbrook, ST',      'Express',  1),
+    (9,  131, '2025-10-09', '09 Walnut Pl, Brookside, ST',         'Standard', 1),
+    (10, 132, '2025-10-10', '10 Chestnut Blvd, Springvale, ST',    'Express',  1),
+    (11, 133, '2025-10-11', '11 Poplar Rd, Greenwood, ST',         'Standard', 1),
+    (12, 134, '2025-10-12', '12 Cypress Ave, Fairview, ST',        'Express',  1),
+    (13, 135, '2025-10-13', '13 Willow St, Oakwood, ST',           'Standard', 1),
+    (14, 136, '2025-10-14', '14 Ash Ln, Riverbend, ST',            'Express',  1),
+    (15, 137, '2025-10-15', '15 Beech Dr, Highland, ST',           'Standard', 1),
+    (16, 138, '2025-10-16', '16 Magnolia Ct, Pleasant Hill, ST',   'Express',  1),
+    (17, 139, '2025-10-17', '17 Palm Way, Sunnyvale, ST',          'Standard', 1),
+    (18, 140, '2025-10-18', '18 Fir Pl, Pinecrest, ST',            'Express',  1),
+    (19, 141, '2025-10-19', '19 Alder Blvd, Cedar Grove, ST',      'Standard', 1),
+    (20, 142, '2025-10-20', '20 Redwood Rd, Valleyview, ST',       'Express',  1);
