@@ -10,7 +10,7 @@ public class Product extends IDObject {
     private Date releaseDate;
     private String category;
 
-    public Product() {
+    public Product() {//default constructor
         super();
     }
 

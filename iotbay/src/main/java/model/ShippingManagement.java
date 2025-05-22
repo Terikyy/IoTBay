@@ -11,7 +11,7 @@ public class ShippingManagement extends IDObject {
     private String address;
     private boolean isFinalised;
 
-    public ShippingManagement() {
+    public ShippingManagement() {//default constructor
         super();
     }
 

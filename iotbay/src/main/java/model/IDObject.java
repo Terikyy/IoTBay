@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public abstract class IDObject {
     private int id;
 
-    public IDObject() {
+    public IDObject() {//default constructor
         randomizeID();
     }
 
@@ -23,7 +23,9 @@ public abstract class IDObject {
         this.id = (int) (Math.random() * Integer.MAX_VALUE);
     }
 
-    public static <T extends IDObject> void insert(AbstractDAO<T> dao, T obj) throws SQLException { // This is dangerous, but sadly Java generics inheritance doesnt allow us to use AbstractDAO<IDObject> here
+    // This method is used to handle the case where the ID is already in use, which can happen if two objects get the same random ID.
+    // The chances of this happen are very low, but this function safeguards against it, if it does happen.
+    public static <T extends IDObject> void insert(AbstractDAO<T> dao, T obj) throws SQLException {
         while (true) {
             try {
                 dao.insert(obj);

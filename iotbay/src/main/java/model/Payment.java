@@ -9,7 +9,7 @@ public class Payment extends IDObject {
     private Date paymentDate;
     private String paymentStatus;
 
-    public Payment() {
+    public Payment() {// default constructor
         super();
     }
 

@@ -14,7 +14,7 @@ public class Order extends IDObject {
     public static final String ORDER_STATUS_DELIVERED = "DELIVERED";
     public static final String ORDER_STATUS_CANCELLED = "CANCELLED";
 
-    public Order() {
+    public Order() { // default constructor
         super();
     }
 

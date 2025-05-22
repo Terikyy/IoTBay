@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Customer extends User {
 
-    public Customer() {
+    public Customer() {// default constructor
         super();
     }
 

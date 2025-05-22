@@ -18,7 +18,7 @@ public class Address extends IDObject {
     private String city;
     private String state;
 
-    public Address() {
+    public Address() {//default constructor
         super();
     }
 

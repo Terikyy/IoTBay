@@ -20,7 +20,7 @@ public abstract class User extends IDObject implements Serializable {
     private String password;
     private boolean active;
 
-    public User() {
+    public User() { //default constructor
         super();
     }
 
@@ -51,7 +51,7 @@ public abstract class User extends IDObject implements Serializable {
         return this instanceof Staff;
     }
 
-    public void setStaff(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    public void setStaff(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         StaffDAO staffDAO = (StaffDAO) session.getAttribute("staffDAO");
         if (staffDAO == null) {
@@ -71,7 +71,7 @@ public abstract class User extends IDObject implements Serializable {
         new Staff(this);
     }
 
-    public void setCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    public void setCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         StaffDAO staffDAO = (StaffDAO) session.getAttribute("staffDAO");
         if (staffDAO == null) {
