@@ -3,11 +3,15 @@ package model;
 import java.util.Date;
 
 public class Payment extends IDObject {
-    private final int orderID;
-    private final double amountPaid;
-    private final String paymentMethod;
-    private final Date paymentDate;
+    private int orderID;
+    private double amountPaid;
+    private String paymentMethod;
+    private Date paymentDate;
     private String paymentStatus;
+
+    public Payment() {
+        super();
+    }
 
     public Payment(int orderID, String paymentMethod, double amountPaid, Date paymentDate, String paymentStatus) {
         super();

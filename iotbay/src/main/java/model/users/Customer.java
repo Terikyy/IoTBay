@@ -7,6 +7,10 @@ import java.sql.SQLException;
 
 public class Customer extends User {
 
+    public Customer() {
+        super();
+    }
+
     public Customer(String name, String email, String password) {
         super(name, email, password);
     }

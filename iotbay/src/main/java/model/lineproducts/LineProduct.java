@@ -1,8 +1,12 @@
 package model.lineproducts;
 
 public abstract class LineProduct {
-    private final int productID;
+    private int productID;
     private int quantity;
+
+    public LineProduct() {
+        super();
+    }
 
     public LineProduct(int productID, int quantity) {
         this.productID = productID;
