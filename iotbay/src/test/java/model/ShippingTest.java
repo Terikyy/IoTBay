@@ -1,8 +1,9 @@
 package model;
 
+import org.junit.Test;
+
 import java.time.LocalDate;
 
-import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ShippingTest {
@@ -22,61 +23,72 @@ public class ShippingTest {
     public void testGetShipmentId() {
         assertEquals(Integer.parseInt(shipmentId), shipping.getShipmentId());
     }
-    @Test  
+
+    @Test
     public void testGetOrderId() {
         assertEquals(Integer.parseInt(orderId), shipping.getOrderId());
     }
+
     @Test
     public void testGetShippingMethod() {
         assertEquals(shippingMethod, shipping.getShippingMethod());
     }
+
     @Test
     public void testGetShipmentDate() {
         assertEquals(shipmentDate, shipping.getShipmentDate());
     }
+
     @Test
     public void testGetAddress() {
         assertEquals(address, shipping.getAddress());
     }
+
     @Test
     public void testIsFinalised() {
         assertEquals(isFinalised, shipping.isFinalised());
     }
+
     @Test
     public void testSetShipmentId() {
         String newShipmentId = "67890";
         shipping.setShipmentId(Integer.parseInt(newShipmentId));
-        assertEquals(Integer.parseInt(shipmentId), shipping.getShipmentId());
+        assertEquals(Integer.parseInt(newShipmentId), shipping.getShipmentId());
     }
+
     @Test
     public void testSetOrderId() {
         String newOrderId = "09876";
         shipping.setOrderId(Integer.parseInt(newOrderId));
-        assertEquals(Integer.parseInt(orderId), shipping.getOrderId());
+        assertEquals(Integer.parseInt(newOrderId), shipping.getOrderId());
     }
+
     @Test
     public void testSetShippingMethod() {
         String newShippingMethod = "Standard";
         shipping.setShippingMethod(newShippingMethod);
-        assertEquals(shippingMethod, shipping.getShippingMethod());
+        assertEquals(newShippingMethod, shipping.getShippingMethod());
     }
+
     @Test
     public void testSetShipmentDate() {
         LocalDate newShipmentDate = LocalDate.now();
         shipping.setShipmentDate(newShipmentDate);
         assertEquals(shipmentDate, shipping.getShipmentDate());
     }
+
     @Test
     public void testSetAddress() {
         String newAddress = "B12 UTS";
         shipping.setAddress(newAddress);
-        assertEquals(address, shipping.getAddress());
+        assertEquals(newAddress, shipping.getAddress());
     }
+
     @Test
     public void testSetFinalised() {
         boolean newFinalised = true;
         shipping.setFinalised(newFinalised);
-        assertEquals(isFinalised, shipping.isFinalised());
+        assertEquals(newFinalised, shipping.isFinalised());
     }
 
 }

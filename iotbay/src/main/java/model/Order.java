@@ -3,10 +3,10 @@ package model;
 import java.util.Date;
 
 public class Order extends IDObject {
-    private final Integer userID;
+    private Integer userID;
     private String orderStatus;
-    private final Date orderDate;
-    private final double totalPrice;
+    private Date orderDate;
+    private double totalPrice;
 
     public static final String ORDER_STATUS_PENDING = "PENDING";
     public static final String ORDER_STATUS_PAID = "PAID";
@@ -14,6 +14,9 @@ public class Order extends IDObject {
     public static final String ORDER_STATUS_DELIVERED = "DELIVERED";
     public static final String ORDER_STATUS_CANCELLED = "CANCELLED";
 
+    public Order() {
+        super();
+    }
 
     public Order(Integer userID, String orderStatus, Date orderDate, double totalPrice) {
         super();

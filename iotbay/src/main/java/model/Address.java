@@ -10,13 +10,17 @@ package model;
  * needs to be updated or changed.
  */
 public class Address extends IDObject {
-    private final String name;
-    private final int streetNumber;
-    private final String streetName;
-    private final int postcode;
-    private final String suburb;
-    private final String city;
-    private final String state;
+    private String name;
+    private int streetNumber;
+    private String streetName;
+    private int postcode;
+    private String suburb;
+    private String city;
+    private String state;
+
+    public Address() {
+        super();
+    }
 
     public Address(String name, int streetNumber, String streetName, int postcode, String suburb, String city, String state) {
         super();

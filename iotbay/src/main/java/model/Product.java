@@ -10,6 +10,10 @@ public class Product extends IDObject {
     private Date releaseDate;
     private String category;
 
+    public Product() {
+        super();
+    }
+
     public Product(String name, String description, double price, int stock, Date releaseDate, String category) {
         super();
         this.name = name;

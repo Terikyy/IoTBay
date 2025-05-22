@@ -1,8 +1,12 @@
 package model.lineproducts;
 
 public class OrderItem extends LineProduct {
-    private final int orderID;
-    private final double priceOnOrder;
+    private int orderID;
+    private double priceOnOrder;
+
+    public OrderItem() {
+        super();
+    }
 
     public OrderItem(int productID, int orderID, int quantity, double priceOnOrder) {
         super(productID, quantity);

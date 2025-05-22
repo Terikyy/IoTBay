@@ -2,6 +2,10 @@ package model.users;
 
 public class Staff extends User {
 
+    public Staff() {
+        super();
+    }
+
     public Staff(String name, String email, String password) {
         super(name, email, password);
     }

@@ -3,9 +3,13 @@ package model;
 import java.sql.Date;
 
 public class Log extends IDObject {
-    private final String message;
-    private final Date timestamp;
-    private final int userId;
+    private String message;
+    private Date timestamp;
+    private int userId;
+
+    public Log() {
+        super();
+    }
 
     public Log(String message, int userId) {
         super();

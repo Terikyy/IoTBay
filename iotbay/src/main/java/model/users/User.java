@@ -20,6 +20,10 @@ public abstract class User extends IDObject implements Serializable {
     private String password;
     private boolean active;
 
+    public User() {
+        super();
+    }
+
     public User(String name, String email, String password) {
         super();
         this.name = name;
