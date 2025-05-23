@@ -25,7 +25,6 @@
     <div class="logo">
         <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <a href="shopping-cart.jsp">Return to cart</a>
 </header>
 
 <div class="container">
@@ -63,6 +62,8 @@
           <option value="">Select</option>
           <option>Standard</option>
           <option>Express</option>
+          <option>Overnight</option>
+          <option>Local Delivery/Pick up</option>
         </select>
       </div>
       <div class="form-group">
