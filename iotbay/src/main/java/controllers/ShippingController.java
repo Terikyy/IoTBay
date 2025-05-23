@@ -28,6 +28,8 @@ public class ShippingController extends HttpServlet {
 
         HttpSession session = request.getSession();
 
+        
+
         shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
         orderDAO = (OrderDAO) session.getAttribute("orderDAO");
         

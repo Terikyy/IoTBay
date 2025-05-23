@@ -90,7 +90,7 @@ public class OrderController extends HttpServlet {
         session.removeAttribute("cartTotal");
         session.removeAttribute("cart");
 
-        System.out.println("Redirecting to shippingManagement.jsp...");
+        System.out.println("Redirecting to payment.jsp...");
         response.sendRedirect("payment.jsp");
     }
 
