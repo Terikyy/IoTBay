@@ -1,12 +1,19 @@
-<%@ page import="java.util.List, model.ShippingManagement" %>
+<%@ page import="java.util.List, model.ShippingManagement, model.users.User" %>
 <%@ page session="true" %>
 <%
-
-    List<ShippingManagement> shipments =
+    List<ShippingManagement> shipments = 
         (List<ShippingManagement>) request.getAttribute("shipments");
-
-    ShippingManagement edit =
+    ShippingManagement edit = 
         (ShippingManagement) request.getAttribute("updateShipment");
+    User user = (User) session.getAttribute("user");
+
+    String showAllParam = request.getParameter("showAll");
+    String sidParam     = request.getParameter("shipmentId");
+    String dateParam    = request.getParameter("shipmentDate");
+    boolean hasSearched =
+        (showAllParam != null)
+     || (sidParam     != null && !sidParam.isEmpty())
+     || (dateParam    != null && !dateParam.isEmpty());
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +23,6 @@
   <link rel="stylesheet" href="css/subpages/shippingManagement.css">
 </head>
 <body>
-
 <header>
   <div class="logo">
     <img src="assets/images/iotbay_logo.png" alt="IoTBay">
@@ -36,59 +42,16 @@
           <input type="hidden" name="action" value="update"/>
           <input type="hidden" name="shipmentId" value="<%= edit.getShipmentId() %>"/>
 
-          <div class="form-group">
-            <label>Order ID:</label>
-            <input type="text"
-                   value="<%= edit.getOrderId() %>"
-                   disabled
-                   class="readonly-field"/>
-            <input type="hidden"
-                   name="orderId"
-                   value="<%= edit.getOrderId() %>"/>
-          </div>
-
-          <div class="form-group">
-            <label>Date:</label>
-            <input type="date"
-                   name="shipmentDate"
-                   value="<%= edit.getShipmentDate() %>"
-                   disabled
-                   class="no-interact"/>
-          </div>
-
-          <div class="form-group">
-            <label>Method:</label>
-            <select name="shippingMethod" required>
-              <option value="Standard"
-                <%= "Standard".equals(edit.getShippingMethod()) ? "selected" : "" %>>
-                Standard
-              </option>
-              <option value="Express"
-                <%= "Express".equals(edit.getShippingMethod()) ? "selected" : "" %>>
-                Express
-              </option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Address:</label>
-            <input type="text"
-                   name="address"
-                   value="<%= edit.getAddress() %>"
-                   required/>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="submit">Save Changes</button>
           <a href="${pageContext.request.contextPath}/ShippingListController?showAll=1">
-            <button type="button" class="btn btn-secondary">Cancel</button>
+            <button type="button">Cancel</button>
           </a>
         </form>
 
       <% } else { %>
-        <!-- Search  -->
+        <!-- SEARCH FORM -->
         <form action="${pageContext.request.contextPath}/ShippingListController"
-              method="get"
-              class="search-form">
+              method="get" class="search-form">
           <div class="form-group">
             <label for="shipmentId">Shipment ID</label>
             <input type="number" name="shipmentId" id="shipmentId" placeholder="e.g. 42"/>
@@ -97,52 +60,51 @@
             <label for="shipmentDate">Shipment Date</label>
             <input type="date" name="shipmentDate" id="shipmentDate"/>
           </div>
-          <button type="submit" class="btn btn-sm btn-primary">Search</button>
-          <button type="submit"
-                  name="showAll" value="true"
-                  class="btn btn-sm btn-secondary">
+          <button type="submit">Search</button>
+          <button type="submit" name="showAll" value="true">
             Show All
           </button>
         </form>
         <br/>
 
-        <!-- Shipping List -->
-        <% if (shipments == null || shipments.isEmpty()) { %>
-          <p>No shipments found.</p>
-        <% } else { %>
-          <% for (ShippingManagement s : shipments) { %>
-            <div class="card">
-              <h3>Shipment #<%= s.getShipmentId() %></h3>
-              <p><strong>Order ID:</strong>  <%= s.getOrderId() %></p>
-              <p><strong>Date:</strong>      <%= s.getShipmentDate() %></p>
-              <p><strong>Method:</strong>    <%= s.getShippingMethod() %></p>
-              <p><strong>Address:</strong>   <%= s.getAddress() %></p>
+        <% if (hasSearched) { %>
+          <% if (user == null) { %>
+            <a href="${pageContext.request.contextPath}/login.jsp">
+            <p>Only registered users can view shipment history.</p>
+            </a>
+
+          <% } else if (shipments == null || shipments.isEmpty()) { %>
+            <p>No shipments found.</p>
+
+          <% } else { %>
+            <% for (ShippingManagement s : shipments) { %>
+              <div class="card">
+                <h3>Shipment #<%= s.getShipmentId() %></h3>
+                <br><p><strong>Order ID:</strong>  <%= s.getOrderId() %></p>
+                <br><p><strong>Date:</strong>      <%= s.getShipmentDate() %></p>
+                <br><p><strong>Method:</strong>    <%= s.getShippingMethod() %></p>
+                <br><p><strong>Address:</strong>   <%= s.getAddress() %></p>
+                
+                <!-- UPDATE -->
+                <form action="${pageContext.request.contextPath}/ShippingController"
+                      method="get" style="display:inline;">
+                  <input type="hidden" name="action" value="update"/>
+                  <input type="hidden" name="shipmentId"
+                         value="<%= s.getShipmentId() %>"/>
+                  <button type="submit">Update</button>
+                </form>
+                <!-- DELETE -->
+                <form action="${pageContext.request.contextPath}/ShippingDeleteController"
+                      method="post" style="display:inline;"
+                      onsubmit="return confirm('Delete shipment #<%= s.getShipmentId() %>?');">
+                  <input type="hidden" name="action" value="delete"/>
+                  <input type="hidden" name="shipmentId"
+                         value="<%= s.getShipmentId() %>"/>
+                  <button type="submit">Delete</button>
+                </form>
+              </div>
               <br/>
-
-              <!-- UPDATE -->
-              <form action="${pageContext.request.contextPath}/ShippingController"
-                    method="get" style="display:inline;">
-                <input type="hidden" name="action" value="update"/>
-                <input type="hidden" name="shipmentId"
-                       value="<%= s.getShipmentId() %>"/>
-                <button type="submit" class="btn btn-sm btn-primary">
-                  Update
-                </button>
-              </form>
-
-              <!-- DELETE -->
-              <form action="${pageContext.request.contextPath}/ShippingDeleteController"
-                    method="post" style="display:inline;"
-                    onsubmit="return confirm('Delete shipment #<%= s.getShipmentId() %>?');">
-                <input type="hidden" name="action" value="delete"/>
-                <input type="hidden" name="shipmentId"
-                       value="<%= s.getShipmentId() %>"/>
-                <button type="submit" class="btn btn-sm btn-danger">
-                  Delete
-                </button>
-              </form>
-            </div>
-            <br/>
+            <% } %>
           <% } %>
         <% } %>
       <% } %>
@@ -150,6 +112,5 @@
     </div>
   </div>
 </div>
-
 </body>
 </html>
