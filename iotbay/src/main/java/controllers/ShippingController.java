@@ -183,7 +183,7 @@ public class ShippingController extends HttpServlet {
         int newShipmentId = shippingDAO.insert(shipment);
         HttpSession session = request.getSession();
         session.setAttribute("lastShipmentId", newShipmentId);
-        response.sendRedirect(request.getContextPath() + "/payment.jsp");
+        response.sendRedirect(request.getContextPath() + "/confirmation.jsp");
     }
 
     // Update an existing shipment

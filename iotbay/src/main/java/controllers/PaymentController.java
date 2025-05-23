@@ -1,5 +1,8 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,9 +14,6 @@ import model.Order;
 import model.Payment;
 import model.dao.OrderDAO;
 import model.dao.PaymentDAO;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/PaymentController")
 public class PaymentController extends HttpServlet {
@@ -82,7 +82,7 @@ public class PaymentController extends HttpServlet {
 
         session.setAttribute("paymentId", payment.getPaymentID());
 
-        response.sendRedirect("confirmation.jsp");
+        response.sendRedirect("shippingManagement.jsp");
     }
 
     public static Payment getPaymentById(int paymentId, HttpServletRequest request, HttpServletResponse response)
