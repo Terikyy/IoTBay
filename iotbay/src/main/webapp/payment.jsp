@@ -7,6 +7,9 @@
 <%@ page import="model.Order" %>
 <%@ page import="controllers.OrderController" %>
 <%@ page import="java.sql.SQLException" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="model.Product" %>
 
 
 <!DOCTYPE html>
@@ -16,8 +19,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment</title>
     <link rel="stylesheet" href="css/subpages/payment.css">
-
- 
 
     <%
     User user = (User) session.getAttribute("user");
@@ -41,10 +42,42 @@
 <body>
 <header>
     <div class="logo">
-        <img src="assets/images/iotbay_logo.png" alt="IoTBay">
+        <a href="${pageContext.request.contextPath}/products/list">
+            <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
+        </a>
     </div>
-    <a href="index.jsp" title="Main Page">Return to Order</a>
-
+    <div class="header-right">
+        <div class="nav-icons" title="Shopping Cart">
+            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                <%
+                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
+                    int itemCount = 0;
+                    if (cartItems != null) {
+                        for (Map<String, Object> item : cartItems) {
+                            itemCount += (int) item.get("quantity");
+                        }
+                    }
+                %>
+                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
+                        <%= itemCount %>
+                    </span>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (user != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
+    </div>
 </header>
 <div class="container">
     <div class="main-container">

@@ -43,10 +43,20 @@
                 <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
             </a>
         </div>
-        <div class="account">
-            <a href="${pageContext.request.contextPath}/account.jsp">
-                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-            </a>
+        <div class="header-right">
+            <div class="nav-icons">
+                <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                    <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                    <% if (user != null) { %>
+                    <span class="login-indicator"></span>
+                    <% } %>
+                </a>
+            </div>
+            <div class="nav-icons">
+                <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                    <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+                </a>
+            </div>
         </div>
     </header>
     

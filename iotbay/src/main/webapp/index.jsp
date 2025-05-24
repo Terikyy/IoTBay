@@ -1,3 +1,8 @@
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="model.users.User" %>
 <%
     // Redirect to products list if accessed directly
     if (request.getAttribute("products") == null) {
@@ -5,10 +10,7 @@
         return;
     }
 %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="model.users.User" %>
+<% User user = (User) session.getAttribute("user"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,72 +40,38 @@
             </button>
         </form>
     </div>
-
-    <%
-        // TODO: Check styling for the icons (make unified class)
-        User user = (User) session.getAttribute("user");
-        if (user != null && user.isAdmin()) {
-    %>
-    <div class="user-logs" title="User Logs">
-        <a href="${pageContext.request.contextPath}/log.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
-        </a>
-    </div>
-    <div class="manage-users" title="Manage Users">
-        <a href="${pageContext.request.contextPath}/user-management.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
-        </a>
-    </div>
-    <% 
-        } 
-
-        if (user != null && (user.isStaff() || user.isAdmin())) { 
-    %>
-    <div class="shopping-cart" title="Inventory Management">
-        <a href="${pageContext.request.contextPath}/inventory.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/inventory_icon.png" alt="Inventory managemnt">
-        </a>
-    </div>
-    <% } %>
-
-    <div class="shopping-cart" title = "Shipping List"><!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->
-        <a href="${pageContext.request.contextPath}/shippingList.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="ShippingList">
-        </a>
-    </div>
-
-    <div class="shopping-cart" title = "Payment List"> <!-- Reusing same style for Shipping List Icon (Add by Braeden) --> <!--not best practice-->
-        <a href="${pageContext.request.contextPath}/paymentList.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/payment_icon.png" alt="PaymentList">
-        </a>
-    </div>
-
-    <div class="account" title = "Account">
-        <a href="${pageContext.request.contextPath}/account.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-        </a>
-    </div>
-
-
-    </div>
-    <div class="shopping-cart" title="Shopping Cart">
-        <a href="${pageContext.request.contextPath}/cart" class="cart-button">
-            <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
-            <%
-                List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
-                int itemCount = 0;
-                if (cartItems != null) {
-                    for (Map<String, Object> item : cartItems) {
-                        itemCount += (int) item.get("quantity");
+    <div class="header-right">
+        <div class="nav-icons" title="Shopping Cart">
+            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                <%
+                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
+                    int itemCount = 0;
+                    if (cartItems != null) {
+                        for (Map<String, Object> item : cartItems) {
+                            itemCount += (int) item.get("quantity");
+                        }
                     }
-                }
-            %>
-            <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
-                    <%= itemCount %>
-                </span>
-        </a>
+                %>
+                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
+                        <%= itemCount %>
+                    </span>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (user != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
     </div>
-
 </header>
 
 <!-- Main container with sidebar and content -->

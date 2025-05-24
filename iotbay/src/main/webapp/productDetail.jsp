@@ -25,6 +25,8 @@
     if (referer == null || referer.isEmpty()) {
         referer = request.getContextPath() + "/products/list";
     }
+
+    User user = (User) session.getAttribute("user");
 %>
 
 <!-- Top search bar -->
@@ -43,46 +45,37 @@
             </button>
         </form>
     </div>
-
-    <%
-        User user = (User) session.getAttribute("user");
-        if (user != null && user.isAdmin()) {
-    %>
-    <div class="user-logs" title="User Logs">
-        <a href="${pageContext.request.contextPath}/log.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
-        </a>
-    </div>
-    <% } %>
-
-    <div class="shopping-cart">
-        <a href="${pageContext.request.contextPath}/shippingList.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="ShippingList">
-        </a>
-    </div>
-
-    <div class="account">
-        <a href="${pageContext.request.contextPath}/account.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-        </a>
-    </div>
-
-    <div class="shopping-cart">
-        <a href="${pageContext.request.contextPath}/cart" class="cart-button">
-            <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
-            <%
-                List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
-                int itemCount = 0;
-                if (cartItems != null) {
-                    for (Map<String, Object> item : cartItems) {
-                        itemCount += (int) item.get("quantity");
+    <div class="header-right">
+        <div class="nav-icons" title="Shopping Cart">
+            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                <%
+                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
+                    int itemCount = 0;
+                    if (cartItems != null) {
+                        for (Map<String, Object> item : cartItems) {
+                            itemCount += (int) item.get("quantity");
+                        }
                     }
-                }
-            %>
-            <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
-                <%= itemCount %>
-            </span>
-        </a>
+                %>
+                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
+                        <%= itemCount %>
+                    </span>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (user != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
     </div>
 </header>
 

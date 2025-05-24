@@ -5,6 +5,7 @@
 <%@ page import="controllers.LogController" %>
 <%@ page import="java.text.DateFormatSymbols" %>
 <%@ page import="java.util.*" %>
+<%@ page import="model.Product" %>"
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,16 +48,37 @@
             </button>
         </form>
     </div>
-    <div class="manage-users" title="Manage Users">
-        <a href="${pageContext.request.contextPath}/user-management.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
-        </a>
-    </div>
-
-    <div class="account">
-        <a href="${pageContext.request.contextPath}/account.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-        </a>
+    <div class="header-right">
+        <div class="nav-icons" title="Shopping Cart">
+            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                <%
+                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
+                    int itemCount = 0;
+                    if (cartItems != null) {
+                        for (Map<String, Object> item : cartItems) {
+                            itemCount += (int) item.get("quantity");
+                        }
+                    }
+                %>
+                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
+                        <%= itemCount %>
+                    </span>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (user != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
     </div>
 </header>
 <div class="container">

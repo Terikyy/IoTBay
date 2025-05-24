@@ -2,6 +2,9 @@
 <%@ page import="model.ShippingManagement" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="model.Order" %>
+<%@ page import="model.users.User" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="model.Product" %>
 <%@ page session="true" %>
 
 <%
@@ -23,7 +26,41 @@
 <body>
 <header>
     <div class="logo">
-        <img src="assets/images/iotbay_logo.png" alt="IoTBay">
+        <a href="${pageContext.request.contextPath}/products/list">
+            <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
+        </a>
+    </div>
+    <div class="header-right">
+        <div class="nav-icons" title="Shopping Cart">
+            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                <%
+                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
+                    int itemCount = 0;
+                    if (cartItems != null) {
+                        for (Map<String, Object> item : cartItems) {
+                            itemCount += (int) item.get("quantity");
+                        }
+                    }
+                %>
+                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
+                        <%= itemCount %>
+                    </span>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (user != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
     </div>
 </header>
 

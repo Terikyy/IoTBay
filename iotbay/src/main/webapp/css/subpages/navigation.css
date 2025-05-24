@@ -1,0 +1,127 @@
+/* Import base styles first */
+@import '../base/variables.css';
+@import '../base/reset.css';
+
+/* Import layout styles */
+@import '../layout/container.css';
+
+
+/* Import component styles */
+@import '../components/header.css';
+@import '../components/forms.css';
+
+/* Page specific styles */
+.navigation-content {
+    padding: 30px;
+}
+
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--content-text-secondary);
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+/* Navigation grid layout */
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1024px) {
+    .nav-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Navigation tile styling */
+.nav-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--content-bg-secondary);
+    border-radius: 16px;
+    padding: 25px 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: transform 0.2s ease-in-out, 
+                box-shadow 0.2s ease-in-out, 
+                background-color 0.2s ease-in-out;
+    text-decoration: none;
+    color: var(--content-text-primary);
+    height: 180px;
+}
+
+.nav-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    background-color: var(--content-bg-tertiary);
+}
+
+.nav-tile:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease-in-out;
+}
+
+/* Icon container for consistent sizing */
+.nav-tile .icon-container {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: var(--content-bg-primary);
+    border-radius: 50%;
+    padding: 15px;
+    box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+.nav-tile img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.nav-tile h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--content-text-primary);
+    font-weight: 500;
+}
+
+/* Add a subtle pulse animation on hover */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.nav-tile:hover .icon-container {
+    animation: pulse 1.5s infinite ease-in-out;
+    background-color: var(--content-bg-primary);
+}
