@@ -5,7 +5,7 @@
 <%@ page import="controllers.LogController" %>
 <%@ page import="java.text.DateFormatSymbols" %>
 <%@ page import="java.util.*" %>
-<%@ page import="model.Product" %>"
+<%@ page import="model.Product" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +69,7 @@
         <div class="nav-icons">
             <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
                 <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-                <% if (user != null) { %>
+                <% if (admin != null) { %>
                 <span class="login-indicator"></span>
                 <% } %>
             </a>

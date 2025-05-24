@@ -85,13 +85,6 @@
                     </div>
                     <h3>Shipments</h3>
                 </a>
-                
-                <a href="${pageContext.request.contextPath}/log.jsp" class="nav-tile">
-                    <div class="icon-container">
-                        <img src="${pageContext.request.contextPath}/assets/images/logs_icon.png" alt="Logs">
-                    </div>
-                    <h3>Logs</h3>
-                </a>
             </div>
             
             <% if (user != null && (user.isStaff() || user.isAdmin())) { %>
@@ -111,6 +104,12 @@
                         <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="User Management">
                     </div>
                     <h3>User Management</h3>
+                </a>
+                <a href="${pageContext.request.contextPath}/log.jsp" class="nav-tile">
+                    <div class="icon-container">
+                        <img src="${pageContext.request.contextPath}/assets/images/logs_icon.png" alt="Logs">
+                    </div>
+                    <h3>Logs</h3>
                 </a>
                 <% } %>
             </div>
