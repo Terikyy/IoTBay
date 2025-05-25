@@ -88,6 +88,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                // Show a specific success message for quantity updates
+                showNotification('Quantity updated successfully');
+                
                 // Update cart count display
                 updateCartCountDisplay(data.cartCount);
                 
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error updating cart:', error);
             showNotification('An error occurred while updating the cart.', 'error');
         });
     }
