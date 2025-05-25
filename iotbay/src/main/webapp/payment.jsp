@@ -83,32 +83,49 @@
     <div class="main-container">
         <div class="centered-container">
             <h2>Payment</h2>
-            <div class="totalPrice">Total Amount: $<%= String.format("%.2f", order.getTotalPrice()) %>
-            </div>
-            <form action="PayPalServlet" method="post">
-                <label for="paymentMethod">Payment Method:</label><br>
+
+        <form action="PayPalServlet" method="post" class="payment-method-form" style="margin-top: 1rem;">
+            <div class="form-group">
+                <label for="paymentMethod">Payment Method:</label>
                 <select name="paymentMethod" id="paymentMethod" required onchange="this.form.submit()">
                     <option value="credit-card" selected>Credit Card</option>
                     <option value="paypal">PayPal</option>
-                </select><br><br>
-            </form>
-            <form action="PaymentController" method="post">
-                <div id="cardDetails">
-                    <label for="nameOnCard">Name on Card:</label><br>
-                    <input type="text" name="nameOnCard" id="nameOnCard" required><br>
-                    <label for="cardNumber">Card Number:</label><br>
-                    <input type="number" name="cardNumber" id="cardNumber" required><br>
-                    <label for="expiryDate">Expiry Date:</label><br>
-                    <input type="date" name="expiryDate" id="expiryDate" required><br>
-                    <label for="cvv">CVV:</label><br>
-                    <input type="number" name="cvv" id="cvv" required><br>
+                </select>
+        </div>
+        </form>
+
+        <form action="PaymentController" method="post">
+            <div id="cardDetails">
+                <div class="form-group">
+                    <label for="nameOnCard">Name on Card:</label>
+                    <input type="text" name="nameOnCard" id="nameOnCard" required>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                    <input type="submit" name="action" value="Save" style="flex: 1; margin-right: 10px;">
-                    <input type="submit" name="action" value="Pay Now" style="flex: 1; margin-left: 10px;">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number:</label>
+                    <input type="number" name="cardNumber" id="cardNumber" required>
                 </div>
-            </form>
+
+                <div class="form-group">
+                    <label for="expiryDate">Expiry Date:</label>
+                    <input type="date" name="expiryDate" id="expiryDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cvv">CVV:</label>
+                    <input type="number" name="cvv" id="cvv" required>
+                </div>
+            </div>
+
+            <div class="totalPrice">
+                <strong>Total Amount: $<%= String.format("%.2f", order.getTotalPrice()) %></strong>
+            </div>
+
+            <div class="button-group">
+                <input type="submit" name="action" value="Save">
+                <input type="submit" name="action" value="Pay Now">
+            </div>
+        </form>
         </div>
     </div>
 </div>

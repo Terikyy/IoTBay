@@ -43,9 +43,6 @@
         <div class="nav-icons">
             <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
                 <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-                <% if (user != null) { %>
-                <span class="login-indicator"></span>
-                <% } %>
             </a>
         </div>
         <div class="nav-icons">

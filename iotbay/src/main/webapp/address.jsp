@@ -7,11 +7,10 @@
 <%@ page import="model.Product" %>
 <%
     // Redirect to login page if user is not logged in
+    // Check if user session exists
 
-    // Check if user session exists without using a User object
-
-    String username = (String) session.getAttribute("username");
-    if (username == null) {
+    User user = (User) session.getAttribute("user");
+    if (user == null) {
         response.sendRedirect("login.jsp");
         return;
     }

@@ -149,7 +149,14 @@
             </p>
             <a href="${pageContext.request.contextPath}/products/detail/<%= product.getProductID() %>"
                class="view-details">View Details</a>
-            <button class="add-to-cart" data-product-id="<%= product.getProductID() %>">Add to Cart</button>
+            <button 
+                class="add-to-cart" 
+                data-product-id="<%= product.getProductID() %>"
+                data-stock="<%= product.getStock() %>"
+                <%= product.getStock() <= 0 ? "disabled" : "" %>
+            >
+                <%= product.getStock() > 0 ? "Add to Cart" : "Out of Stock" %>
+            </button>
         </div>
         <%
                 }
