@@ -1,7 +1,5 @@
 package model.dao;
 
-import model.Address;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Address;
+
 public class AddressDAO extends AbstractDAO<Address> {
+
+
 
     public AddressDAO(Connection conn) throws SQLException {
         super(conn);
@@ -59,34 +61,28 @@ public class AddressDAO extends AbstractDAO<Address> {
 
     @Override
     public int insert(Address address) throws SQLException {
-        String sql = "INSERT INTO Address (Name, StreetNumber, StreetName, Postcode, Suburb, City, State) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (var preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setString(1, address.getName());
-            preparedStatement.setInt(2, address.getStreetNumber());
-            preparedStatement.setString(3, address.getStreetName());
-            preparedStatement.setInt(4, address.getPostcode());
-            preparedStatement.setString(5, address.getSuburb());
-            preparedStatement.setString(6, address.getCity());
-            preparedStatement.setString(7, address.getState());
-            return preparedStatement.executeUpdate();
+        String sql = "INSERT INTO addresses (Name, StreetNumber, StreetName, Postcode, Suburb, City, State) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, address.getName());
+            stmt.setInt(2, address.getStreetNumber());
+            stmt.setString(3, address.getStreetName());
+            stmt.setInt(4, address.getPostcode());
+            stmt.setString(5, address.getSuburb());
+            stmt.setString(6, address.getCity());
+            stmt.setString(7, address.getState());
+            stmt.executeUpdate();
+
+            //Retreieve the generated AddressID
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1); //return generated AddressID
+                }
+            }
+            throw new SQLException("Failed to insert address and retrieve AddressID.");
         }
     }
 
-    @Override
-    public int update(Address address) throws SQLException {
-        String sql = "UPDATE Address SET Name = ?, StreetNumber = ?, StreetName = ?, Postcode = ?, Suburb = ?, City = ?, State = ? WHERE addressId = ?";
-        try (var preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setString(1, address.getName());
-            preparedStatement.setInt(2, address.getStreetNumber());
-            preparedStatement.setString(3, address.getStreetName());
-            preparedStatement.setInt(4, address.getPostcode());
-            preparedStatement.setString(5, address.getSuburb());
-            preparedStatement.setString(6, address.getCity());
-            preparedStatement.setString(7, address.getState());
-            preparedStatement.setInt(8, address.getAddressID());
-            return preparedStatement.executeUpdate();
-        }
-    }
+
 
     @Override
     public List<Address> getAll() throws SQLException {
@@ -116,11 +112,18 @@ public class AddressDAO extends AbstractDAO<Address> {
     }
 
     @Override
-    public int deleteById(int addressId) throws SQLException {
-        String sql = "DELETE FROM Address WHERE addressId = ?";
-        try (var preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setInt(1, addressId);
-            return preparedStatement.executeUpdate();
+    public int deleteById(int id) throws SQLException {
+        String sql = "DELETE FROM Address WHERE AddressID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate(); // Returns the number of rows deleted
         }
     }
+
+    @Override
+    public int update(Address entity) throws SQLException {
+        throw new UnsupportedOperationException("Updating an Address is not supported because Address is immutable.");
+    }
 }
+
+

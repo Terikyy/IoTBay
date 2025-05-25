@@ -1,0 +1,118 @@
+/* Import base styles */
+@import '../base/variables.css';
+@import '../base/reset.css';
+
+/* Layout styles */
+@import '../layout/container.css';
+
+/* Header & Form components */
+@import '../components/header.css';
+@import '../components/forms.css';
+
+/* Main container styling */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--content-bg-primary);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+h1, h2 {
+    color: var(--content-text-primary);
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+
+/* Grid layout for address forms */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.form-grid input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border-light);
+    background-color: var(--content-bg-primary);
+    color: var(--content-text-primary);
+}
+
+/* Action buttons under form */
+.action-buttons {
+    grid-column: span 4;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Submit and delete styles */
+button[type="submit"] {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--accent-secondary);
+}
+
+button.delete-button {
+    background-color: var(--error);
+}
+
+button.delete-button:hover {
+    background-color: #8d1e29;
+}
+
+/* Feedback messages */
+.message {
+    text-align: center;
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 16px;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: var(--success);
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: var(--error);
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

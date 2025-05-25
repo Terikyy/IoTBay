@@ -10,17 +10,14 @@ package model;
  * needs to be updated or changed.
  */
 public class Address extends IDObject {
-    private String name;
-    private int streetNumber;
-    private String streetName;
-    private int postcode;
-    private String suburb;
-    private String city;
-    private String state;
+    private final String name;
+    private final int streetNumber;
+    private final String streetName;
+    private final int postcode;
+    private final String suburb;
+    private final String city;
+    private final String state;
 
-    public Address() {//default constructor
-        super();
-    }
 
     public Address(String name, int streetNumber, String streetName, int postcode, String suburb, String city, String state) {
         super();
@@ -68,5 +65,47 @@ public class Address extends IDObject {
 
     public String getState() {
         return state;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "addressID=" + getAddressID() +
+                ", name='" + name + '\'' +
+                ", streetNumber=" + streetNumber +
+                ", streetName='" + streetName + '\'' +
+                ", postcode=" + postcode +
+                ", suburb='" + suburb + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+
+        Address address = (Address) o;
+
+        if (streetNumber != address.streetNumber) return false;
+        if (postcode != address.postcode) return false;
+        if (!name.equals(address.name)) return false;
+        if (!streetName.equals(address.streetName)) return false;
+        if (!suburb.equals(address.suburb)) return false;
+        if (!city.equals(address.city)) return false;
+        return state.equals(address.state);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + streetNumber;
+        result = 31 * result + streetName.hashCode();
+        result = 31 * result + postcode;
+        result = 31 * result + suburb.hashCode();
+        result = 31 * result + city.hashCode();
+        result = 31 * result + state.hashCode();
+        return result;
     }
 }
