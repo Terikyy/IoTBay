@@ -41,7 +41,7 @@
     </div>
     <div class="search-container">
         <form action="log.jsp" method="get">
-            <input type="text" class="search-input" name="query" placeholder="Search..."
+            <input type="text" class="search-input" name="query" placeholder="Search Logs..."
                    value="<%= request.getAttribute("query") != null ? request.getAttribute("query") : "" %>">
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
@@ -69,9 +69,7 @@
         <div class="nav-icons">
             <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
                 <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-                <% if (admin != null) { %>
                 <span class="login-indicator"></span>
-                <% } %>
             </a>
         </div>
         <div class="nav-icons">

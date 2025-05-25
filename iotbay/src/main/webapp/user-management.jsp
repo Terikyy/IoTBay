@@ -22,7 +22,7 @@
             response.sendRedirect("restricted.jsp");
             return;
         }
-        List<User> users = null;
+        List<User> users;
         try {
             users = UserController.queryUsers(query, request, response);
         } catch (SQLException e) {
@@ -31,15 +31,13 @@
         String updateError = (String) session.getAttribute("update-error");
         if (updateError != null) {
             session.removeAttribute("update-error");
-        }
-        if (updateError == null) {
+        } else {
             updateError = "";
         }
         String error = (String) session.getAttribute("error");
         if (error != null) {
             session.removeAttribute("error");
-        }
-        if (error == null) {
+        } else {
             error = "";
         }
     %>
@@ -53,7 +51,7 @@
     </div>
     <div class="search-container">
         <form action="user-management.jsp" method="get">
-            <input type="text" class="search-input" name="query" placeholder="Search..."
+            <input type="text" class="search-input" name="query" placeholder="Search Users..."
                    value="<%= query %>">
             <button type="submit" class="search-button">
                 <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
@@ -64,9 +62,7 @@
         <div class="nav-icons">
             <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
                 <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-                <% if (admin != null) { %>
                 <span class="login-indicator"></span>
-                <% } %>
             </a>
         </div>
         <div class="nav-icons">

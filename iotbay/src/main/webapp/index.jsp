@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -30,7 +29,7 @@
     </div>
     <div class="search-container">
         <form action="${pageContext.request.contextPath}/products/list" method="get">
-            <input type="text" class="search-input" name="query" placeholder="Search..."
+            <input type="text" class="search-input" name="query" placeholder="Search Products..."
                    value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
             <% if (request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
             <input type="hidden" name="category" value="<%= request.getAttribute("selectedCategory") %>">
@@ -134,13 +133,13 @@
         <div class="product-tile">
             <img src="${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.png"
                  alt="<%= product.getName() %>"
-                 onerror="if (this.src.includes('.png')) { 
-                    this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpg';
-                 } else if (this.src.includes('.jpg')) {
-                    this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpeg';
-                 } else {
-                    this.src='${pageContext.request.contextPath}/assets/images/products/placeholder.png';
-                 }">
+                 onerror="if (this.src.includes('.png')) {
+                         this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpg';
+                         } else if (this.src.includes('.jpg')) {
+                         this.src='${pageContext.request.contextPath}/assets/images/products/<%= product.getName() %>.jpeg';
+                         } else {
+                         this.src='${pageContext.request.contextPath}/assets/images/products/placeholder.png';
+                         }">
             <h3><%= product.getName() %>
             </h3>
             <p>$<%= product.getPrice() %>
@@ -149,11 +148,11 @@
             </p>
             <a href="${pageContext.request.contextPath}/products/detail/<%= product.getProductID() %>"
                class="view-details">View Details</a>
-            <button 
-                class="add-to-cart" 
-                data-product-id="<%= product.getProductID() %>"
-                data-stock="<%= product.getStock() %>"
-                <%= product.getStock() <= 0 ? "disabled" : "" %>
+            <button
+                    class="add-to-cart"
+                    data-product-id="<%= product.getProductID() %>"
+                    data-stock="<%= product.getStock() %>"
+                    <%= product.getStock() <= 0 ? "disabled" : "" %>
             >
                 <%= product.getStock() > 0 ? "Add to Cart" : "Out of Stock" %>
             </button>
