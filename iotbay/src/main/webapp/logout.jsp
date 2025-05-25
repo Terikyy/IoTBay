@@ -3,10 +3,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page session="true" %>
-<%
-    // Remove the user from session storage
-    session.removeAttribute("user");
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

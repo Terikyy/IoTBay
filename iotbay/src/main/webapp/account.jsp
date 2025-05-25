@@ -74,7 +74,7 @@
                 <input type="submit" value="Save Changes">
             </form>
             <div>
-                <a href="logout.jsp">Log Out</a>
+                <a href="LogOutServlet">Log Out</a>
             </div>
         </div>
     </div>

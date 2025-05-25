@@ -38,6 +38,9 @@ public class UserController extends HttpServlet {
         String postcode = request.getParameter("postalCode");
         String city = request.getParameter("city");
         String state = request.getParameter("state");
+
+
+        response.sendRedirect("account.jsp");
     }
 
     public static List<User> getAllUsers(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
