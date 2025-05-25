@@ -1,15 +1,20 @@
-<%@ page import="java.util.List" %>
-<%@ page import="model.Payment" %>
-<%@ page session="true" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="model.Product" %>
-<%@ page import="model.users.User" %>
+<%@ page import="java.util.List, java.util.ArrayList, java.util.Map" %>
+<%@ page import="model.Payment, model.Product, model.users.User" %>
 
 <%
+    // Retrieve the logged-in user from the session.
     User user = (User) session.getAttribute("user");
-    
-    @SuppressWarnings("unchecked")
+  
     List<Payment> payments = (List<Payment>) request.getAttribute("payments");
+    if (payments == null) {
+      payments = new ArrayList<>();
+    }
+
+    // Determine if a search was performed.
+    Boolean hasSearched = (Boolean) request.getAttribute("hasSearched");
+    if (hasSearched == null) { 
+    hasSearched = false;
+    } 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,25 +80,35 @@
           <label for="paymentDate">Payment Date</label>
           <input type="date" name="paymentDate" id="paymentDate"/>
         </div>
-
-        <button type="submit">Search</button>
-        <button type="submit" name="showAll" value="1">Show All</button>
+        
+        <div class="button-group">
+          <button type="submit" <%= (user == null ? "disabled" : "") %> >Search</button>
+          <button type="submit" name="showAll" value="1" <%= (user == null ? "disabled" : "") %> >Show All</button>
+        </div>
       </form>
 
       <!-- Payment List -->
-      <% if (payments == null || payments.isEmpty()) { %>
-        <br><p>No payments found.</p>
-      <% } else { 
-           for (Payment p : payments) { %>
+      <% if (request.getAttribute("error") != null) { %>
+        <p class="message error-message"><%= request.getAttribute("error") %></p>
+      <% } %>
+
+      <% if (user == null) { %>
+        <a href="${pageContext.request.contextPath}/login.jsp">
+          <p class="message">You must be logged in to view your payment history.</p>
+        </a>
+      <% } else if (request.getParameter("showAll") != null && payments.isEmpty()) { %>
+        <p class="message">No payments found.</p>
+      <% } else if (!payments.isEmpty()) { 
+            for (Payment p : payments) { %>
         <div class="card">
           <h3>Payment #<%= p.getPaymentID() %></h3>
-          <p><strong>Order ID:</strong>    <%= p.getOrderID() %></p>
-          <p><strong>Amount:</strong>      $<%= String.format("%.2f", p.getAmountPaid()) %></p>
-          <p><strong>Date:</strong>        <%= p.getPaymentDate() %></p>
-          <p><strong>Status:</strong>      <%= p.getPaymentStatus() %></p>
+          <p><strong>Order ID:</strong> <%= p.getOrderID() %></p>
+          <p><strong>Amount:</strong> $<%= String.format("%.2f", p.getAmountPaid()) %></p>
+          <p><strong>Date:</strong> <%= p.getPaymentDate() %></p>
+          <p><strong>Status:</strong> <%= p.getPaymentStatus() %></p>
         </div>
-      <%   }
-         } %>
+      <%   } // end for loop
+        } // end if/else %>
 
     </div>
   </div>
