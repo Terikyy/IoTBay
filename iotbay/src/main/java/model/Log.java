@@ -14,7 +14,7 @@ public class Log extends IDObject {
     public Log(String message, int userId) {
         super();
         this.message = message;
-        this.timestamp = null;
+        this.timestamp = new Date(System.currentTimeMillis());
         this.userId = userId;
     }
 

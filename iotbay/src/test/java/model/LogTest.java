@@ -38,6 +38,6 @@ public class LogTest {
         assertEquals(message, logWithMessage.getMessage());
         assertEquals(userId, logWithMessage.getUserId());
         assertTrue(logWithMessage.getLogId() >= 0 && logWithMessage.getLogId() < Integer.MAX_VALUE);
-        assertNull(logWithMessage.getTimestamp());
+        assertNotNull(logWithMessage.getTimestamp());
     }
 }

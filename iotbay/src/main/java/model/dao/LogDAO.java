@@ -29,6 +29,7 @@ public class LogDAO extends AbstractDAO<Log> {
 
     @Override
     public int insert(Log log) throws SQLException {
+
         String query = "INSERT INTO Log (LogMessage, LogId, UserId, Timestamp) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, log.getMessage());

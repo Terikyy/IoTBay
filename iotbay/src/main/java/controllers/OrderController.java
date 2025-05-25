@@ -1,5 +1,11 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,12 +19,6 @@ import model.dao.OrderDAO;
 import model.dao.OrderItemDAO;
 import model.lineproducts.OrderItem;
 import model.users.User;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @WebServlet("/OrderController")
 public class OrderController extends HttpServlet {
@@ -90,8 +90,8 @@ public class OrderController extends HttpServlet {
         session.removeAttribute("cartTotal");
         session.removeAttribute("cart");
 
-        System.out.println("Redirecting to shippingManagement.jsp...");
-        response.sendRedirect("shippingManagement.jsp");
+        System.out.println("Redirecting to payment.jsp...");
+        response.sendRedirect("payment.jsp");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -101,7 +101,7 @@ public class OrderController extends HttpServlet {
 
         if (orderCreated != null && orderCreated) {
             session.removeAttribute("orderCreated");
-            response.sendRedirect("shippingManagement.jsp");
+            response.sendRedirect("payment.jsp");
             return;
         } else {
             OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");

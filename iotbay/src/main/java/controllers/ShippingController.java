@@ -28,6 +28,8 @@ public class ShippingController extends HttpServlet {
 
         HttpSession session = request.getSession();
 
+        
+
         shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
         orderDAO = (OrderDAO) session.getAttribute("orderDAO");
         
@@ -179,11 +181,11 @@ public class ShippingController extends HttpServlet {
         String address        = request.getParameter("address");
         String shippingMethod = request.getParameter("shippingMethod");
         int    orderId        = Integer.parseInt(request.getParameter("orderId"));
-        ShippingManagement shipment = new ShippingManagement(0, orderId, LocalDate.now(), address, shippingMethod, false);
+        ShippingManagement shipment = new ShippingManagement(0, orderId, LocalDate.now(), address, shippingMethod, true);
         int newShipmentId = shippingDAO.insert(shipment);
         HttpSession session = request.getSession();
         session.setAttribute("lastShipmentId", newShipmentId);
-        response.sendRedirect(request.getContextPath() + "/payment.jsp");
+        response.sendRedirect(request.getContextPath() + "/confirmation.jsp");
     }
 
     // Update an existing shipment
@@ -193,7 +195,7 @@ public class ShippingController extends HttpServlet {
         String address = request.getParameter("address");
         String shippingMethod = request.getParameter("shippingMethod");
 
-        ShippingManagement shipment = new ShippingManagement(shipmentId, orderId, LocalDate.now(), address, shippingMethod, false);
+        ShippingManagement shipment = new ShippingManagement(shipmentId, orderId, LocalDate.now(), address, shippingMethod, true);
         shippingDAO.update(shipment);
 
         HttpSession session = request.getSession();

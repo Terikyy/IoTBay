@@ -3,6 +3,7 @@
 <%@ page import="controllers.UserController" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="model.Product" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,17 +60,21 @@
             </button>
         </form>
     </div>
-    <div class="user-logs" title="User Logs">
-        <a href="${pageContext.request.contextPath}/log.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
-        </a>
+    <div class="header-right">
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (admin != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
     </div>
-    <div class="account">
-        <a href="${pageContext.request.contextPath}/account.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-        </a>
-    </div>
-
 </header>
 <div class="container">
     <div class="main-container main-content">

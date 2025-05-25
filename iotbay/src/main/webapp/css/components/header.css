@@ -97,10 +97,7 @@ header .search-container .search-button img {
     width: 30px;
 }
 
-header .account,
-header .shopping-cart,
-header .user-logs,
-header .manage-users {
+header .nav-icons {
     display: flex;
     align-items: center;
     margin-left: 20px;
@@ -112,20 +109,37 @@ header .header-right {
     justify-content: flex-end;
 }
 
-header .account img,
-header .shopping-cart img,
-header .user-logs img,
-header .manage-users img {
+header .nav-icons img{
     height: 40px;
     width: 40px;
     cursor: pointer;
 }
 
+/* Login indicator (green checkmark) */
+.account-icon {
+    position: relative;
+}
+
+.login-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background-color: var(--success);
+    border-radius: 50%;
+    border: 2px solid var(--header-bg);
+}
+
 /* Cart count badge */
+.cart-button, .shopping-cart a {  /* Add these classes for cart icon container */
+    position: relative;
+}
+
 .cart-count {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: -5px;
+    right: -5px;
     background-color: var(--error);
     color: white;
     border-radius: 50%;

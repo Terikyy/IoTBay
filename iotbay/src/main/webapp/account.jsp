@@ -1,5 +1,5 @@
 <%@ page import="model.users.*" %>
-<%@ page import="model.Address" %>
+<%@ page import="model.Product" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
 <%@ page session="true" %>
@@ -10,8 +10,6 @@
         response.sendRedirect("login.jsp");
         return;
     }
-
-    Address address = (Address) session.getAttribute("address");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,42 +26,38 @@
             <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
         </a>
     </div>
-
-
-    <div class="search-container">
-        <form action="${pageContext.request.contextPath}/products/list" method="get">
-            <input type="text" class="search-input" name="query" placeholder="Search..."
-                   value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
-            <% if (request.getAttribute("selectedCategory") != null && !request.getAttribute("selectedCategory").toString().isEmpty()) { %>
-            <input type="hidden" name="category" value="<%= request.getAttribute("selectedCategory") %>">
-            <% } %>
-            <button type="submit" class="search-button">
-                <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
-            </button>
-        </form>
+    <div class="header-right">
+        <div class="nav-icons" title="Shopping Cart">
+            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                <%
+                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
+                    int itemCount = 0;
+                    if (cartItems != null) {
+                        for (Map<String, Object> item : cartItems) {
+                            itemCount += (int) item.get("quantity");
+                        }
+                    }
+                %>
+                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
+                        <%= itemCount %>
+                    </span>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (user != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
     </div>
-
-    <%
-        if (user.isAdmin()) {
-    %>
-    <div class="user-logs" title="User Logs">
-        <a href="${pageContext.request.contextPath}/log.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/log_icon.png" alt="Log">
-        </a>
-    </div>
-    <div class="manage-users" title="Manage Users">
-        <a href="${pageContext.request.contextPath}/user-management.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/manage_icon.png" alt="Manage Users">
-        </a>
-    </div>
-    <% } %>
-
-    <div class="shopping-cart"> <!-- Reusing same style for Shipping List Icon (Add by Jiaming) -->
-        <a href="${pageContext.request.contextPath}/shippingList.jsp">
-            <img src="${pageContext.request.contextPath}/assets/images/shipping_icon.png" alt="ShippingList">
-        </a>
-    </div>
-
 </header>
 <div class="container">
     <div class="main-container">
