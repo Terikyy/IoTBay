@@ -72,7 +72,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                    <input type="submit" name="action" value="Save" style="flex: 1; margin-right: 10px;">
+                    <input type="submit" name="action" value="Save" style="flex: 1; margin-right: 10px;">   <!-- Save button - finish payment in payment list - payment is pending rn -->
                     <input type="submit" name="action" value="Pay Now" style="flex: 1; margin-left: 10px;">
                 </div>
             </form>
