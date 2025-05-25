@@ -13,6 +13,7 @@
     ShippingManagement edit = 
         (ShippingManagement) request.getAttribute("updateShipment");
     Integer oid = (Integer) session.getAttribute("orderId");
+    User user = (User) session.getAttribute("user");
 %>
 
 <!DOCTYPE html>
