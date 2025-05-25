@@ -1,0 +1,66 @@
+/* Notification styling */
+.notification {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    max-width: 350px;
+    background-color: white;
+    color: var(--content-text-primary);
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    font-size: 1rem;
+    display: none;
+    overflow: hidden;
+    animation: slide-in 0.3s ease-out;
+}
+
+.notification.success {
+    border-right: 5px solid var(--success);
+}
+
+.notification.error {
+    border-right: 5px solid var(--error);
+}
+
+.notification.info {
+    border-right: 5px solid var(--info);
+}
+
+.notification.warning {
+    border-right: 5px solid var(--warning);
+}
+
+/* Progress bar at the bottom of notification */
+.notification::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Use accent-primary for all notification types */
+.notification::after {
+    background-color: var(--accent-primary);
+    animation: progress-bar 3s linear forwards;
+}
+
+@keyframes progress-bar {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

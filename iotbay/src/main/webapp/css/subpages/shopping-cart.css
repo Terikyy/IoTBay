@@ -5,6 +5,7 @@
 /* Import component styles */
 @import '../components/header.css';
 @import '../components/forms.css';
+@import '../components/notification.css';
 
 /* Cart-specific styles */
 .main-container {
@@ -214,28 +215,6 @@ th {
 .continue-shopping:hover {
     background-color: var(--content-bg-tertiary);
     color: var(--accent-primary);
-}
-
-/* Notification styles */
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 20px;
-    border-radius: 4px;
-    color: white;
-    font-weight: 600;
-    z-index: 1000;
-    display: none;
-    box-shadow: 0 4px 8px var(--shadow-color);
-}
-
-.notification.success {
-    background-color: var(--success);
-}
-
-.notification.error {
-    background-color: var(--error);
 }
 
 /* Responsive design */

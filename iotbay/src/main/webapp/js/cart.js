@@ -2,6 +2,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get context path from meta tag
     const contextPath = document.querySelector('meta[name="contextPath"]')?.getAttribute('content') || '';
     
+    // Check for stored notification message
+    const storedNotification = sessionStorage.getItem('cartNotification');
+    if (storedNotification) {
+        try {
+            const notification = JSON.parse(storedNotification);
+            showNotification(notification.message, notification.type);
+            // Clear after showing
+            sessionStorage.removeItem('cartNotification');
+        } catch (e) {
+            console.error('Error parsing stored notification', e);
+        }
+    }
+    
     // Add event listeners for all "Add to Cart" buttons
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     
@@ -188,6 +201,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to refresh cart page content
     function refreshCartPage() {
+        // Store notification message in sessionStorage before redirect
+        if (lastNotificationMessage) {
+            sessionStorage.setItem('cartNotification', JSON.stringify({
+                message: lastNotificationMessage,
+                type: lastNotificationType
+            }));
+        }
+        // Then redirect
         window.location.href = `${contextPath}/cart`;
     }
     
@@ -231,6 +252,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to show a notification
     function showNotification(message, type = 'success') {
+        // Store the message and type for potential page refresh
+        lastNotificationMessage = message;
+        lastNotificationType = type;
+        
         // Create notification element if it doesn't exist
         let notification = document.querySelector('.notification');
         if (!notification) {
@@ -248,7 +273,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Hide after 3 seconds
         setTimeout(() => {
-            notification.style.display = 'none';
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            notification.style.transition = 'opacity 0.3s, transform 0.3s';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+                notification.style.transition = '';
+            }, 300);
         }, 3000);
     }
 });
