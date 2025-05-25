@@ -18,12 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @WebServlet("/PaymentListController")
 public class PaymentListController extends HttpServlet {
     private PaymentDAO paymentDAO;
     private UserDAO userDAO;
-
 
     // doGet Method
     @Override
@@ -32,7 +30,6 @@ public class PaymentListController extends HttpServlet {
         HttpSession session = request.getSession();
         paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
         userDAO = (UserDAO) session.getAttribute("userDAO");
-
 
         try {
             if (paymentDAO == null) {
@@ -74,21 +71,25 @@ public class PaymentListController extends HttpServlet {
                 int id = Integer.parseInt(sid);
                 LocalDate d = LocalDate.parse(date);
                 filtered = all.stream()
-
-                        .filter(s -> s.getPaymentID() == id
-                                && s.getPaymentDate().equals(d))
-                        .collect(Collectors.toList());
-            } else if (!sid.isEmpty()) { //filter by paymentId only
+                            .filter(s -> s.getPaymentID() == id && s.getPaymentDate().equals(d))
+                            .collect(Collectors.toList());
+            } else if (!sid.isEmpty()) { // filter by paymentId only
                 int id = Integer.parseInt(sid);
                 filtered = filtered.stream()
-                        .filter(s -> s.getPaymentID() == id)
-                        .collect(Collectors.toList());
-            } else if (date != null && !date.isEmpty()) { //filter by paymentDate only
+                            .filter(s -> s.getPaymentID() == id)
+                            .collect(Collectors.toList());
+            } else if (date != null && !date.isEmpty()) { // filter by paymentDate only
                 LocalDate d = LocalDate.parse(date);
                 filtered = filtered.stream()
-                        .filter(s -> s.getPaymentDate().equals(d))
-                        .collect(Collectors.toList());
+                            .filter(s -> s.getPaymentDate().equals(d))
+                            .collect(Collectors.toList());
             }
+
+            //set an error message if both filters are provided
+            if (!( (sid == null || sid.isEmpty()) && (date == null || date.isEmpty()) ) && filtered.isEmpty()) {
+                request.setAttribute("error", "No such payment");
+            }
+
 
             request.setAttribute("payments", filtered);
 
@@ -98,4 +99,3 @@ public class PaymentListController extends HttpServlet {
         }
     }
 }
-
