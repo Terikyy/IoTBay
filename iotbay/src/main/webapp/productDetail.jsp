@@ -120,9 +120,13 @@
                 </div>
                 <div class="product-actions">
                     <input type="number" min="1" max="<%= product.getStock() %>" value="1" class="quantity-input" id="quantity">
-                    <button class="add-to-cart" data-product-id="<%= product.getProductID() %>" 
-                            <%= product.getStock() <= 0 ? "disabled" : "" %>>
-                        Add to Cart
+                    <button 
+                        class="add-to-cart" 
+                        data-product-id="<%= product.getProductID() %>"
+                        data-stock="<%= product.getStock() %>"
+                        <%= product.getStock() <= 0 ? "disabled" : "" %>
+                    >
+                        <%= product.getStock() > 0 ? "Add to Cart" : "Out of Stock" %>
                     </button>
                 </div>
             </div>

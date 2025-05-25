@@ -58,6 +58,13 @@
             <!-- Customer accessible pages -->
             <h2 class="section-title">Main Services</h2>
             <div class="nav-grid">
+                <a href="${pageContext.request.contextPath}/index.jsp" class="nav-tile">
+                    <div class="icon-container">
+                        <img src="${pageContext.request.contextPath}/assets/images/home_icon.png" alt="Home">
+                    </div>
+                    <h3>Home</h3>
+                </a>
+
                 <a href="${pageContext.request.contextPath}/account.jsp" class="nav-tile">
                     <div class="icon-container">
                         <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
