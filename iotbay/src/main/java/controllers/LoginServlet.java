@@ -44,6 +44,16 @@ public class LoginServlet extends HttpServlet {
             }
             session.setAttribute("user", user);
             session.setAttribute("userID", user.getUserID()); // Added By Eric (Jiaming)
+
+            // Add this: Merge cart data from session with database
+            try {
+                CartController.mergeCartWithDatabase(request, user.getUserID());
+                System.out.println("Cart merged successfully for user ID: " + user.getUserID());
+            } catch (Exception e) {
+                System.err.println("Error merging cart: " + e.getMessage());
+                // Continue login process even if cart merge fails
+            }
+
             LogController.createLog(request, response, "User logged in", user.getUserID());
             response.sendRedirect("welcome.jsp");
         } catch (Exception e) {
