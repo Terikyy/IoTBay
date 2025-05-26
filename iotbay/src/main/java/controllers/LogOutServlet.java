@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.dao.LogDAO;
+import model.users.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,8 +21,15 @@ public class LogOutServlet extends HttpServlet {
             ConnServlet.updateDAOsGET(request, response);
             return;
         }
+
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("logout.jsp");
+            return;
+        }
+
         try {
-            LogController.createLog(request, response, "User logged out", (int) session.getAttribute("userID"));
+            LogController.createLog(request, response, "User logged out", user.getUserID());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
