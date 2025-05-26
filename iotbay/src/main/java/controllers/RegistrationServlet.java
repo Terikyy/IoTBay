@@ -42,6 +42,16 @@ public class RegistrationServlet extends HttpServlet {
         try {
             IDObject.insert(userDAO, user);
             session.setAttribute("user", user);
+
+            // Save current cart items to database for the newly registered user
+            try {
+                CartController.mergeCartWithDatabase(request, user.getUserID());
+                System.out.println("Cart saved for new user ID: " + user.getUserID());
+            } catch (Exception e) {
+                System.err.println("Error saving cart for new user: " + e.getMessage());
+                // Continue registration process even if cart save fails
+            }
+
             LogController.createLog(request, response, "User registered", user.getUserID());
             response.sendRedirect("welcome.jsp");
         } catch (Exception e) {
