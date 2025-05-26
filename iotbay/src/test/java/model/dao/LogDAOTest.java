@@ -42,7 +42,7 @@ public class LogDAOTest {
         }
         assertEquals(log.getLogId(), result.getLogId());
         assertEquals(log.getMessage(), result.getMessage());
-        assertEquals(log.getTimestamp(), result.getTimestamp());
+        assertEquals(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime())), new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(result.getTimestamp().getTime())));
         assertEquals(log.getUserId(), result.getUserId());
 
         cleanUpLog();

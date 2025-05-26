@@ -1,5 +1,6 @@
-insert into User (UserID, Name, Email, Password, PhoneNumber)
-values (1, 'Alice Smith', 'alice@iotbay.com', 'password1', '0412345678'),
+INSERT INTO User (UserID, Name, Email, Password, PhoneNumber)
+VALUES (0, 'SysAdmin', 'admin@iotbay.com', 'admin123', '0400123456'),
+       (1, 'Alice Smith', 'alice@iotbay.com', 'password1', '0412345678'),
        (2, 'Bob Johnson', 'bob@iotbay.com', 'password2', '0422345678'),
        (3, 'Carol Williams', 'carol@iotbay.com', 'password3', '0433345678'),
        (4, 'David Brown', 'david@iotbay.com', 'password4', '0444345678'),
@@ -19,3 +20,7 @@ values (1, 'Alice Smith', 'alice@iotbay.com', 'password1', '0412345678'),
        (18, 'Ruby Allen', 'ruby@iotbay.com', 'password18', '0481345678'),
        (19, 'Sam King', 'sam@iotbay.com', 'password19', '0491345678'),
        (20, 'Tina Scott', 'tina@iotbay.com', 'password20', '0402345678');
+INSERT INTO Admin (UserID)
+VALUES (0);
+INSERT INTO Staff (UserID)
+VALUES (1);

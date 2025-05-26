@@ -97,7 +97,7 @@
                     }
                 %>
                 <div class="log-row">
-                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime())) /*Add 10 hours, because database time is in Greenwich Mean Time*/ %></span>
+                    <span class="log-timestamp"><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime())) %></span>
                     <span class="log-user"><%= user != null ? user.getEmail() : "User does not exist" %></span>
                     <span class="log-message"><%= log.getMessage() %></span>
                 </div>

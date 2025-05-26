@@ -2,10 +2,7 @@ package model.dao;
 
 import model.Log;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class LogDAO extends AbstractDAO<Log> {
             ps.setString(1, log.getMessage());
             ps.setInt(2, log.getLogId());
             ps.setInt(3, log.getUserId());
-            ps.setDate(4, log.getTimestamp());
+            ps.setString(4, new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(log.getTimestamp().getTime())));
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }

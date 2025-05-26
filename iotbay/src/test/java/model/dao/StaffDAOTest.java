@@ -1,11 +1,15 @@
 package model.dao;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StaffDAOTest {
     StaffDAO staffDAO;
 
@@ -19,6 +23,14 @@ public class StaffDAOTest {
     }
 
     @Test
+    @Order(0)
+    public void testIsStaff() throws SQLException {
+        boolean result = staffDAO.isStaff(1);
+        assertTrue(result);
+    }
+
+    @Test
+    @Order(1)
     public void testInsert() throws SQLException {
         try {
             staffDAO.insert(Integer.MAX_VALUE);
@@ -30,6 +42,7 @@ public class StaffDAOTest {
     }
 
     @Test
+    @Order(2)
     public void testDelete() throws SQLException {
         try {
             staffDAO.delete(Integer.MAX_VALUE);
