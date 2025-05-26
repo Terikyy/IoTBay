@@ -2,8 +2,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="controllers.UserController" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="model.Product" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">

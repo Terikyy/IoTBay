@@ -1,7 +1,4 @@
 <%@ page import="model.users.User" %>
-<%@ page import="model.Product" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
 <%@ page session="true" %>
 <%
     User user = (User) session.getAttribute("user");
@@ -24,23 +21,6 @@
         </a>
     </div>
     <div class="header-right">
-        <div class="nav-icons" title="Shopping Cart">
-            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
-                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
-                <%
-                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
-                    int itemCount = 0;
-                    if (cartItems != null) {
-                        for (Map<String, Object> item : cartItems) {
-                            itemCount += (int) item.get("quantity");
-                        }
-                    }
-                %>
-                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
-                            <%= itemCount %>
-                        </span>
-            </a>
-        </div>
         <div class="nav-icons">
             <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
                 <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
@@ -67,6 +47,13 @@
                     <img src="${pageContext.request.contextPath}/assets/images/home_icon.png" alt="Home">
                 </div>
                 <h3>Home</h3>
+            </a>
+
+            <a href="${pageContext.request.contextPath}/cart" class="nav-tile">
+                <div class="icon-container">
+                    <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
+                </div>
+                <h3>Shopping Cart</h3>
             </a>
 
             <a href="${pageContext.request.contextPath}/account.jsp" class="nav-tile">

@@ -11,8 +11,13 @@
         response.sendRedirect(request.getContextPath() + "/cart");
         return; // Important to stop JSP processing after redirect
     }
+
+    // get url of previous page
+    String previousPage = request.getHeader("Referer");
+
+    // get user for login indicator
+    User user = (User) session.getAttribute("user");
 %>
-<% User user = (User) session.getAttribute("user"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +36,7 @@
     </div>
     <div class="header-right">
             <div class="nav-icons" title="Shopping Cart">
-                <a href="${pageContext.request.contextPath}/cart" class="cart-button">
+                <a href="<%=previousPage == null ? "" : previousPage%>" class="cart-button">
                     <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
                     <%
                         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");

@@ -5,7 +5,6 @@
 <%@ page import="controllers.LogController" %>
 <%@ page import="java.text.DateFormatSymbols" %>
 <%@ page import="java.util.*" %>
-<%@ page import="model.Product" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,23 +48,6 @@
         </form>
     </div>
     <div class="header-right">
-        <div class="nav-icons" title="Shopping Cart">
-            <a href="${pageContext.request.contextPath}/cart" class="cart-button">
-                <img src="${pageContext.request.contextPath}/assets/images/cart_icon.png" alt="Shopping Cart">
-                <%
-                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) request.getAttribute("cartItems");
-                    int itemCount = 0;
-                    if (cartItems != null) {
-                        for (Map<String, Object> item : cartItems) {
-                            itemCount += (int) item.get("quantity");
-                        }
-                    }
-                %>
-                <span class="cart-count <%= itemCount > 0 ? "" : "hidden" %>">
-                        <%= itemCount %>
-                    </span>
-            </a>
-        </div>
         <div class="nav-icons">
             <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
                 <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
