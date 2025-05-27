@@ -177,10 +177,20 @@ public class ShippingController extends HttpServlet {
     
     // Create a new shipment
     private void createShipment(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-
-        String address        = request.getParameter("address");
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        String address = request.getParameter("address");
         String shippingMethod = request.getParameter("shippingMethod");
-        int    orderId        = Integer.parseInt(request.getParameter("orderId"));
+    
+        // Check if a shipment already exists for this order
+        List<ShippingManagement> existingShipments = shippingDAO.findByOrderId(orderId);
+        if (!existingShipments.isEmpty()) {
+            // If shipment already exists, reject creation
+            request.setAttribute("errorMessage", "A shipment already exists for this order.");
+            request.getRequestDispatcher("/shippingManagement.jsp").forward(request, response);
+            return;
+        }
+    
+        // Proceed to create new shipment
         ShippingManagement shipment = new ShippingManagement(0, orderId, LocalDate.now(), address, shippingMethod, true);
         int newShipmentId = shippingDAO.insert(shipment);
         HttpSession session = request.getSession();
