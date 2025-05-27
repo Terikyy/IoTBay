@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="css/subpages/payment.css">
 
     <%
+    String message = (String) request.getAttribute("message");
+
     User user = (User) session.getAttribute("user");
     Integer orderIdObj = (Integer) session.getAttribute("orderId");
     if (orderIdObj == null) {
@@ -74,6 +76,12 @@
         </div>
         </form>
 
+        <% if (message != null) { %>
+            <div class="alert"><%=message%></div>
+        <% } %>
+
+        <% if (message == null) { %>
+
         <form action="PaymentController" method="post">
             <div id="cardDetails">
                 <div class="form-group">
@@ -102,10 +110,18 @@
             </div>
 
             <div class="button-group">
-                <input type="submit" name="action" value="Save">
-                <input type="submit" name="action" value="Pay Now">
+                <button type="submit" name="action" value="Save" <%= (user == null ? "disabled" : "") %> >Save</button>
+                <button type="submit" name="action" value="Pay Now">Pay Now</button>
             </div>
+
+            <% if (user == null) { %>
+            <a href="${pageContext.request.contextPath}/login.jsp">
+                <p class="message">You must be logged in to save payments.</p>
+            </a>
+            <% } %>
+
         </form>
+        <% } %>
         </div>
     </div>
 </div>

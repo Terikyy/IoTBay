@@ -14,6 +14,7 @@ import model.Order;
 import model.Payment;
 import model.dao.OrderDAO;
 import model.dao.PaymentDAO;
+import model.users.User;
 
 @WebServlet("/PaymentController")
 public class PaymentController extends HttpServlet {
@@ -30,6 +31,18 @@ public class PaymentController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+
+        Integer paymentId = (Integer) session.getAttribute("paymentId");
+        if (paymentId != null) {
+            User user = (User) session.getAttribute("user");
+            String msg = (user == null)
+                    ? "Payment already created, go back to shipping."
+                    : "Payment created already, please complete in payment history.";
+            request.setAttribute("message", msg);
+            request.getRequestDispatcher("payment.jsp")
+                    .forward(request, response);
+            return;
+        }
 
         Double totalPrice = (Double) request.getAttribute("totalPrice");
         if (totalPrice == null) {
@@ -71,14 +84,16 @@ public class PaymentController extends HttpServlet {
         }
         System.out.println("Processing payment with card number: " + cardNumber);
 
-        Payment payment = new Payment(orderId, "CreditCard", totalPrice, new java.util.Date(), Payment.PAYMENT_STATUS_PENDING);
+        Payment payment = new Payment(orderId, "CreditCard", totalPrice, new java.util.Date(),
+                Payment.PAYMENT_STATUS_PENDING);
         IDObject.insert(paymentDAO, payment);
-
 
         if ("Pay Now".equals(request.getParameter("action"))) {
             orderDAO.updateStatus(orderId, Order.ORDER_STATUS_PAID);
             payment.setPaymentStatus(Payment.PAYMENT_STATUS_COMPLETED);
-        } 
+
+            paymentDAO.update(payment);
+        }
 
         session.setAttribute("paymentId", payment.getPaymentID());
 
