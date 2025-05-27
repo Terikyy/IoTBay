@@ -21,7 +21,6 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     HttpSession session = request.getSession();
     shippingDAO = (ShippingDAO) session.getAttribute("shippingDAO");
     if (shippingDAO == null) {
-        // same redirect-to-login logic you have in doGet…
         String currentURL = request.getRequestURI()
                           + (request.getQueryString()!=null?("?"+request.getQueryString()):"");
         response.sendRedirect(request.getContextPath() + "/Connservlet?redirectURL=" + currentURL);
@@ -37,8 +36,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throw new ServletException("Error deleting shipment", e);
         }
     }
-
-    // after delete, bounce right back to GET so the list refreshes
+    
     response.sendRedirect(request.getContextPath() + "/ShippingListController?showAll=1");
 }
 }

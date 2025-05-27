@@ -11,8 +11,10 @@
         (List<ShippingManagement>) request.getAttribute("shipments");
     ShippingManagement edit = 
         (ShippingManagement) request.getAttribute("updateShipment");
+
     Integer oid = (Integer) session.getAttribute("orderId");
     User user = (User) session.getAttribute("user");
+
 %>
 
 <!DOCTYPE html>
@@ -52,7 +54,6 @@
     <div class="centered-container">
       <h1>Shipping</h1>
 
-
 <% 
   boolean hasShipments = shipments != null && !shipments.isEmpty();
 %>
@@ -90,6 +91,12 @@
         <label>Address:</label>
         <input type="text" name="address" required/>
       </div>
+      
+      <!-- Error message display -->
+      <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+      <% if (errorMessage != null) { %>
+          <strong><a href = "confirmation.jsp"> <%= errorMessage %> </a></strong>
+      <% } %>
       
       <button>Create</button>
     </form>
