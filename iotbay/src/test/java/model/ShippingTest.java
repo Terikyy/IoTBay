@@ -1,10 +1,9 @@
 package model;
 
-import org.junit.Test;
-
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 public class ShippingTest {
     ShippingManagement shipping;
