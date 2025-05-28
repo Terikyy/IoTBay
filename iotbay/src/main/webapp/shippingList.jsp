@@ -97,10 +97,10 @@
             <% for (ShippingManagement s : shipments) { %>
               <div class="card">
                 <h3>Shipment #<%= s.getShipmentId() %></h3>
-                <br><p><strong>Order ID:</strong>  <%= s.getOrderId() %></p>
-                <br><p><strong>Date:</strong>      <%= s.getShipmentDate() %></p>
-                <br><p><strong>Method:</strong>    <%= s.getShippingMethod() %></p>
-                <br><p><strong>Address:</strong>   <%= s.getAddress() %></p>
+                <p><strong>Order ID:</strong>  <%= s.getOrderId() %></p>
+                <p><strong>Date:</strong>      <%= s.getShipmentDate() %></p>
+                <p><strong>Method:</strong>    <%= s.getShippingMethod() %></p>
+                <p><strong>Address:</strong>   <%= s.getAddress() %></p>
                 
                 <!-- UPDATE -->
                 <form action="${pageContext.request.contextPath}/ShippingController"
