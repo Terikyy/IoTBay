@@ -66,12 +66,6 @@
         <div class="centered-container">
             <h2>Payment</h2>
 
-
-            <% if (message != null) { %>
-            <div class="alert"><%=message%>
-            </div>
-            <% } %>
-
             <form action="PayPalServlet" method="post" class="payment-method-form" style="margin-top: 1rem;">
                 <div class="form-group">
                     <label for="paymentMethod">Payment Method:</label>
@@ -115,6 +109,11 @@
                     </button>
                     <button type="submit" name="action" value="Pay Now">Pay Now</button>
                 </div>
+
+                <% if (message != null) { %>
+                    <div class="message" style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/shipping.jsp';" ><%=message%> 
+                    </div>
+                <% } %>
 
                 <% if (user == null) { %>
                 <a href="${pageContext.request.contextPath}/login.jsp">

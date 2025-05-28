@@ -33,17 +33,17 @@ public class PaymentController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        Integer paymentId = (Integer) session.getAttribute("paymentId");
-        if (paymentId != null) {
-            User user = (User) session.getAttribute("user");
-            String msg = (user == null)
-                    ? "Payment already created, go back to shipping."
-                    : "Payment created already, please complete in payment history.";
-            request.setAttribute("message", msg);
-            request.getRequestDispatcher("payment.jsp")
-                    .forward(request, response);
-            return;
-        }
+        // Integer paymentId = (Integer) session.getAttribute("paymentId");
+        // if (paymentId != null) {
+        //     User user = (User) session.getAttribute("user");
+        //     String msg = (user == null)
+        //             ? "Payment already created, go back to shipping."
+        //             : "Payment created already, please complete in payment history.";
+        //     request.setAttribute("message", msg);
+        //     request.getRequestDispatcher("payment.jsp")
+        //             .forward(request, response);
+        //     return;
+        // }
 
         Double totalPrice = (Double) request.getAttribute("totalPrice");
         if (totalPrice == null) {
