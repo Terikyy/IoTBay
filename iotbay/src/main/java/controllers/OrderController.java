@@ -1,11 +1,5 @@
 package controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,12 +9,16 @@ import jakarta.servlet.http.HttpSession;
 import model.IDObject;
 import model.Order;
 import model.Product;
-import model.dao.AddressDAO;
 import model.dao.OrderDAO;
 import model.dao.OrderItemDAO;
 import model.lineproducts.OrderItem;
-import model.Address;
 import model.users.User;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet("/OrderController")
 public class OrderController extends HttpServlet {
@@ -66,7 +64,7 @@ public class OrderController extends HttpServlet {
         }
         session.setAttribute("orderId", order.getOrderID());
         session.setAttribute("totalPrice", order.getTotalPrice());
-        
+
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
 
         if (cartItems != null) {
@@ -99,29 +97,22 @@ public class OrderController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Boolean orderCreated = (Boolean) session.getAttribute("orderCreated");
 
-        if (orderCreated != null && orderCreated) {
-            session.removeAttribute("orderCreated");
-            response.sendRedirect("payment.jsp");
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        if (orderDAO == null) {
+            ConnServlet.updateDAOsGET(request, response);
             return;
-        } else {
-            OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
-            if (orderDAO == null) {
-                ConnServlet.updateDAOsGET(request, response);
-                return;
-            }
+        }
 
-            String action = request.getParameter("action");
-            if ("delete".equals(action)) {
-                int orderId = Integer.parseInt(request.getParameter("orderId"));
-                try {
-                    deleteOrder(orderId, session);
-                    System.out.println("Order deleted: " + orderId);
-                    response.sendRedirect("order.jsp");
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            try {
+                deleteOrder(orderId, session);
+                System.out.println("Order deleted: " + orderId);
+                response.sendRedirect("order.jsp");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
     }
