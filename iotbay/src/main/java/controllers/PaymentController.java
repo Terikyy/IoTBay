@@ -65,13 +65,13 @@ public class PaymentController extends HttpServlet {
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
         if (new SimpleDateFormat("yyyy-MM-dd").parse(expiryDate).before(new Date())) {
-            request.setAttribute("message", "Expiry date cannot be in the past.");
+            request.setAttribute("errorMessage", "Expiry date cannot be in the past.");
             request.getRequestDispatcher("payment.jsp").forward(request, response);
             return;
         }
         String cvv = request.getParameter("cvv");
         if (Integer.parseInt(cvv) > 999 || Integer.parseInt(cvv) < 100) {
-            request.setAttribute("message", "CVV format wrong, must be 3 digits.");
+            request.setAttribute("errorMessage", "CVV must be 3 digits.");
             request.getRequestDispatcher("payment.jsp").forward(request, response);
             return;
         }

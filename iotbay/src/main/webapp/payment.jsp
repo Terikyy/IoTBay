@@ -19,6 +19,7 @@
 
     <%
         String message = (String) request.getAttribute("message");
+        String errorMessage = (String) request.getAttribute("errorMessage");
 
 
         User user = (User) session.getAttribute("user");
@@ -110,6 +111,11 @@
                     </button>
                     <button type="submit" name="action" value="Pay Now">Pay Now</button>
                 </div>
+
+                <%-- validation errors, plain text styled as .error-message --%>
+                    <% if (errorMessage != null) { %>
+                    <div class="error-message"><%= errorMessage %></div>
+                <% } %>
 
                 <% if (message != null) {
                     session.removeAttribute("message");
