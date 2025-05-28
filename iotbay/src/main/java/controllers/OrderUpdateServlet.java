@@ -7,7 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Order;
+import model.Product;
+import model.dao.ProductDAO;
 import model.dao.OrderDAO;
+import model.dao.OrderItemDAO;
+import model.lineproducts.OrderItem;
 import model.users.User;
 
 import java.io.IOException;
@@ -19,14 +23,12 @@ public class OrderUpdateServlet extends HttpServlet {
     // Controller for managing orders
     // This class will handle order-related operations such as creating, updating, and deleting orders and order items.
 
-    private OrderDAO orderDAO;
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
         if (orderDAO == null) {
-            ConnServlet.updateDAOsGET(request, response);
+            ConnServlet.updateDAOsPOST(request, response);
             return;
         }
 
@@ -47,9 +49,15 @@ public class OrderUpdateServlet extends HttpServlet {
         return order;
     }
 
-    public static List<Order> getUserOrders(int userId, HttpSession session) throws SQLException {
-        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
+    public static List<OrderItem> getOrderItems(int orderID, HttpSession session) throws SQLException {
+        OrderItemDAO orderItemDAO = (OrderItemDAO) session.getAttribute("orderItemDAO");
 
-        return orderDAO.findByUserId(userId);
+        return orderItemDAO.findByOrderId(orderID);
+    }
+
+    public static Product getProductById(int productId, HttpSession session) throws SQLException {
+        ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
+
+        return productDAO.findById(productId);
     }
 }
