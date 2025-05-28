@@ -51,6 +51,11 @@ form .button-group button {
   margin-top: 1.5rem;
 }
 
+.error-message {
+  color: #d9534f;      
+  margin-top: 1.5rem;
+}
+
 .form-group input::placeholder {
 color: #6c757d;
 opacity: 1;

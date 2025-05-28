@@ -71,6 +71,14 @@
           </div>
         </form>
 
+        <%-- 1) “No such payment” when filters supplied but nothing matched --%>
+        <% if (request.getAttribute("error") != null) { %>
+          <p class="message error-message"><%= request.getAttribute("error") %></p>
+
+        <%-- 2) “No payments exist” when Show All clicked and list is empty --%>
+        <% } else if (request.getParameter("showAll") != null && payments.isEmpty()) { %>
+          <p class="message">No payments exist.</p>
+        <% } %>
 
         <% if (user == null) { %>
           <a href="${pageContext.request.contextPath}/login.jsp">
@@ -78,6 +86,7 @@
           </a>
         <% } 
         %>
+
       </div>
 
       <!-- Payment List -->
@@ -99,13 +108,11 @@
             </form>
 
             <!-- DELETE button -->
-            <form action="${pageContext.request.contextPath}/PaymentDeleteController"
-                  method="post"
-                  style="display:inline;"
-                  onsubmit="return confirm('Delete payment #<%= p.getPaymentID() %>?');">
-              <input type="hidden" name="action"    value="delete"/>
+            <form action="${pageContext.request.contextPath}/PaymentDeletionServlet" method="post" style="display:inline;">
               <input type="hidden" name="paymentId" value="<%= p.getPaymentID() %>"/>
-              <button type="submit">Delete</button>
+              <button type="submit" <%= !"PENDING".equals(p.getPaymentStatus()) ? "disabled" : "" %> >
+                Delete
+              </button>
             </form>
           </div>
         <%   } // end for
