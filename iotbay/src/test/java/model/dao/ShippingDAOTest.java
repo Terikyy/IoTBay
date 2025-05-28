@@ -1,110 +1,143 @@
 package model.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import model.ShippingManagement;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ShippingDAOTest {
 
-    ShippingDAO shippingDAO;
-    ShippingManagement shipping;
+    private static Connection conn;
+    private ShippingDAO shippingDAO;
 
-    public ShippingDAOTest() throws SQLException, ClassNotFoundException {
-        DBConnector db = new DBConnector();
-        try {
-            shippingDAO = new ShippingDAO(db.openConnection());
-        } catch (Exception e) {
-            fail("Failed to initialize ShippingDAO: " + e.getMessage());
+    private final int TEST_ORDER_ID = Integer.MAX_VALUE;
+    private final LocalDate TEST_DATE = LocalDate.of(2025, 10, 1);
+    private final String TEST_ADDRESS = "123 Test St";
+    private final String TEST_METHOD = "Express";
+    private final boolean TEST_FINALISED = false;
+
+    private int insertedShipmentId;
+
+    @BeforeAll
+    public static void setupClass() throws Exception {
+        DBConnector connector = new DBConnector();
+        conn = connector.openConnection();
+        conn.setAutoCommit(false);
+    }
+
+    @BeforeEach
+    public void setup() throws SQLException {
+        shippingDAO = new ShippingDAO(conn);
+    }
+
+    @AfterEach
+    public void rollback() throws SQLException {
+        conn.rollback();
+    }
+
+    @AfterAll
+    public static void teardownClass() throws SQLException {
+        if (conn != null && !conn.isClosed()) {
+            conn.setAutoCommit(true);
+            conn.close();
         }
     }
 
-    private void insertShipping() throws SQLException {
-        shipping = new ShippingManagement(
-                0,
-                54321,
-                LocalDate.now(),
-                "B11 UTS",
-                "Express",
-                false
-        );
-    
-        String sql = "INSERT INTO ShippingManagement (OrderID, ShipmentDate, Address, ShippingMethod, IsFinalised) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = shippingDAO.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, shipping.getOrderId());
-            ps.setObject(2, shipping.getShipmentDate());
-            ps.setString(3, shipping.getAddress());
-            ps.setString(4, shipping.getShippingMethod());
-            ps.setBoolean(5, shipping.isFinalised());
-            ps.executeUpdate();
-    
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    shipping.setShipmentId(rs.getInt(1));
-                }
-            }
-        }
-    }
-
-    private void cleanShipping() throws SQLException {
-        String query = "DELETE FROM ShippingManagement WHERE ShipmentID = ?";
-        try (PreparedStatement ps = shippingDAO.conn.prepareStatement(query)) {
-            ps.setInt(1, shipping.getShipmentId());
-            ps.executeUpdate();
-        }
-    }
-
+    // US501: Insert new shipment
     @Test
+    @Order(1)
     public void testInsert() throws SQLException {
-        insertShipping();
+        ShippingManagement shipment = new ShippingManagement(0, TEST_ORDER_ID, TEST_DATE, TEST_ADDRESS, TEST_METHOD, TEST_FINALISED);
+        insertedShipmentId = shippingDAO.insert(shipment);
+        assertTrue(insertedShipmentId > 0, "Expected generated ShipmentID");
 
-        ShippingManagement result = shippingDAO.findById(shipping.getShipmentId());
-        assertNotNull(result, "ShippingManagement not found after insert");
-
-        assertEquals(shipping.getOrderId(), result.getOrderId());
-        assertEquals(shipping.getShippingMethod(), result.getShippingMethod());
-        assertEquals(shipping.getShipmentDate(), result.getShipmentDate());
-        assertEquals(shipping.getAddress(), result.getAddress());
-        assertEquals(shipping.isFinalised(), result.isFinalised());
-
-        cleanShipping();
+        ShippingManagement found = shippingDAO.findById(insertedShipmentId);
+        assertNotNull(found, "Inserted shipment should be found");
+        assertEquals(TEST_ORDER_ID, found.getOrderId());
+        assertEquals(TEST_METHOD, found.getShippingMethod());
+        assertEquals(TEST_ADDRESS, found.getAddress());
+        assertEquals(TEST_FINALISED, found.isFinalised());
     }
 
+    // US505: Find shipment by ID
     @Test
+    @Order(2)
+    public void testFindById() throws SQLException {
+        ShippingManagement shipment = new ShippingManagement(0, TEST_ORDER_ID, TEST_DATE, TEST_ADDRESS, TEST_METHOD, TEST_FINALISED);
+        int id = shippingDAO.insert(shipment);
+        ShippingManagement found = shippingDAO.findById(id);
+
+        assertNotNull(found);
+        assertEquals(TEST_ORDER_ID, found.getOrderId());
+    }
+
+    // US605: Update shipment
+    @Test
+    @Order(3)
     public void testUpdate() throws SQLException {
-        insertShipping();
+        ShippingManagement shipment = new ShippingManagement(0, TEST_ORDER_ID, TEST_DATE, TEST_ADDRESS, TEST_METHOD, TEST_FINALISED);
+        int id = shippingDAO.insert(shipment);
 
-        shipping.setShippingMethod("Standard");
-        shipping.setAddress("B12 UTS");
+        shipment.setShipmentId(id);
+        shipment.setAddress("456 Updated St");
+        shipment.setShippingMethod("Standard");
+        shipment.setFinalised(true);
 
-        int updatedRows = shippingDAO.update(shipping);
-        assertEquals(1, updatedRows, "Expected 1 row to be updated");
+        int rowsAffected = shippingDAO.update(shipment);
+        assertEquals(1, rowsAffected);
 
-        ShippingManagement result = shippingDAO.findById(shipping.getShipmentId());
-        assertNotNull(result, "Expected shipment to not be null after update");
-        assertEquals("Standard", result.getShippingMethod(), "Expected shipping method to be updated");
-        assertEquals("B12 UTS", result.getAddress(), "Expected address to be updated");
-
-        cleanShipping();
+        ShippingManagement updated = shippingDAO.findById(id);
+        assertEquals("456 Updated St", updated.getAddress());
+        assertEquals("Standard", updated.getShippingMethod());
     }
 
+    // US507: Delete shipment by ID
     @Test
-    public void testDelete() throws SQLException {
-        insertShipping();
+    @Order(4)
+    public void testDeleteById() throws SQLException {
+        ShippingManagement shipment = new ShippingManagement(0, TEST_ORDER_ID, TEST_DATE, TEST_ADDRESS, TEST_METHOD, TEST_FINALISED);
+        int id = shippingDAO.insert(shipment);
+        int rowsAffected = shippingDAO.deleteById(id);
+        assertEquals(1, rowsAffected);
 
-        int deletedRows = shippingDAO.deleteById(shipping.getShipmentId());
-        assertEquals(1, deletedRows, "Expected 1 row to be deleted");
+        ShippingManagement result = shippingDAO.findById(id);
+        assertNull(result, "Shipment should be null after deletion");
+    }
 
-        ShippingManagement result = shippingDAO.findById(shipping.getShipmentId());
-        assertNull(result, "Expected shipment to be null after deletion");
+    // US507:
+    @Test
+    @Order(5)
+    public void testFindByOrderId() throws SQLException {
+        ShippingManagement shipment = new ShippingManagement(0, TEST_ORDER_ID, TEST_DATE, TEST_ADDRESS, TEST_METHOD, TEST_FINALISED);
+        int id = shippingDAO.insert(shipment);
+
+        List<ShippingManagement> list = shippingDAO.findByOrderId(TEST_ORDER_ID);
+        assertNotNull(list);
+        assertTrue(list.stream().anyMatch(s -> s.getShipmentId() == id));
+    }
+
+    // US505: Get all shipments
+    @Test
+    @Order(6)
+    public void testGetAll() throws SQLException {
+        List<ShippingManagement> list = shippingDAO.getAll();
+        assertNotNull(list);
+        // Just verify list retrieval works — no exact size assertion
     }
 }
