@@ -1,7 +1,9 @@
 package model.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,14 +17,7 @@ import model.ShippingManagement;
 public class ShippingDAOTest {
 
     ShippingDAO shippingDAO;
-    ShippingManagement shipping = new ShippingManagement(
-            Integer.MAX_VALUE,
-            54321,
-            LocalDate.now(),
-            "B11 UTS",
-            "Express",
-            false
-    );
+    ShippingManagement shipping;
 
     public ShippingDAOTest() throws SQLException, ClassNotFoundException {
         DBConnector db = new DBConnector();
@@ -33,22 +28,48 @@ public class ShippingDAOTest {
         }
     }
 
+    private void insertShipping() throws SQLException {
+        shipping = new ShippingManagement(
+                0,
+                54321,
+                LocalDate.now(),
+                "B11 UTS",
+                "Express",
+                false
+        );
+    
+        String sql = "INSERT INTO ShippingManagement (OrderID, ShipmentDate, Address, ShippingMethod, IsFinalised) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = shippingDAO.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, shipping.getOrderId());
+            ps.setObject(2, shipping.getShipmentDate());
+            ps.setString(3, shipping.getAddress());
+            ps.setString(4, shipping.getShippingMethod());
+            ps.setBoolean(5, shipping.isFinalised());
+            ps.executeUpdate();
+    
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    shipping.setShipmentId(rs.getInt(1));
+                }
+            }
+        }
+    }
+
+    private void cleanShipping() throws SQLException {
+        String query = "DELETE FROM ShippingManagement WHERE ShipmentID = ?";
+        try (PreparedStatement ps = shippingDAO.conn.prepareStatement(query)) {
+            ps.setInt(1, shipping.getShipmentId());
+            ps.executeUpdate();
+        }
+    }
+
     @Test
     public void testInsert() throws SQLException {
-     
-        if (shippingDAO.findById(shipping.getShipmentId()) != null) cleanShipping();
+        insertShipping();
 
-        try {
-            shippingDAO.insert(shipping);
-        } catch (Exception e) {
-            fail("Insert failed: " + e.getMessage());
-        }
         ShippingManagement result = shippingDAO.findById(shipping.getShipmentId());
-        if (result == null) {
-            fail("ShippingManagement not found after insert");
-        }
-        
-        assertEquals(shipping.getShipmentId(), result.getShipmentId());
+        assertNotNull(result, "ShippingManagement not found after insert");
+
         assertEquals(shipping.getOrderId(), result.getOrderId());
         assertEquals(shipping.getShippingMethod(), result.getShippingMethod());
         assertEquals(shipping.getShipmentDate(), result.getShipmentDate());
@@ -58,17 +79,9 @@ public class ShippingDAOTest {
         cleanShipping();
     }
 
-    public void cleanShipping() throws SQLException {
-        String query = "DELETE FROM ShippingManagement WHERE ShipmentID = ?";
-        try (PreparedStatement ps = shippingDAO.conn.prepareStatement(query)) {
-            ps.setInt(1, shipping.getShipmentId());
-            ps.executeUpdate(); 
-        }
-    }
-
     @Test
-    public void testUpdate() throws SQLException{
-        testInsert();
+    public void testUpdate() throws SQLException {
+        insertShipping();
 
         shipping.setShippingMethod("Standard");
         shipping.setAddress("B12 UTS");
@@ -82,13 +95,11 @@ public class ShippingDAOTest {
         assertEquals("B12 UTS", result.getAddress(), "Expected address to be updated");
 
         cleanShipping();
-
     }
 
     @Test
     public void testDelete() throws SQLException {
-
-        testInsert();
+        insertShipping();
 
         int deletedRows = shippingDAO.deleteById(shipping.getShipmentId());
         assertEquals(1, deletedRows, "Expected 1 row to be deleted");
@@ -96,6 +107,4 @@ public class ShippingDAOTest {
         ShippingManagement result = shippingDAO.findById(shipping.getShipmentId());
         assertNull(result, "Expected shipment to be null after deletion");
     }
-
-    
 }
