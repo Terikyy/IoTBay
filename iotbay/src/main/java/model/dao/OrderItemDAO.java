@@ -78,4 +78,19 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
             return ps.executeUpdate();
         }
     }
+
+    public boolean isProductInOrder(int productId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM OrderItem WHERE ProductID = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, productId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+                return false;
+            }
+        }
+    }
 }

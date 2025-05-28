@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Product;
 import model.dao.ProductDAO;
+import model.dao.CartItemDAO;
+import model.dao.OrderItemDAO;
+import model.lineproducts.CartItem;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -95,10 +98,16 @@ public class ProductController extends HttpServlet {
                         request.setAttribute("product", product);
                         request.getRequestDispatcher("/productDetail.jsp").forward(request, response);
                     } else {
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
+                        // Set error message and forward to product error page
+                        request.setAttribute("errorMessage", "Product with ID " + productId + " not found");
+                        request.setAttribute("errorTitle", "Product Not Found");
+                        request.getRequestDispatcher("/productError.jsp").forward(request, response);
                     }
                 } catch (NumberFormatException e) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID");
+                    // Handle invalid product ID format
+                    request.setAttribute("errorMessage", "Invalid product ID format");
+                    request.setAttribute("errorTitle", "Invalid Product ID");
+                    request.getRequestDispatcher("/productError.jsp").forward(request, response);
                 }
             } else if (pathInfo.equals("/inventory")) {
                 // Handle inventory management page
@@ -220,10 +229,29 @@ public class ProductController extends HttpServlet {
             } else if ("delete".equals(action)) {
                 // Handle deleting a product
                 int id = Integer.parseInt(request.getParameter("productId"));
-                productDAO.deleteById(id);
                 
-                // Redirect back to inventory page with success message
-                response.sendRedirect(request.getContextPath() + "/products/inventory?message=Product+deleted+successfully");
+                // Check if product is referenced in cart items
+                CartItemDAO cartItemDAO = (CartItemDAO) session.getAttribute("cartItemDAO");
+                List<CartItem> cartItems = cartItemDAO.getAllByProductId(id);
+                
+                // Check if product is referenced in order items
+                OrderItemDAO orderItemDAO = (OrderItemDAO) session.getAttribute("orderItemDAO");
+                boolean isInOrder = orderItemDAO.isProductInOrder(id);
+                
+                if (!cartItems.isEmpty()) {
+                    // Product is in someone's cart, prevent deletion
+                    response.sendRedirect(request.getContextPath() + 
+                        "/products/inventory?error=Cannot+delete+product+because+it+is+in+active+shopping+carts");
+                } else if (isInOrder) {
+                    // Product is in completed orders, prevent deletion
+                    response.sendRedirect(request.getContextPath() + 
+                        "/products/inventory?error=Cannot+delete+product+because+it+appears+in+orders");
+                } else {
+                    // Safe to delete the product
+                    productDAO.deleteById(id);
+                    response.sendRedirect(request.getContextPath() + 
+                        "/products/inventory?message=Product+deleted+successfully");
+                }
             } else {
                 // Handle invalid action
                 response.sendRedirect(request.getContextPath() + "/products/inventory?error=Invalid+action");
