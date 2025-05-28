@@ -1,57 +1,77 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: timothykugler
-  Date: 19.05.25
-  Time: 20:05
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import="model.users.User" %>
+<%@ page import="controllers.UserController" %>
+<%@ page import="model.Order" %>
+<%@ page import="controllers.OrderController" %>
+<%@ page import="model.OrderItems" %>
+<%@ page import="controllers.OrderItemServlet" %>
+<%@ page import="model.Product" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.sql.SQLException" %>
 <%@ page session="true" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% User user = (User) session.getAttribute("user"); %>
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
-    <link rel="stylesheet" href="css/subpages/update-order.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order</title>
+    <link rel="stylesheet" href="css/subpages/order.css">
+    <%
+        User user = (User) session.getAttribute("user");
+        Order order = (Order) session.getAttribute("order");
+        if (order == null) {
+            // no order in session ⇒ redirect or show error
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
+        if (user == null) {
+            response.sendRedirect("index.jsp"); 
+            return; // Important to stop JSP processing after redirect
+        }
+        List<OrderItem> orderItems = null;
+        try {
+            orderItems = OrderItemServlet.getOrderItems(order.getOrderID(), session);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    %>
 </head>
 <body>
 <header>
     <div class="logo">
-        <a href="${pageContext.request.contextPath}/products/list">
-            <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
-        </a>
+        <img src="assets/images/iotbay_logo.png" alt="IoTBay">
     </div>
-    <div class="header-right">
-        <div class="nav-icons">
-            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
-                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
-                <% if (user != null) { %>
-                <span class="login-indicator"></span>
-                <% } %>
-            </a>
-        </div>
-        <div class="nav-icons">
-            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
-                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
-            </a>
-        </div>
-    </div>
+    <a href="index.jsp" title="Main Page">Return to Home Page</a>
 </header>
 <div class="container">
     <div class="main-container">
         <div class="centered-container">
-            <h1>Update Order</h1>
-            <form action="OrderUpdateController" method="post">
-                <input type="hidden" name="orderID" value="<%= request.getParameter("orderID") %>">
-                <label for="orderStatus">Order Status:</label>
-                <select name="orderStatus" id="orderStatus">
-                    <option value="Pending">Pending</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                    <option value="Cancelled">Cancelled</option>
-                </select>
-                <input type="submit" value="Update Order">
-            </form>
+            <h2>Order items</h2>
+            <% if (orderItems.isEmpty()) { %>
+            <p>No order items found.</p>
+            <% } else { %>
+            <p>Use Delete button to remove items from the order.</p>
+            <% } %>
+            <% for (OrderItem orderItem : orderItems) { %>
+            <div class="order-item-card">
+                <h3>Item Name: <br> <%= OrderItemServlet.getProductById(orderItem.getProductID()).getName() %>
+                </h3>
+                <p>Quantity: <br> <%= orderItem.getQuantity() %>
+                </p>
+                <p>Price: <br> <%= orderItem.getPriceOnOrder() %>
+>
+                </form>
+                <form method="get" action="OrderItemServlet">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="productId" value="<%= orderItem.getProductID() %>">
+                    <input type="hidden" name="orderId" value="<%= orderItem.getOrderID() %>">
+                    <button type="submit" <%= !"PENDING".equals(order.getOrderStatus()) ? "disabled" : "" %>>
+                        Delete
+                    </button>
+                </form>
+            </div>
+            <% } %>
         </div>
     </div>
 </div>
