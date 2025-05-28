@@ -15,10 +15,6 @@
 <body>
 <%
     Product product = (Product) request.getAttribute("product");
-    if (product == null) {
-        response.sendRedirect(request.getContextPath() + "/products/list");
-        return;
-    }
     
     // Get the referrer URL for the back button
     String referer = request.getHeader("Referer");

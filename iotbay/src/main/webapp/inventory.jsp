@@ -66,11 +66,11 @@
                 <h1>Inventory Management</h1>
                 
                 <% if (message != null && !message.isEmpty()) { %>
-                    <div class="message success"><%= message %></div>
+                    <div class="notification success"><%= message %></div>
                 <% } %>
                 
                 <% if (error != null && !error.isEmpty()) { %>
-                    <div class="message error"><%= error %></div>
+                    <div class="notification error"><%= error %></div>
                 <% } %>
                 
                 <!-- Add New Product Form -->
@@ -153,7 +153,6 @@
             </div>
         </div>
     </div>
-    
     <script>
         // Script to handle new category option
         document.querySelectorAll('select[name="category"]').forEach(select => {
@@ -167,6 +166,26 @@
                     newCategoryInput.required = false;
                 }
             });
+        });
+        
+        // Show notifications
+        document.addEventListener('DOMContentLoaded', function() {
+            const successNotification = document.querySelector('.notification.success');
+            const errorNotification = document.querySelector('.notification.error');
+            
+            if (successNotification && successNotification.textContent.trim() !== '') {
+                successNotification.style.display = 'block';
+                setTimeout(() => {
+                    successNotification.style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+            }
+            
+            if (errorNotification && errorNotification.textContent.trim() !== '') {
+                errorNotification.style.display = 'block';
+                setTimeout(() => {
+                    errorNotification.style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+            }
         });
     </script>
 </body>
