@@ -51,6 +51,41 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to add a product to the cart
     function addToCart(productId, quantity) {
+        // First, check the current cart quantity for this product
+        fetch(`${contextPath}/cart/check?productId=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const currentCartQuantity = data.currentQuantity || 0;
+                const availableStock = data.availableStock || 0;
+                
+                // Check if requested quantity would exceed stock
+                if (currentCartQuantity + quantity > availableStock) {
+                    // Calculate how many more items can be added
+                    const canAdd = Math.max(0, availableStock - currentCartQuantity);
+                    
+                    if (canAdd === 0) {
+                        showNotification('This item is already at maximum available quantity in your cart.', 'warning');
+                    } else {
+                        // Auto-adjust to max available and notify user (no confirm dialog)
+                        addItemToCart(productId, canAdd, `Only ${canAdd} more units available. Added to cart.`);
+                    }
+                } else {
+                    // If stock is sufficient, proceed with adding to cart
+                    addItemToCart(productId, quantity);
+                }
+            } else {
+                showNotification('Error checking product availability: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred while checking product availability.', 'error');
+        });
+    }
+
+    // Helper function to actually add the item to cart after validation
+    function addItemToCart(productId, quantity, customMessage = null) {
         fetch(`${contextPath}/cart/add`, {
             method: 'POST',
             headers: {
@@ -61,8 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Show success message
-                showNotification('Product added to cart!');
+                // Show success message or custom message
+                showNotification(customMessage || 'Product added to cart!', 
+                                customMessage ? 'warning' : 'success');
                 
                 // Update cart count display
                 updateCartCountDisplay(data.cartCount);
@@ -74,10 +110,44 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             showNotification('An error occurred while adding the product to the cart.', 'error');
         });
+    }   
+    
+    // Helper function to actually update the item quantity after validation
+    function updateCartItemQuantity(productId, quantity) {
+        // First, check available stock
+        fetch(`${contextPath}/cart/check?productId=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const availableStock = data.availableStock || 0;
+                
+                // If requested quantity exceeds stock, adjust to max available
+                if (quantity > availableStock) {
+                    // Update input field to show correct value
+                    const quantityInput = document.querySelector(`.cart-quantity[data-product-id="${productId}"]`);
+                    if (quantityInput) {
+                        quantityInput.value = availableStock;
+                    }
+                    
+                    // Send the request with adjusted quantity
+                    sendUpdateRequest(productId, availableStock, 
+                        `Quantity adjusted to ${availableStock} (maximum available stock).`);
+                } else {
+                    // If stock is sufficient, proceed with normal update
+                    sendUpdateRequest(productId, quantity);
+                }
+            } else {
+                showNotification('Error checking product availability: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred while checking product availability.', 'error');
+        });
     }
     
-    // Function to update a cart item
-    function updateCartItem(productId, quantity) {
+    // Helper function to send the update request
+    function sendUpdateRequest(productId, quantity, customMessage = null) {
         fetch(`${contextPath}/cart/update`, {
             method: 'POST',
             headers: {
@@ -88,8 +158,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Show a specific success message for quantity updates
-                showNotification('Quantity updated successfully');
+                // Show success message or custom message
+                showNotification(customMessage || 'Quantity updated successfully',
+                                customMessage ? 'warning' : 'success');
                 
                 // Update cart count display
                 updateCartCountDisplay(data.cartCount);
@@ -227,9 +298,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     if (isNaN(quantity) || quantity < 1) {
                         this.value = 1;
-                        updateCartItem(productId, 1);
+                        updateCartItemQuantity(productId, 1);
                     } else {
-                        updateCartItem(productId, quantity);
+                        updateCartItemQuantity(productId, quantity);
                     }
                 });
             });
