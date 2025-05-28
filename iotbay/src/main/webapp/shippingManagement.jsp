@@ -83,7 +83,6 @@
           <option value="">Select</option>
           <option>Standard</option>
           <option>Express</option>
-          <option>Overnight</option>
           <option>Local Delivery/Pick up</option>
         </select>
       </div>
@@ -97,7 +96,7 @@
       <% if (errorMessage != null) { %>
           <strong><a href = "confirmation.jsp"> <%= errorMessage %> </a></strong>
       <% } %>
-      
+
       <button>Create</button>
     </form>
 
@@ -136,6 +135,10 @@
           <option value="Express"
             <%= "Express".equals(edit.getShippingMethod())?"selected":"" %>>
             Express
+          </option>
+          <option value="Local Delivery/Pick up"
+            <%= "Local Delivery/Pick up".equals(edit.getShippingMethod())?"selected":"" %>>
+            Local Delivery/Pick up
           </option>
         </select>
       </div>
