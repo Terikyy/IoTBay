@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.Order;
 import model.lineproducts.OrderItem;
 
 import java.sql.Connection;
@@ -31,7 +32,7 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
             ps.setInt(1, orderItem.getProductID());
             ps.setInt(2, orderItem.getOrderID());
             ps.setInt(3, orderItem.getQuantity());
-            ps.setDouble(4, orderItem.getPriceOnOrder());
+            ps.setDouble(4, orderItem.getPriceOnOrder());   
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -44,7 +45,7 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
             ps.setInt(1, orderItem.getProductID());
             ps.setInt(2, orderItem.getOrderID());
             ps.setInt(3, orderItem.getQuantity());
-            ps.setDouble(4, orderItem.getPriceOnOrder());
+            ps.setDouble(5, orderItem.getPriceOnOrder());
 
             return ps.executeUpdate(); // Returns the number of rows affected
         }
@@ -60,9 +61,13 @@ public class OrderItemDAO extends AbstractDAO<OrderItem> {
         return queryById("OrderItem", "OrderID", id);
     }
 
+    public List<OrderItem> findByOrderId(int orderId) throws SQLException {
+        return queryByColumnValue("OrderItem", "OrderID", orderId);
+    }
+
     @Override
     public int deleteById(int id) throws SQLException {
-        throw new UnsupportedOperationException("DeleteById is not supported for OrderItemDAO. Use deleteByIds instead.");
+        throw new UnsupportedOperationException("Order operation is not implemented.");
     }
 
     public int deleteByIds(int orderId, int productId) throws SQLException {

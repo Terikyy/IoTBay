@@ -18,7 +18,7 @@ public class OrderDeletionServlet extends HttpServlet {
         HttpSession session = request.getSession();
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
         if (orderDAO == null) {
-            ConnServlet.updateDAOsGET(request, response);
+            ConnServlet.updateDAOsPOST(request, response);
             return;
         }
 
