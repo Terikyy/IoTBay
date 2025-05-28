@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.dao.OrderDAO;
+import model.dao.OrderItemDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,18 +16,23 @@ import java.sql.SQLException;
 public class OrderDeletionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String orderId = request.getParameter("orderId");
+        String productId = request.getParameter("productId");
+
         HttpSession session = request.getSession();
-        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
-        if (orderDAO == null) {
+        OrderItemDAO orderItemDAO = (OrderItemDAO) session.getAttribute("orderItemDAO");
+        if (orderItemDAO == null) {
             ConnServlet.updateDAOsPOST(request, response);
             return;
         }
 
-        try {
-            orderDAO.deleteById(Integer.parseInt(orderId));
-            response.sendRedirect("order.jsp");
-        } catch (SQLException e) {
-            throw new ServletException("Error deleting Order", e);
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            try {
+                orderItemDAO.deleteByIds(Integer.parseInt(orderId), Integer.parseInt(productId));
+                response.sendRedirect("update-order.jsp");
+            } catch (SQLException e) {
+                throw new ServletException("Error deleting Order Item", e);
+            }
         }
     }
 }

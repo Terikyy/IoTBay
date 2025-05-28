@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order</title>
+    <title>Order Items</title>
     <link rel="stylesheet" href="css/subpages/order.css">
     <%
         User user = (User) session.getAttribute("user");
@@ -37,9 +37,25 @@
 <body>
 <header>
     <div class="logo">
-        <img src="assets/images/iotbay_logo.png" alt="IoTBay">
+        <a href="${pageContext.request.contextPath}/products/list">
+            <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
+        </a>
     </div>
-    <a href="index.jsp" title="Main Page">Return to Home Page</a>
+    <div class="header-right">
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/account.jsp" title="Account" class="account-icon">
+                <img src="${pageContext.request.contextPath}/assets/images/account_icon.png" alt="Account">
+                <% if (user != null) { %>
+                <span class="login-indicator"></span>
+                <% } %>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="${pageContext.request.contextPath}/navigation.jsp" title="Navigation">
+                <img src="${pageContext.request.contextPath}/assets/images/navigation_icon.png" alt="Navigation">
+            </a>
+        </div>
+    </div>
 </header>
 <div class="container">
     <div class="main-container">
@@ -51,15 +67,15 @@
             <p>Use Delete button to remove items from the order.</p>
             <% } %>
             <% for (OrderItem orderItem : orderItems) { %>
-            <div class="order-item-card">
+            <div class="order-card">
                 <h3>Item Name: <br> <%= OrderUpdateServlet.getProductById(orderItem.getProductID(), session).getName() %>
                 </h3>
                 <p>Quantity: <br> <%= orderItem.getQuantity() %>
                 </p>
                 <p>Price: <br> <%= orderItem.getPriceOnOrder() %>
->
-                </form>
-                <form method="get" action="OrderItemServlet">
+                </p>
+
+                <form method="post" action="OrderDeletionServlet">
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="productId" value="<%= orderItem.getProductID() %>">
                     <input type="hidden" name="orderId" value="<%= orderItem.getOrderID() %>">

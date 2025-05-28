@@ -25,16 +25,14 @@ public class OrderUpdateServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String orderId = request.getParameter("orderId");
+
         HttpSession session = request.getSession();
-        OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
-        if (orderDAO == null) {
+        OrderItemDAO orderItemDAO = (OrderItemDAO) session.getAttribute("orderItemDAO");
+        if (orderItemDAO == null) {
             ConnServlet.updateDAOsPOST(request, response);
             return;
         }
-
-
-        User user = (User) session.getAttribute("user");
-        Integer userId = user == null ? null : user.getUserID();
 
         response.sendRedirect("update-order.jsp");
     }
