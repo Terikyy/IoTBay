@@ -13,10 +13,10 @@ import model.dao.OrderDAO;
 import model.dao.PaymentDAO;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @WebServlet("/PaymentController")
@@ -64,7 +64,7 @@ public class PaymentController extends HttpServlet {
         String nameOnCard = request.getParameter("nameOnCard");
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
-        if (new SimpleDateFormat("yyyy-MM-dd").parse(expiryDate).before(new Date())) {
+        if (new SimpleDateFormat("yyyy-MM-dd").parse(expiryDate).before(new Date(System.currentTimeMillis()))) {
             request.setAttribute("errorMessage", "Expiry date cannot be in the past.");
             request.getRequestDispatcher("payment.jsp").forward(request, response);
             return;
@@ -93,7 +93,7 @@ public class PaymentController extends HttpServlet {
         }
         System.out.println("Processing payment with card number: " + cardNumber);
 
-        Payment payment = new Payment(orderId, "CreditCard", totalPrice, new java.util.Date(),
+        Payment payment = new Payment(orderId, "CreditCard", totalPrice, new java.sql.Date(System.currentTimeMillis()),
                 Payment.PAYMENT_STATUS_PENDING);
         IDObject.insert(paymentDAO, payment);
 

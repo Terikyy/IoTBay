@@ -39,7 +39,7 @@ public class OrderDAO extends AbstractDAO<Order> {
                 ps.setInt(2, order.getUserID());
             }
             ps.setString(3, order.getOrderStatus());
-            ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setDate(4, order.getOrderDate());
             ps.setDouble(5, order.getTotalPrice());
 
             return ps.executeUpdate(); // Returns the number of rows affected

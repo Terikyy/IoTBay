@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Payment extends IDObject {
     private int orderID;
@@ -10,8 +10,8 @@ public class Payment extends IDObject {
     private String paymentStatus;
 
     public static final String PAYMENT_STATUS_PENDING = "PENDING";
-    public static final String PAYMENT_STATUS_COMPLETED = "COMPLETED";  
-    public static final String PAYMENT_STATUS_FAILED = "FAILED"; 
+    public static final String PAYMENT_STATUS_COMPLETED = "COMPLETED";
+    public static final String PAYMENT_STATUS_FAILED = "FAILED";
 
     public Payment() {
         super();

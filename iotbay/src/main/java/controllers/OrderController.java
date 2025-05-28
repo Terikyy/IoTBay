@@ -15,9 +15,9 @@ import model.lineproducts.OrderItem;
 import model.users.User;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +55,7 @@ public class OrderController extends HttpServlet {
         }
         System.out.println("Received total price: " + totalPrice);
 
-        Order order = new Order(userId, Order.ORDER_STATUS_PENDING, new Date(), totalPrice); // TODO: Add total amount
+        Order order = new Order(userId, Order.ORDER_STATUS_PENDING, new Date(System.currentTimeMillis()), totalPrice); // TODO: Add total amount
         // calculation
         try {
             IDObject.insert(orderDAO, order);

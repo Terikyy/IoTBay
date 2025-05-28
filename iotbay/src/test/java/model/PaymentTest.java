@@ -1,9 +1,10 @@
 package model;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
+import java.sql.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PaymentTest {
     private Payment payment;
@@ -11,7 +12,7 @@ public class PaymentTest {
     private final int orderId = 456;
     private final double amountPaid = 99.99;
     private final String paymentMethod = "CreditCard";
-    private final Date paymentDate = new Date();
+    private final Date paymentDate = new Date(System.currentTimeMillis());
     private final String paymentStatus = Payment.PAYMENT_STATUS_PENDING;
 
     public PaymentTest() {
@@ -58,7 +59,7 @@ public class PaymentTest {
 
     @Test
     public void testSetPaymentDate() {
-        Date newDate = new Date(paymentDate.getTime() + 86400000L); // +1 day
+        Date newDate = new Date(System.currentTimeMillis());
         payment.setPaymentDate(newDate);
         assertEquals(newDate, payment.getPaymentDate());
     }

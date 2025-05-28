@@ -2,14 +2,11 @@ package model.dao;
 
 import model.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Data Access Object for Product entities.
@@ -38,8 +35,8 @@ public class ProductDAO extends AbstractDAO<Product> {
      */
     @Override
     protected Product mapRow(ResultSet rs) throws SQLException {
-        java.util.Date releaseDate = null;
-        
+        java.sql.Date releaseDate = null;
+
         // Safely handle date parsing with multiple fallback strategies
         try {
             // First try standard getDate method
@@ -50,15 +47,15 @@ public class ProductDAO extends AbstractDAO<Product> {
             if (dateStr != null && !dateStr.isEmpty()) {
                 try {
                     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                    releaseDate = sdf.parse(dateStr);
+                    releaseDate = new Date(sdf.parse(dateStr).getTime());
                 } catch (java.text.ParseException pe) {
                     System.err.println("Failed to parse date: " + dateStr);
                     // Use current date as last resort fallback
-                    releaseDate = new java.util.Date();
+                    releaseDate = new java.sql.Date(System.currentTimeMillis());
                 }
             }
         }
-        
+
         // Create and return a new Product instance with data from the result set
         return new Product(
                 rs.getInt("ProductID"),
@@ -81,8 +78,8 @@ public class ProductDAO extends AbstractDAO<Product> {
     @Override
     public int insert(Product product) throws SQLException {
         String sql = "INSERT INTO Product (ProductID, Name, Description, Price, Stock, ReleaseDate, Category) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, product.getProductID()); // Use the product's predefined ID
             ps.setString(2, product.getName());
@@ -91,14 +88,14 @@ public class ProductDAO extends AbstractDAO<Product> {
             ps.setInt(5, product.getStock());
             ps.setDate(6, new java.sql.Date(product.getReleaseDate().getTime()));
             ps.setString(7, product.getCategory());
-            
+
             int affectedRows = ps.executeUpdate();
-            
+
             // Validate that the insert was successful
             if (affectedRows == 0) {
                 throw new SQLException("Creating product failed, no rows affected.");
             }
-            
+
             return product.getProductID();
         }
     }
@@ -113,8 +110,8 @@ public class ProductDAO extends AbstractDAO<Product> {
     @Override
     public int update(Product product) throws SQLException {
         String sql = "UPDATE Product SET Name = ?, Description = ?, Price = ?, Stock = ?, ReleaseDate = ?, Category = ? " +
-                     "WHERE ProductID = ?";
-        
+                "WHERE ProductID = ?";
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, product.getName());
             ps.setString(2, product.getDescription());
@@ -123,7 +120,7 @@ public class ProductDAO extends AbstractDAO<Product> {
             ps.setDate(5, new java.sql.Date(product.getReleaseDate().getTime()));
             ps.setString(6, product.getCategory());
             ps.setInt(7, product.getProductID());
-            
+
             return ps.executeUpdate();
         }
     }
@@ -165,7 +162,7 @@ public class ProductDAO extends AbstractDAO<Product> {
         // Uses the helper method from AbstractDAO
         return deleteFromTableById("Product", "ProductID", id);
     }
-    
+
     /**
      * Searches for products by name using partial matching.
      *
@@ -176,39 +173,39 @@ public class ProductDAO extends AbstractDAO<Product> {
     public List<Product> searchByName(String name) throws SQLException {
         List<Product> results = new ArrayList<>();
         String sql = "SELECT * FROM Product WHERE Name LIKE ?";
-        
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + name + "%");  // Use SQL LIKE wildcards for partial matching
-            
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     results.add(mapRow(rs));
                 }
             }
         }
-        
+
         return results;
     }
-    
+
     /**
      * Updates the stock quantity for a specific product.
      *
      * @param productId The ID of the product to update
-     * @param newStock The new stock quantity
+     * @param newStock  The new stock quantity
      * @return The number of rows affected (should be 1 if successful)
      * @throws SQLException If a database access error occurs
      */
     public int updateStock(int productId, int newStock) throws SQLException {
         String sql = "UPDATE Product SET Stock = ? WHERE ProductID = ?";
-        
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, newStock);
             ps.setInt(2, productId);
-            
+
             return ps.executeUpdate();
         }
     }
-    
+
     /**
      * Retrieves all unique product categories from the database.
      * Empty or null categories are excluded from the results.
@@ -219,18 +216,18 @@ public class ProductDAO extends AbstractDAO<Product> {
     public List<String> getAllCategories() throws SQLException {
         Set<String> categories = new HashSet<>();  // Using Set to ensure uniqueness
         String sql = "SELECT DISTINCT Category FROM Product WHERE Category IS NOT NULL AND Category != ''";
-        
+
         try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-            
+
             while (rs.next()) {
                 categories.add(rs.getString("Category"));
             }
         }
-        
+
         return new ArrayList<>(categories);
     }
-    
+
     /**
      * Finds all products belonging to a specific category.
      *
@@ -241,7 +238,7 @@ public class ProductDAO extends AbstractDAO<Product> {
     public List<Product> findProductsByCategory(String category) throws SQLException {
         return queryByColumnValue("Product", "Category", category);
     }
-    
+
     /**
      * Retrieves all products sorted first by category and then by name.
      * Useful for displaying products grouped by category.
@@ -252,42 +249,42 @@ public class ProductDAO extends AbstractDAO<Product> {
     public List<Product> getAllProductsSortedByCategory() throws SQLException {
         List<Product> results = new ArrayList<>();
         String sql = "SELECT * FROM Product ORDER BY Category, Name";
-        
+
         try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-            
+
             while (rs.next()) {
                 results.add(mapRow(rs));
             }
         }
-        
+
         return results;
     }
-    
+
     /**
      * Updates the category of a specific product.
      *
      * @param productId The ID of the product to update
-     * @param category The new category
+     * @param category  The new category
      * @return The number of rows affected (should be 1 if successful)
      * @throws SQLException If a database access error occurs
      */
     public int updateProductCategory(int productId, String category) throws SQLException {
         String sql = "UPDATE Product SET Category = ? WHERE ProductID = ?";
-        
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, category);
             ps.setInt(2, productId);
-            
+
             return ps.executeUpdate();
         }
     }
-    
+
     /**
      * Searches for products by name within a specific category.
      * Allows for more targeted searching when browsing by category.
      *
-     * @param name The search term to match against product names
+     * @param name     The search term to match against product names
      * @param category The category to restrict the search to
      * @return A list of matching products in the specified category
      * @throws SQLException If a database access error occurs
@@ -295,18 +292,18 @@ public class ProductDAO extends AbstractDAO<Product> {
     public List<Product> searchByNameInCategory(String name, String category) throws SQLException {
         List<Product> results = new ArrayList<>();
         String sql = "SELECT * FROM Product WHERE Name LIKE ? AND Category = ?";
-        
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + name + "%");
             ps.setString(2, category);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     results.add(mapRow(rs));
                 }
             }
         }
-        
+
         return results;
     }
 }

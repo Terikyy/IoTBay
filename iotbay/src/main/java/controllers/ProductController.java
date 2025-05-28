@@ -6,19 +6,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.IDObject;
 import model.Product;
-import model.dao.ProductDAO;
 import model.dao.CartItemDAO;
 import model.dao.OrderItemDAO;
+import model.dao.ProductDAO;
 import model.lineproducts.CartItem;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import model.IDObject;
 
 /**
  * Controller servlet responsible for handling all product-related operations.
@@ -33,10 +33,10 @@ public class ProductController extends HttpServlet {
      * Supports listing all products, filtering by category, searching by name,
      * viewing product details, and accessing the inventory management page.
      *
-     * @param request The HTTP request object
+     * @param request  The HTTP request object
      * @param response The HTTP response object
      * @throws ServletException If a servlet-specific error occurs
-     * @throws IOException If an I/O error occurs
+     * @throws IOException      If an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -115,11 +115,11 @@ public class ProductController extends HttpServlet {
                     // Get all products for inventory management
                     List<Product> products = productDAO.getAll();
                     List<String> categories = productDAO.getAllCategories();
-                    
+
                     // Set attributes for JSP
                     request.setAttribute("products", products);
                     request.setAttribute("categories", categories);
-                    
+
                     // Check for any message from POST operations
                     String message = request.getParameter("message");
                     String error = request.getParameter("error");
@@ -129,7 +129,7 @@ public class ProductController extends HttpServlet {
                     if (error != null) {
                         request.setAttribute("error", error);
                     }
-                    
+
                     // Forward to inventory page
                     request.getRequestDispatcher("/inventory.jsp").forward(request, response);
                 } catch (SQLException e) {
@@ -145,33 +145,33 @@ public class ProductController extends HttpServlet {
             throw new ServletException("Database error", e);
         }
     }
-    
+
     /**
      * Handles HTTP POST requests for product management operations.
      * Supports adding, updating, and deleting products.
      *
-     * @param request The HTTP request object
+     * @param request  The HTTP request object
      * @param response The HTTP response object
      * @throws ServletException If a servlet-specific error occurs
-     * @throws IOException If an I/O error occurs
+     * @throws IOException      If an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
-        
+
         // Get the ProductDAO from the session or initialize it if not present
         ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
-        
+
         if (productDAO == null) {
             ConnServlet.updateDAOsGET(request, response);
             return;
         }
-        
+
         // Determine which action to perform based on the form parameter
         String action = request.getParameter("action");
-        
+
         try {
             if ("add".equals(action)) {
                 // Handle adding a new product
@@ -180,7 +180,7 @@ public class ProductController extends HttpServlet {
                 double price = Double.parseDouble(request.getParameter("price"));
                 int stock = Integer.parseInt(request.getParameter("stock"));
                 String category = request.getParameter("category");
-                
+
                 // Handle new category creation
                 if ("new_category".equals(category)) {
                     category = request.getParameter("newCategory");
@@ -188,16 +188,16 @@ public class ProductController extends HttpServlet {
                         category = "Uncategorized";
                     }
                 }
-                
+
                 // Parse release date or use default
                 Date releaseDate = parseDate(request.getParameter("releaseDate"));
-                
+
                 // Create product - IDObject constructor will call randomizeID()
                 Product product = new Product(name, description, price, stock, releaseDate, category);
-                
+
                 // Use the static insert method from IDObject which handles ID generation
                 IDObject.insert(productDAO, product);
-                
+
                 // Redirect back to inventory page with success message
                 response.sendRedirect(request.getContextPath() + "/products/inventory?message=Product+added+successfully");
             } else if ("update".equals(action)) {
@@ -208,7 +208,7 @@ public class ProductController extends HttpServlet {
                 double price = Double.parseDouble(request.getParameter("price"));
                 int stock = Integer.parseInt(request.getParameter("stock"));
                 String category = request.getParameter("category");
-                
+
                 // Handle new category creation
                 if ("new_category".equals(category)) {
                     category = request.getParameter("newCategory");
@@ -216,41 +216,41 @@ public class ProductController extends HttpServlet {
                         category = "Uncategorized";
                     }
                 }
-                
+
                 // Parse release date or use default
                 Date releaseDate = parseDate(request.getParameter("releaseDate"));
-                
+
                 // Create and update product
                 Product product = new Product(id, name, description, price, stock, releaseDate, category);
                 productDAO.update(product);
-                
+
                 // Redirect back to inventory page with success message
                 response.sendRedirect(request.getContextPath() + "/products/inventory?message=Product+updated+successfully");
             } else if ("delete".equals(action)) {
                 // Handle deleting a product
                 int id = Integer.parseInt(request.getParameter("productId"));
-                
+
                 // Check if product is referenced in cart items
                 CartItemDAO cartItemDAO = (CartItemDAO) session.getAttribute("cartItemDAO");
                 List<CartItem> cartItems = cartItemDAO.getAllByProductId(id);
-                
+
                 // Check if product is referenced in order items
                 OrderItemDAO orderItemDAO = (OrderItemDAO) session.getAttribute("orderItemDAO");
                 boolean isInOrder = orderItemDAO.isProductInOrder(id);
-                
+
                 if (!cartItems.isEmpty()) {
                     // Product is in someone's cart, prevent deletion
-                    response.sendRedirect(request.getContextPath() + 
-                        "/products/inventory?error=Cannot+delete+product+because+it+is+in+active+shopping+carts");
+                    response.sendRedirect(request.getContextPath() +
+                            "/products/inventory?error=Cannot+delete+product+because+it+is+in+active+shopping+carts");
                 } else if (isInOrder) {
                     // Product is in completed orders, prevent deletion
-                    response.sendRedirect(request.getContextPath() + 
-                        "/products/inventory?error=Cannot+delete+product+because+it+appears+in+orders");
+                    response.sendRedirect(request.getContextPath() +
+                            "/products/inventory?error=Cannot+delete+product+because+it+appears+in+orders");
                 } else {
                     // Safe to delete the product
                     productDAO.deleteById(id);
-                    response.sendRedirect(request.getContextPath() + 
-                        "/products/inventory?message=Product+deleted+successfully");
+                    response.sendRedirect(request.getContextPath() +
+                            "/products/inventory?message=Product+deleted+successfully");
                 }
             } else {
                 // Handle invalid action
@@ -264,7 +264,7 @@ public class ProductController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/products/inventory?error=Invalid+date+format");
         }
     }
-    
+
     /**
      * Helper method to parse a date string into a Date object.
      * If the date string is empty or invalid, returns the current date as default.
@@ -275,9 +275,9 @@ public class ProductController extends HttpServlet {
      */
     private Date parseDate(String dateStr) throws ParseException {
         if (dateStr == null || dateStr.trim().isEmpty()) {
-            return new Date(); // Default to current date
+            return new Date(System.currentTimeMillis()); // Default to current date
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.parse(dateStr);
+        return new Date(sdf.parse(dateStr).getTime());
     }
 }

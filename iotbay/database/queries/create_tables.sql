@@ -1,15 +1,15 @@
 -- noinspection SqlNoDataSourceInspectionForFile
-drop table User;
-drop table Admin;
-drop table Staff;
-drop table Product;
-drop table Payment;
-drop table `Order`;
-drop table CartItem;
-drop table OrderItem;
-drop table Address;
-drop table ShippingManagement;
-drop table Log;
+DROP TABLE User;
+DROP TABLE Admin;
+DROP TABLE Staff;
+DROP TABLE Product;
+DROP TABLE Payment;
+DROP TABLE `Order`;
+DROP TABLE CartItem;
+DROP TABLE OrderItem;
+DROP TABLE Address;
+DROP TABLE ShippingManagement;
+DROP TABLE Log;
 
 -- 01 User
 CREATE TABLE User
@@ -54,7 +54,7 @@ CREATE TABLE `Order`
     OrderID     INT PRIMARY KEY,
     UserID      INT,
     OrderStatus VARCHAR(20),
-    OrderDate   DATE,
+    OrderDate   DATE DEFAULT CURRENT_TIMESTAMP,
     TotalPrice  NUMERIC(10, 2),
     FOREIGN KEY (UserID) REFERENCES User (UserID)
 );
