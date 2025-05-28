@@ -20,6 +20,8 @@
         User user = (User) session.getAttribute("user");
         Order order = (Order) session.getAttribute("order");
 
+        System.out.println("Opening order items for order: " + order.getOrderID());
+
         if (user == null) {
             response.sendRedirect("index.jsp"); 
             return; // Important to stop JSP processing after redirect
