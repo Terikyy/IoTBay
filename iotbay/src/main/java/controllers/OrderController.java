@@ -55,7 +55,7 @@ public class OrderController extends HttpServlet {
         }
         System.out.println("Received total price: " + totalPrice);
 
-        Order order = new Order(userId, Order.ORDER_STATUS_PENDING, new Date(System.currentTimeMillis()), totalPrice); // TODO: Add total amount
+        Order order = new Order(userId, Order.ORDER_STATUS_PENDING, new Date(System.currentTimeMillis()), totalPrice);
         // calculation
         try {
             IDObject.insert(orderDAO, order);
