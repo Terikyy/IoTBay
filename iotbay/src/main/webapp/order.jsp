@@ -19,9 +19,16 @@
             response.sendRedirect("login.jsp");
             return; // Important to stop JSP processing after redirect
         }
+
+
+        String query = request.getParameter("query");
+        if (query == null) {
+            query = "";
+        }
+
         List<Order> orders = null;
         try {
-            orders = OrderController.getUserOrders(user.getUserID(), session);
+            orders = OrderController.queryUserOrders(user.getUserID(), query, session);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -37,6 +44,15 @@
         <a href="${pageContext.request.contextPath}/products/list">
             <img src="${pageContext.request.contextPath}/assets/images/iotbay_logo.png" alt="IoTBay">
         </a>
+    </div>
+    <div class="search-container">
+        <form action="order.jsp" method="get">
+            <input type="text" class="search-input" name="query" placeholder="Search Orders..."
+                   value="<%= query %>">
+            <button type="submit" class="search-button">
+                <img src="${pageContext.request.contextPath}/assets/images/search_icon.png" alt="Search">
+            </button>
+        </form>
     </div>
     <div class="header-right">
         <div class="nav-icons">

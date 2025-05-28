@@ -16,6 +16,7 @@ import model.users.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -131,6 +132,17 @@ public class OrderController extends HttpServlet {
         OrderDAO orderDAO = (OrderDAO) session.getAttribute("orderDAO");
 
         return orderDAO.findByUserId(userId);
+    }
+
+    public static List<Order> queryUserOrders(int userId, String query, HttpSession session) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        for (Order order : getUserOrders(userId, session)) {
+            if (String.valueOf(order.getOrderID()).contains(query) ||
+                    order.getOrderDate().toString().contains(query)) {
+                orders.add(order);
+            }
+        }
+        return orders;
     }
 
     public static Order getOrderById(int orderId, HttpServletRequest request, HttpServletResponse response)
