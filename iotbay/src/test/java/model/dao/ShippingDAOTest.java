@@ -75,7 +75,7 @@ public class ShippingDAOTest {
         assertEquals(TEST_FINALISED, found.isFinalised());
     }
 
-    // US502: Find shipment by ID
+    // US505: Find shipment by ID
     @Test
     @Order(2)
     public void testFindById() throws SQLException {
@@ -87,7 +87,7 @@ public class ShippingDAOTest {
         assertEquals(TEST_ORDER_ID, found.getOrderId());
     }
 
-    // US503: Update shipment
+    // US605: Update shipment
     @Test
     @Order(3)
     public void testUpdate() throws SQLException {
@@ -107,7 +107,7 @@ public class ShippingDAOTest {
         assertEquals("Standard", updated.getShippingMethod());
     }
 
-    // US504: Delete shipment by ID
+    // US507: Delete shipment by ID
     @Test
     @Order(4)
     public void testDeleteById() throws SQLException {
@@ -120,7 +120,7 @@ public class ShippingDAOTest {
         assertNull(result, "Shipment should be null after deletion");
     }
 
-    // US505: Find by order ID
+    // US507:
     @Test
     @Order(5)
     public void testFindByOrderId() throws SQLException {
@@ -132,7 +132,7 @@ public class ShippingDAOTest {
         assertTrue(list.stream().anyMatch(s -> s.getShipmentId() == id));
     }
 
-    // US506: Get all shipments
+    // US505: Get all shipments
     @Test
     @Order(6)
     public void testGetAll() throws SQLException {
