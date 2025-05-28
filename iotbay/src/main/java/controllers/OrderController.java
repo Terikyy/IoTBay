@@ -75,7 +75,7 @@ public class OrderController extends HttpServlet {
                 int quantity = (int) cartItem.get("quantity");
                 double price = product.getPrice();
 
-                OrderItem orderItem = new OrderItem(order.getOrderID(), productId, quantity,
+                OrderItem orderItem = new OrderItem(productId, order.getOrderID(), quantity,
                         price);
                 try {
                     orderItemDAO.insert(orderItem);
