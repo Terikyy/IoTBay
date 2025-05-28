@@ -2,8 +2,8 @@
 <%@ page import="controllers.UserController" %>
 <%@ page import="model.Order" %>
 <%@ page import="controllers.OrderController" %>
-<%@ page import="model.OrderItem" %>
-<%@ page import="controllers.OrderItemServlet" %>
+<%@ page import="model.lineproducts.OrderItem" %>
+<%@ page import="controllers.OrderUpdateServlet" %>
 <%@ page import="model.Product" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.SQLException" %>
@@ -19,11 +19,6 @@
     <%
         User user = (User) session.getAttribute("user");
         Order order = (Order) session.getAttribute("order");
-        if (order == null) {
-            // no order in session ⇒ redirect or show error
-            response.sendRedirect("index.jsp");
-            return;
-        }
 
         if (user == null) {
             response.sendRedirect("index.jsp"); 
@@ -31,7 +26,7 @@
         }
         List<OrderItem> orderItems = null;
         try {
-            orderItems = OrderItemServlet.getOrderItems(order.getOrderID(), session);
+            orderItems = OrderUpdateServlet.getOrderItems(order.getOrderID(), session);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -55,7 +50,7 @@
             <% } %>
             <% for (OrderItem orderItem : orderItems) { %>
             <div class="order-item-card">
-                <h3>Item Name: <br> <%= OrderItemServlet.getProductById(orderItem.getProductID()).getName() %>
+                <h3>Item Name: <br> <%= OrderUpdateServlet.getProductById(orderItem.getProductID(), session).getName() %>
                 </h3>
                 <p>Quantity: <br> <%= orderItem.getQuantity() %>
                 </p>
