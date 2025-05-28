@@ -1,9 +1,5 @@
 package controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +11,13 @@ import model.Order;
 import model.Payment;
 import model.dao.OrderDAO;
 import model.dao.PaymentDAO;
-import model.users.User;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @WebServlet("/PaymentController")
 public class PaymentController extends HttpServlet {
@@ -25,25 +27,13 @@ public class PaymentController extends HttpServlet {
             throws ServletException, IOException {
         try {
             processCreditCardPayment(request, response);
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-
-        // Integer paymentId = (Integer) session.getAttribute("paymentId");
-        // if (paymentId != null) {
-        //     User user = (User) session.getAttribute("user");
-        //     String msg = (user == null)
-        //             ? "Payment already created, go back to shipping."
-        //             : "Payment created already, please complete in payment history.";
-        //     request.setAttribute("message", msg);
-        //     request.getRequestDispatcher("payment.jsp")
-        //             .forward(request, response);
-        //     return;
-        // }
 
         Double totalPrice = (Double) request.getAttribute("totalPrice");
         if (totalPrice == null) {
@@ -57,7 +47,7 @@ public class PaymentController extends HttpServlet {
     }
 
     private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, SQLException, ServletException {
+            throws IOException, SQLException, ServletException, ParseException {
         HttpSession session = request.getSession();
 
         PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
@@ -74,7 +64,17 @@ public class PaymentController extends HttpServlet {
         String nameOnCard = request.getParameter("nameOnCard");
         String cardNumber = request.getParameter("cardNumber");
         String expiryDate = request.getParameter("expiryDate");
+        if (new SimpleDateFormat("yyyy-MM-dd").parse(expiryDate).before(new Date())) {
+            request.setAttribute("message", "Expiry date cannot be in the past.");
+            request.getRequestDispatcher("payment.jsp").forward(request, response);
+            return;
+        }
         String cvv = request.getParameter("cvv");
+        if (Integer.parseInt(cvv) > 999 || Integer.parseInt(cvv) < 100) {
+            request.setAttribute("message", "CVV format wrong, must be 3 digits.");
+            request.getRequestDispatcher("payment.jsp").forward(request, response);
+            return;
+        }
         int orderId = (Integer) session.getAttribute("orderId");
         Double totalPrice = (Double) session.getAttribute("totalPrice");
 

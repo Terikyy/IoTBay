@@ -20,6 +20,7 @@
     <%
         String message = (String) request.getAttribute("message");
 
+
         User user = (User) session.getAttribute("user");
         Integer orderIdObj = (Integer) session.getAttribute("orderId");
         if (orderIdObj == null) {
@@ -110,9 +111,12 @@
                     <button type="submit" name="action" value="Pay Now">Pay Now</button>
                 </div>
 
-                <% if (message != null) { %>
-                    <div class="message" style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/shipping.jsp';" ><%=message%> 
-                    </div>
+                <% if (message != null) {
+                    session.removeAttribute("message");
+                %>
+                <div class="message" style="cursor: pointer;"
+                     onclick="window.location.href='${pageContext.request.contextPath}/shipping.jsp';"><%=message%>
+                </div>
                 <% } %>
 
                 <% if (user == null) { %>
