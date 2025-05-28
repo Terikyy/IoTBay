@@ -16,7 +16,7 @@
     <%
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("login.jsp");
             return; // Important to stop JSP processing after redirect
         }
         List<Order> orders = null;

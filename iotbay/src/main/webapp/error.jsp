@@ -6,8 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order confirmed</title>
-    <!-- Reuse styling of restricted page -->
+    <title>Error</title>
     <link rel="stylesheet" href="css/subpages/restricted.css">
 </head>
 <body>
@@ -36,13 +35,9 @@
 <div class="container">
     <div class="main-container">
         <div class="centered-container">
-            <h2>Order has been submitted!</h2>
-            <p>Thank you for shopping with us!</p>
-            <% if (user != null) { %>
-                <a href="order.jsp" title="Orders">See my Orders</a>
-            <% } else { %>
-                <a href="index.jsp" title="Main Page">Go to Main Page</a>
-            <% } %>
+            <h2>Non-existent page</h2>
+            <p>This page does not exist</p>
+            <a href="index.jsp" title="Main Page">Return to Main Page</a>
         </div>
     </div>
 </div>
