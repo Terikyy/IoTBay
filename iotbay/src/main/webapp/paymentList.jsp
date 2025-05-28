@@ -101,18 +101,16 @@
             <p>Status:     <%= p.getPaymentStatus() %></p>
 
             <!-- UPDATE button -->
-            <form action="${pageContext.request.contextPath}/PaymentUpdateController" method="get" style="display:inline;">
+            <form action="${pageContext.request.contextPath}/PaymentUpdateServlet" method="get" style="display:inline;">
               <input type="hidden" name="action"    value="update"/>
               <input type="hidden" name="paymentId" value="<%= p.getPaymentID() %>"/>
-              <button type="submit">Update</button>
+              <button type="submit" <%= !"PENDING".equals(p.getPaymentStatus()) ? "disabled" : "" %> > Update </button>            
             </form>
 
             <!-- DELETE button -->
             <form action="${pageContext.request.contextPath}/PaymentDeletionServlet" method="post" style="display:inline;">
               <input type="hidden" name="paymentId" value="<%= p.getPaymentID() %>"/>
-              <button type="submit" <%= !"PENDING".equals(p.getPaymentStatus()) ? "disabled" : "" %> >
-                Delete
-              </button>
+              <button type="submit" <%= !"PENDING".equals(p.getPaymentStatus()) ? "disabled" : "" %> > Delete </button>
             </form>
           </div>
         <%   } // end for
