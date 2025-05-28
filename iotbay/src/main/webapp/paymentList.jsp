@@ -53,46 +53,65 @@
       <h1>Payment History</h1><br>
 
       <!-- Search form -->
-      <form action="${pageContext.request.contextPath}/PaymentListController" method="get">
-        <div class="form-group">
-          <label for="paymentId">Payment ID</label>
-          <input type="number" name="paymentId" id="paymentId" placeholder="e.g. 42"/>
-        </div>
+      <div class="payment-search">      
+        <form action="${pageContext.request.contextPath}/PaymentListController" method="get">
+          <div class="form-group">
+            <label for="paymentId">Payment ID</label>
+            <input type="number" name="paymentId" id="paymentId" placeholder="e.g. 42"/>
+          </div>
 
-        <div class="form-group">
-          <label for="paymentDate">Payment Date</label>
-          <input type="date" name="paymentDate" id="paymentDate"/>
-        </div>
-        
-        <div class="button-group">
-          <button type="submit" <%= (user == null ? "disabled" : "") %> >Search</button>
-          <button type="submit" name="showAll" value="1" <%= (user == null ? "disabled" : "") %> >Show All</button>
-        </div>
-      </form>
+          <div class="form-group">
+            <label for="paymentDate">Payment Date</label>
+            <input type="date" name="paymentDate" id="paymentDate"/>
+          </div>
+          
+          <div class="button-group">
+            <button type="submit" <%= (user == null ? "disabled" : "") %> >Search</button>
+            <button type="submit" name="showAll" value="1" <%= (user == null ? "disabled" : "") %> >Show All</button>
+          </div>
+        </form>
+
+
+        <% if (user == null) { %>
+          <a href="${pageContext.request.contextPath}/login.jsp">
+            <p class="message">You must be logged in to view your payment history.</p>
+          </a>
+        <% } 
+        %>
+      </div>
 
       <!-- Payment List -->
-      <% if (request.getAttribute("error") != null) { %>
-        <p class="message error-message"><%= request.getAttribute("error") %></p>
-      <% } %>
+      <div class="card-container">
+        <% if (user != null && !payments.isEmpty()) { 
+              for (Payment p : payments) { %>
+          <div class="card">
+            <h3>Payment ID: #<%= p.getPaymentID() %></h3>
+            <p>Order ID:   <%= p.getOrderID() %></p>
+            <p>Amount:     $<%= String.format("%.2f", p.getAmountPaid()) %></p>
+            <p>Date:       <%= p.getPaymentDate() %></p>
+            <p>Status:     <%= p.getPaymentStatus() %></p>
 
-      <% if (user == null) { %>
-        <a href="${pageContext.request.contextPath}/login.jsp">
-          <p class="message">You must be logged in to view your payment history.</p>
-        </a>
-      <% } else if (request.getParameter("showAll") != null && payments.isEmpty()) { %>
-        <p class="message">No payments found.</p>
-      <% } else if (!payments.isEmpty()) { 
-            for (Payment p : payments) { %>
-        <div class="card">
-          <h3>Payment #<%= p.getPaymentID() %></h3>
-          <p><strong>Order ID:</strong> <%= p.getOrderID() %></p>
-          <p><strong>Amount:</strong> $<%= String.format("%.2f", p.getAmountPaid()) %></p>
-          <p><strong>Date:</strong> <%= p.getPaymentDate() %></p>
-          <p><strong>Status:</strong> <%= p.getPaymentStatus() %></p>
-        </div>
-      <%   } // end for loop
-        } // end if/else %>
+            <!-- UPDATE button -->
+            <form action="${pageContext.request.contextPath}/PaymentUpdateController" method="get" style="display:inline;">
+              <input type="hidden" name="action"    value="update"/>
+              <input type="hidden" name="paymentId" value="<%= p.getPaymentID() %>"/>
+              <button type="submit">Update</button>
+            </form>
 
+            <!-- DELETE button -->
+            <form action="${pageContext.request.contextPath}/PaymentDeleteController"
+                  method="post"
+                  style="display:inline;"
+                  onsubmit="return confirm('Delete payment #<%= p.getPaymentID() %>?');">
+              <input type="hidden" name="action"    value="delete"/>
+              <input type="hidden" name="paymentId" value="<%= p.getPaymentID() %>"/>
+              <button type="submit">Delete</button>
+            </form>
+          </div>
+        <%   } // end for
+          } %>
+      </div>
+      <br/>
     </div>
   </div>
 </div>

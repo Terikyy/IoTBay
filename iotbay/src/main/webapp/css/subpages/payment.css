@@ -69,3 +69,22 @@ button:disabled:hover {
   background-color: #ccc;
   color: #666;
 }
+
+/* paymentList */
+
+.payment-search {
+  margin-bottom: 2rem;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--content-bg-secondary);
+}
