@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -56,7 +57,7 @@ public class PaymentController extends HttpServlet {
     }
 
     private void processCreditCardPayment(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, SQLException {
+            throws IOException, SQLException, ServletException {
         HttpSession session = request.getSession();
 
         PaymentDAO paymentDAO = (PaymentDAO) session.getAttribute("paymentDAO");
@@ -76,6 +77,14 @@ public class PaymentController extends HttpServlet {
         String cvv = request.getParameter("cvv");
         int orderId = (Integer) session.getAttribute("orderId");
         Double totalPrice = (Double) session.getAttribute("totalPrice");
+
+        List<Payment> existing = paymentDAO.findByOrderId(orderId);
+        if (!existing.isEmpty()) {
+            // if a payment exists, reject creation
+            request.setAttribute("message", "A payment already exists for this order.");
+            request.getRequestDispatcher("payment.jsp").forward(request, response);
+            return;
+        }
 
         if (nameOnCard == null || cardNumber == null || expiryDate == null || cvv == null ||
                 nameOnCard.isEmpty() || cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {

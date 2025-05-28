@@ -66,6 +66,14 @@
         <div class="centered-container">
             <h2>Payment</h2>
 
+
+
+        <% if (message != null) { %>
+            <div class="alert"><%=message%></div>
+        <% } %>
+
+        <% if (message == null) { %>
+
         <form action="PayPalServlet" method="post" class="payment-method-form" style="margin-top: 1rem;">
             <div class="form-group">
                 <label for="paymentMethod">Payment Method:</label>
@@ -75,12 +83,6 @@
                 </select>
         </div>
         </form>
-
-        <% if (message != null) { %>
-            <div class="alert"><%=message%></div>
-        <% } %>
-
-        <% if (message == null) { %>
 
         <form action="PaymentController" method="post">
             <div id="cardDetails">

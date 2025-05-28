@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.Payment;
+import model.ShippingManagement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -89,5 +90,16 @@ public class PaymentDAO extends AbstractDAO<Payment> {
     public int deleteById(int id) throws SQLException { // deletes a payment record by its PaymentID. involves a DELETE
         // FROM Payment WHERE PaymentID = ? sql query
         return deleteFromTableById("Payment", "PaymentID", id);
+    }
+
+    public List<Payment> findByOrderId(int orderId) throws SQLException {
+        String sql = "SELECT * FROM Payment WHERE OrderID = ?";
+               try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            List<Payment> list = new ArrayList<>();
+            while (rs.next()) list.add(mapRow(rs));
+            return list;
+        }
     }
 }
