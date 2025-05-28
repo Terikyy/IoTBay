@@ -31,7 +31,7 @@ public class CartController extends HttpServlet {
     
     /**
      * Handles HTTP GET requests for cart operations.
-     * Supports displaying the cart and retrieving cart item count via AJAX.
+     * Supports displaying the cart, retrieving cart item count, and checking available stock.
      *
      * @param request The HTTP request object
      * @param response The HTTP response object
@@ -62,6 +62,9 @@ public class CartController extends HttpServlet {
         } else if (pathInfo.equals("/count")) {
             // Get cart count for AJAX requests - used for updating cart badge in UI
             getCartCount(request, response);
+        } else if (pathInfo.equals("/check")) {
+            // Check available stock for a product
+            checkProductAvailability(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -154,6 +157,43 @@ public class CartController extends HttpServlet {
             throw new ServletException("Error retrieving cart items", e);
         }
     }
+        
+    /**
+     * Checks a product's available stock and current cart quantity.
+     * Used to prevent adding more items than available stock.
+     *
+     * @param request The HTTP request object
+     * @param response The HTTP response object
+     * @throws IOException If an I/O error occurs
+     */
+    private void checkProductAvailability(HttpServletRequest request, HttpServletResponse response) 
+            throws IOException {
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            
+            HttpSession session = request.getSession();
+            ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
+            Map<Integer, Integer> cart = getCartFromSession(session);
+            
+            // Get current quantity in cart
+            int currentQuantity = cart.getOrDefault(productId, 0);
+            
+            // Get product details to check stock
+            Product product = productDAO.findById(productId);
+            
+            if (product != null) {
+                // Send JSON response with current cart quantity and available stock
+                response.setContentType("application/json");
+                PrintWriter out = response.getWriter();
+                out.print("{\"success\":true,\"currentQuantity\":" + currentQuantity + 
+                         ",\"availableStock\":" + product.getStock() + "}");
+            } else {
+                sendJSONResponse(response, false, "Product not found");
+            }
+        } catch (Exception e) {
+            sendJSONResponse(response, false, "Error checking product availability: " + e.getMessage());
+        }
+    }
     
     /**
      * Returns the total count of items in the cart.
@@ -195,9 +235,26 @@ public class CartController extends HttpServlet {
         
         HttpSession session = request.getSession();
         Map<Integer, Integer> cart = getCartFromSession(session);
+        ProductDAO productDAO = (ProductDAO) session.getAttribute("productDAO");
+        
+        // Get current quantity in cart
+        int currentQuantity = cart.getOrDefault(productId, 0);
+        
+        // Check product stock
+        Product product = productDAO.findById(productId);
+        if (product == null) {
+            sendJSONResponse(response, false, "Product not found");
+            return;
+        }
+        
+        // Validate against available stock
+        if (currentQuantity + quantity > product.getStock()) {
+            sendJSONResponse(response, false, "Not enough stock available");
+            return;
+        }
         
         // Add to existing quantity if product already in cart
-        cart.put(productId, cart.getOrDefault(productId, 0) + quantity);
+        cart.put(productId, currentQuantity + quantity);
         
         // Save updated cart to session
         session.setAttribute("cart", cart);

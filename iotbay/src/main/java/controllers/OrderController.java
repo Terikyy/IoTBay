@@ -66,33 +66,6 @@ public class OrderController extends HttpServlet {
         }
         session.setAttribute("orderId", order.getOrderID());
         session.setAttribute("totalPrice", order.getTotalPrice());
-
-        
-        //retreive address details from the request
-        String name = request.getParameter("name");
-        int streetNumber = Integer.parseInt(request.getParameter("streetNumber"));
-        String streetName = request.getParameter("streetName");
-        int postcode = Integer.parseInt(request.getParameter("postcode"));
-        String suburb = request.getParameter("suburb");
-        String city = request.getParameter("city");
-        String state = request.getParameter("state");
-
-        //create new address object
-        Address address = new Address(name, streetNumber, streetName, postcode, suburb, city, state);
-
-        //insert the address into the database and retreive the addressID
-        AddressDAO addressDAO = (AddressDAO) session.getAttribute("addressDAO");
-        if (addressDAO == null) {
-            throw new IOException("AddressDAO is not initialized in the session.");
-        }
-
-        try {
-            addressDAO.insert(address);
-            System.out.println("Address inserted successfully.");
-        } catch (SQLException e) {
-            throw new ServletException("Error inserting address", e);
-        }
-
         
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
 

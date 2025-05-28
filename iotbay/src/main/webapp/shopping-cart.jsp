@@ -122,7 +122,7 @@
                                         <input type="number" 
                                                min="1" 
                                                max="<%= product.getStock() %>" 
-                                               value="<%= quantity %>" 
+                                               value="<%= Math.min(quantity, product.getStock()) %>"
                                                class="cart-quantity" 
                                                data-product-id="<%= product.getProductID() %>">
                                     </td>
