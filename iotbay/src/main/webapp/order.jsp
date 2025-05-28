@@ -76,6 +76,7 @@
 
                 <form action="OrderUpdateServlet" method="post">
                     <input type="hidden" name="orderId" value="<%= order.getOrderID() %>">
+                    <% session.setAttribute("order", order); %>
                     <button type="submit">
                         View Order Details
                     </button>
